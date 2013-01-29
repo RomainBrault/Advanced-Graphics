@@ -1,1 +1,0 @@
-/usr/bin/g++   -Werror -Wall -fno-common -Wshadow -Wextra -ansi -pedantic -std=c++0x -fopenmp -Ofast -flto -fno-exceptions -DNDEBUG     CMakeFiles/HDRimage.dir/src/main.cpp.o CMakeFiles/HDRimage.dir/src/HDRimage.cpp.o  -o HDRimage -rdynamic 
