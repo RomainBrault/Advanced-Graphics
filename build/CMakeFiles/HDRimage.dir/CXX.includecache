@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/HDRimage.hpp
+HDRimageConfig.hpp
+-
+
+/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/main.cpp
+HDRimage.hpp
+-
+
+HDRimageConfig.hpp
+string
+-
+iostream
+-
+fstream
+-
+string
+-
+memory
+-
+limits
+-
+chrono
+-
+

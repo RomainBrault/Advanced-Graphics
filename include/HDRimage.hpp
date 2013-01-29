@@ -14,7 +14,12 @@ typedef struct {
 	float b[ 8 ];
 } pixelBlock;
 
-enum pnmType : uint32_t {
+enum pfmEndianess : int32_t {
+	PFM_LITTLE_ENDIAN = -1,
+	PFM_BIG_ENDIAN    =  1
+};
+
+enum class pnm_t : uint32_t {
 	ASCIIBitmap    = '1',
 	ASCIIGreymap   = '2',
 	ASCIIColormap  = '3',
@@ -23,14 +28,23 @@ enum pnmType : uint32_t {
 	BinaryColormap = '6'
 };
 
+enum class pfm_t : uint32_t {
+	BinaryGreymap  = 'f',
+	BinaryColormap = 'F'
+};
+
 class image {
 /* Row major matrix of pixelBlock */
 public:
 	image( void ) noexcept;
-	image( uint32_t, uint32_t ) noexcept;
+	image( uint32_t, uint32_t, uint32_t = 1 ) noexcept;
+	image( image const & im ) noexcept;
 
-	// add deep copy constructor, move constructor
-	// overload operator=
+	// move constructor
+	// overload operator= (move + copy)
+
+	image & create( uint32_t, uint32_t, uint32_t = 1 ) noexcept;
+	image & copy  ( image const & im ) noexcept;
 
 	INLINE uint32_t getWidth     ( void ) const noexcept;
 	INLINE uint32_t getHeight    ( void ) const noexcept;
@@ -44,16 +58,16 @@ public:
 
 	int32_t loadPNM( 
 		std::string const &
-	)       noexcept;
+	) noexcept;
 	int32_t savePNM( 
-		std::string const &, uint32_t = BinaryColormap 
+		std::string const &, pnm_t = pnm_t::BinaryColormap 
 	) const noexcept;
 
 	int32_t loadPFM( 
 		std::string const &
-	)       noexcept;
+	) noexcept;
 	int32_t savePFM( 
-		std::string const &, uint32_t = BinaryColormap 
+		std::string const &, pfm_t = pfm_t::BinaryColormap 
 	) const noexcept;
 
 	~image( void ) noexcept;
