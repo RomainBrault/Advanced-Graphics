@@ -1,1 +1,0 @@
-/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc   -Wcheck -Werror -Wall -fno-common -std=c++0x -ansi -fno-gnu-keywords -openmp -O3 -ipo -fno-exceptions -DNDEBUG     CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o CMakeFiles/HDRimage.dir/src/main.cpp.o CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o  -o HDRimage -rdynamic 
