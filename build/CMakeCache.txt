@@ -61,7 +61,7 @@ CMAKE_CXX_FLAGS_MINSIZEREL:STRING=-Os -DNDEBUG
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel.
-CMAKE_CXX_FLAGS_RELEASE:STRING=-Ofast -flto -fno-exceptions -DNDEBUG
+CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -flto -fno-exceptions -DNDEBUG
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel.

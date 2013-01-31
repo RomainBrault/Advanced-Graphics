@@ -9,6 +9,12 @@
 ../include/HDRimage.hpp
 HDRimageConfig.hpp
 -
+cassert
+-
+array
+-
+cmath
+-
 
 /home/romain/Dropbox/Imperial College/Advanced-Graphics/src/main.cpp
 HDRimage.hpp

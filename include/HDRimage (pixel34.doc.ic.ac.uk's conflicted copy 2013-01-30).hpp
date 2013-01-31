@@ -4,16 +4,6 @@
 #include <HDRimageConfig.hpp>
 #include <cassert>
 #include <array>
-#include <cmath>
-
-#define hdr_min( x, y ) \
-    ( ( x ) > ( y ) ? ( y ) : ( x ) )
-
-#define hdr_max( x, y ) \
-    ( ( x ) > ( y ) ? ( x ) : ( y ) )
-
-#define in_range( x, y, z ) \
-    hdr_min( hdr_max( x, y ), z )
 
 namespace details {
 
@@ -40,9 +30,8 @@ void copy_range( size_t, size_t, OutputIterator )
 }
 
 template < typename OutputIterator, typename T, typename... Args >
-void copy_range( 
-    size_t begin, size_t size, OutputIterator out, T value, Args... args
-) {
+void copy_range( size_t begin, size_t size, OutputIterator out, T value, Args... args )
+{
     if ( begin == 0 ) {
         copy_n( size, out, value, args... );
     }
@@ -102,8 +91,6 @@ public:
     void free ( void ) noexcept;
 
     void normalise( float = 1 ) noexcept;
-    void troncate( float, float ) noexcept;
-    void gamma( float ) noexcept;
 
     int32_t loadPNM( 
         std::string const &
@@ -120,9 +107,7 @@ public:
     ) const noexcept;
 
     template < class CWF, class... Args >
-    int32_t createHDR( const Args&... args ) noexcept;
-
-    void linearToneMap( uint32_t stops ) noexcept;
+    int32_t createHDR( const Args&... args );
 
     ~image( void ) noexcept;
 
@@ -148,7 +133,7 @@ public:
     INLINE float operator( ) ( float x ) {
         if      ( x < 0   ) return 0;
         else if ( x < 0.5 ) return 2 * x;
-        else if ( x < 1   ) return 2 * ( 1 - x );
+        else if ( x < 1   ) return 1 - 2 * x;
         else                return 0;
     }
 
@@ -181,7 +166,7 @@ image::isEmpty( void ) const noexcept
 
 template < class CWF, class... Args >
 int32_t 
-image::createHDR( Args const &... args ) noexcept {
+image::createHDR( Args const &... args ) {
 
     uint32_t constexpr N( sizeof... ( Args ) );
     std::array< hdr::image, N > image_set;
@@ -204,90 +189,60 @@ image::createHDR( Args const &... args ) noexcept {
 
     create( width, height, 1 );
 
-#define HDR_MERGE_BLOCK( \
-    pix_buf, \
-    acc_wred, acc_wgreen, acc_wblue, acc_red, \
-    acc_green, acc_blue, exposure_time \
-) \
-    do { \
-        float w_temp_red   = w( pix_buf[ 0 ] ); \
-        float w_temp_green = w( pix_buf[ 1 ] ); \
-        float w_temp_blue  = w( pix_buf[ 2 ] ); \
-        acc_wred   += w_temp_red;   \
-        acc_wgreen += w_temp_green; \
-        acc_wblue  += w_temp_blue;  \
-        acc_red    += std::log( pix_buf[ 0 ] / exposure_time ) * w_temp_red;   \
-        acc_green  += std::log( pix_buf[ 1 ] / exposure_time ) * w_temp_green; \
-        acc_blue   += std::log( pix_buf[ 2 ] / exposure_time ) * w_temp_blue;  \
-    } while( 0 )
-
-#pragma omp parallel for
     for ( uint32_t i = 0; i < height; ++i ) {
         for ( uint32_t j = 0; j < width_block_number; ++j ) {
-            float acc_red   [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 }; 
-            float acc_green [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            float acc_blue  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            float acc_wred  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            float acc_wgreen[ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            float acc_wblue [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            uint32_t exposure_time( 1 );
+            float acc_red   ( 0 ), 
+                  acc_green ( 0 ),
+                  acc_blue  ( 0 ),
+                  acc_wred  ( 0 ),
+                  acc_wgreen( 0 ),
+                  acc_wblue ( 0 );
             for ( uint32_t l = 0; l < N; ++l ) {
+                uint32_t exposure_time = 1;
                 for ( uint32_t k = 0; k < 8; ++k ) {
                     float pix_buf[ 3 ] = {
                         image_set[ l ].m_data_2D[ i ][ j ].r[ k ],
                         image_set[ l ].m_data_2D[ i ][ j ].g[ k ],
                         image_set[ l ].m_data_2D[ i ][ j ].b[ k ]
                     };
-                    HDR_MERGE_BLOCK( 
-                        pix_buf, 
-                        acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ], 
-                        acc_red[ k ],  acc_green[ k ], acc_blue[ k ], 
-                        exposure_time 
-                    );
+                    float w_temp_red   = w( pix_buf[ 0 ] );
+                    float w_temp_green = w( pix_buf[ 1 ] );
+                    float w_temp_blue  = w( pix_buf[ 2 ] );
+                    acc_wred   += w_temp_red;
+                    acc_wgreen += w_temp_green
+                    acc_wblue  += w_temp_blue;
+                    acc_red    += log( pix_buf[ 0 ] / exposure_time ) * w_temp_red;
+                    acc_green  += log( pix_buf[ 1 ] / exposure_time ) * w_temp_green;
+                    acc_blue   += log( pix_buf[ 2 ] / exposure_time ) * w_temp_blue;
                 }
                 exposure_time <<= 2;
             }
             for ( uint32_t k = 0; k < 8; ++k ) {
-                m_data_2D[ i ][ j ].r[ k ] = 
-                    std::exp( acc_red  [ k ] / acc_wred  [ k ] );
-                m_data_2D[ i ][ j ].g[ k ] =
-                    std::exp( acc_green[ k ] / acc_wgreen[ k ] );
-                m_data_2D[ i ][ j ].b[ k ] = 
-                    std::exp( acc_blue [ k ] / acc_wblue [ k ] );
+                m_data_2D[ i ][ j ].r[ k ] = exp( acc_red   / acc_wred );
+                m_data_2D[ i ][ j ].g[ k ] = exp( acc_green / acc_wgreen );
+                m_data_2D[ i ][ j ].b[ k ] = exp( acc_blue  / acc_wblue );
             }
         }
-        float acc_red   [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 }; 
-        float acc_green [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        float acc_blue  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        float acc_wred  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        float acc_wgreen[ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        float acc_wblue [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        uint32_t exposure_time( 1 );
         for ( uint32_t l = 0; l < N; ++l ) {
+            uint32_t exposure_time = 1;
             for ( uint32_t k = 0; width_block_end + k < width; ++k ) {
                 float pix_buf[ 3 ] = {
                     image_set[ l ].m_data_2D[ i ][ width_block_number ].r[ k ],
                     image_set[ l ].m_data_2D[ i ][ width_block_number ].g[ k ],
                     image_set[ l ].m_data_2D[ i ][ width_block_number ].b[ k ]
                 };
-                HDR_MERGE_BLOCK( 
-                    pix_buf, 
-                    acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ], 
-                    acc_red[ k ], acc_green[ k ], acc_blue[ k ], 
-                    exposure_time 
-                );            
+                acc_wred   += w_temp_red;
+                acc_wgreen += w_temp_green
+                acc_wblue  += w_temp_blue;
+                acc_red    += log( pix_buf[ 0 ] / exposure_time ) * w_temp_red;
+                acc_green  += log( pix_buf[ 1 ] / exposure_time ) * w_temp_green;
+                acc_blue   += log( pix_buf[ 2 ] / exposure_time ) * w_temp_blue;
             }
             exposure_time <<= 2;
         }
-        for ( uint32_t k = 0; width_block_end + k < width; ++k ) {
-            m_data_2D[ i ][ width_block_number ].r[ k ] =
-                std::exp( acc_red   [ k ]/ acc_wred  [ k ] );
-            m_data_2D[ i ][ width_block_number ].g[ k ] = 
-                std::exp( acc_green [ k ]/ acc_wgreen[ k ] );
-            m_data_2D[ i ][ width_block_number ].b[ k ] =
-                std::exp( acc_blue  [ k ]/ acc_wblue [ k ] );
-        }
     }
+
+
     return 0;
 }
 

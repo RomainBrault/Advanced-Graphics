@@ -3,6 +3,43 @@
 
 #define is_power_of_two( n ) ( ( ( n ) != 0 ) && !( ( n ) & ( ( n ) - 1 ) ) )
 
+static float
+endian_swap( float val )
+/* Convert LE <=> GE float. not tested. */
+{
+    union en_float {
+        float    f;
+        uint32_t i;
+    };
+
+    /* 4 bit fields in a float. */
+    en_float n;
+    n.f = val;
+    /* swap 2 consecutive bit fields. */
+    n.i = ( ( n.i >>  8 ) & 0x00ff00ff) | ( ( n.i <<  8 ) & 0xff00ff00 );
+    /* swap half float bit field. */
+    n.i = ( ( n.i >> 16 ) & 0x0000ffff) | ( ( n.i << 16 ) & 0xffff0000 );
+
+    return n.f;
+}
+
+static void 
+skip( std::ifstream & file ) noexcept
+/* Read at least 1 char. */
+{
+    char temp;
+    do {
+        temp = static_cast< char >( file.get( ) );
+        if ( temp == '#') // skip this line:
+            file.ignore( std::numeric_limits< std::streamsize >::max( ), '\n' );
+    } while ( 
+        ( ( temp == ' ' )  || ( temp == '\t' )   || 
+          ( temp == '\n' ) || ( temp == '#'  ) ) &&
+        ( !file.eof( ) )
+    );
+    file.putback( temp );
+}
+
 namespace hdr {
 
 image::image( void ) :
@@ -29,9 +66,6 @@ image::image( image const & im ) :
     m_height( im.m_height ),
     m_max_pixel_chanel( im.m_max_pixel_chanel )
 {
-    if ( &im == this ) {
-        return;
-    }
     alloc( PAGE_SIZE, SSE_ALIGN );
     if ( im.m_padd < m_padd ) {
         free( );
@@ -51,11 +85,16 @@ image::~image( void )
 image &
 image::create( uint32_t width, uint32_t height, uint32_t chanel ) noexcept
 {
-    free( );
-    m_width            = width;
-    m_height           = height;
+    if ( 
+        ( m_height != height ) ||
+        ( m_width  != width  )
+    ) {
+        free( );
+        m_width            = width;
+        m_height           = height;
+        alloc( PAGE_SIZE, SSE_ALIGN );
+    }
     m_max_pixel_chanel = chanel;
-    alloc( PAGE_SIZE, SSE_ALIGN );
     return *this;
 }
 
@@ -65,19 +104,20 @@ image::copy( image const & im ) noexcept
     if ( &im == this ) {
         return *this;
     }
-    free( );
-    m_width            = im.m_width;
-    m_height           = im.m_height;
-    m_max_pixel_chanel = im.m_max_pixel_chanel;
-    alloc( PAGE_SIZE, SSE_ALIGN );
+    create( im.m_width, im.m_height, im.m_max_pixel_chanel );
     if ( im.m_padd < m_padd ) {
         free( );
         return *this;
     }
     for ( uint32_t i = 0; i < m_height; ++i ) {
-        std::memcpy( m_data_1D, im.m_data_1D, m_padd );
+        std::memcpy( m_data_2D[ i ], im.m_data_2D[ i ], m_padd );
     }
     return *this;
+}
+
+image & 
+image::operator= ( image const & im ) noexcept {
+    return copy( im );
 }
 
 void 
@@ -154,24 +194,6 @@ image::free( void ) noexcept
     m_padd = 0;
 }
 
-
-static void 
-skip( std::ifstream & file ) noexcept
-/* Read at least 1 char. */
-{
-    char temp;
-    do {
-        temp = static_cast< char >( file.get( ) );
-        if ( temp == '#') // skip this line:
-            file.ignore( std::numeric_limits< std::streamsize >::max( ), '\n' );
-    } while ( 
-        ( ( temp == ' ' )  || ( temp == '\t' )   || 
-          ( temp == '\n' ) || ( temp == '#'  ) ) &&
-        ( !file.eof( ) )
-    );
-    file.putback( temp );
-}
-
 int32_t
 image::loadPNM( std::string const & file_path ) noexcept
 {
@@ -205,11 +227,11 @@ image::loadPNM( std::string const & file_path ) noexcept
         goto FILE_ERROR;
     }
 
-    switch ( static_cast< pnm_t >( magic_number[ 1 ] ) ) {
-    case pnm_t::ASCIIBitmap:
+    switch ( magic_number[ 1 ] ) {
+    case ASCIIBitmap:
         goto FILE_ERROR;
         break;
-    case pnm_t::ASCIIGreymap:
+    case ASCIIGreymap:
         pnm_file >> m_max_pixel_chanel;
         skip( pnm_file );
         alloc( PAGE_SIZE, SSE_ALIGN );
@@ -237,7 +259,7 @@ image::loadPNM( std::string const & file_path ) noexcept
         }
         break;
 
-    case pnm_t::ASCIIColormap:
+    case ASCIIColormap:
         pnm_file >> m_max_pixel_chanel;
         skip( pnm_file );
         alloc( PAGE_SIZE, SSE_ALIGN );
@@ -269,12 +291,12 @@ image::loadPNM( std::string const & file_path ) noexcept
             }
         }
         break;
-    case pnm_t::BinaryBitmap:
+    case BinaryBitmap:
 
         pnm_file.close( );
         goto FILE_ERROR;
         break;
-    case pnm_t::BinaryGreymap:
+    case BinaryGreymap:
 
         pnm_file >> m_max_pixel_chanel;
         skip( pnm_file );
@@ -352,7 +374,7 @@ image::loadPNM( std::string const & file_path ) noexcept
         }
         break;
 
-    case pnm_t::BinaryColormap:
+    case BinaryColormap:
         pnm_file >> m_max_pixel_chanel;
         skip( pnm_file );
         alloc( PAGE_SIZE, SSE_ALIGN );
@@ -451,7 +473,7 @@ FILE_ERROR:
 
 int32_t 
 image::savePNM( 
-    std::string const & file_path, pnm_t magic_number 
+    std::string const & file_path, saveFormat magic_number 
 ) const noexcept {
     std::ofstream pnm_file;
     uint32_t width_block_number;
@@ -472,27 +494,27 @@ image::savePNM(
     pnm_file << "\n" << m_width << " " << m_height << "\n";
 
     switch ( magic_number ) {
-    case pnm_t::ASCIIBitmap:
+    case ASCIIBitmap:
 
         pnm_file.close( );
         goto FILE_ERROR;
         break;
-    case pnm_t::ASCIIGreymap:
+    case ASCIIGreymap:
 
         pnm_file.close( );
         goto FILE_ERROR;
         break;
-    case pnm_t::ASCIIColormap:
+    case ASCIIColormap:
 
         pnm_file.close( );
         goto FILE_ERROR;
         break;
-    case pnm_t::BinaryBitmap:
+    case BinaryBitmap:
 
         pnm_file.close( );
         goto FILE_ERROR;
         break;
-    case pnm_t::BinaryGreymap:
+    case BinaryGreymap:
 
         pnm_file << m_max_pixel_chanel << "\n";
         width_block_number = ( m_width - 1 ) / 8;
@@ -559,7 +581,7 @@ image::savePNM(
             }
         }
         break;
-    case pnm_t::BinaryColormap:
+    case BinaryColormap:
 
         pnm_file << m_max_pixel_chanel << "\n";
         width_block_number = ( m_width - 1 ) / 8;
@@ -663,26 +685,6 @@ FILE_ERROR:
     return -1;
 }
 
-float
-endian_swap( float val )
-/* Convert LE <=> GE float. not tested. */
-{
-    union en_float {
-        float    f;
-        uint32_t i;
-    };
-
-    /* 4 bit fields in a float. */
-    en_float n;
-    n.f = val;
-    /* swap 2 consecutive bit fields. */
-    n.i = ( ( n.i >>  8 ) & 0x00ff00ff) | ( ( n.i <<  8 ) & 0xff00ff00 );
-    /* swap half float bit field. */
-    n.i = ( ( n.i >> 16 ) & 0x0000ffff) | ( ( n.i << 16 ) & 0xffff0000 );
-
-    return n.f;
-}
-
 int32_t
 image::loadPFM( std::string const & file_path ) noexcept
 {
@@ -703,6 +705,18 @@ image::loadPFM( std::string const & file_path ) noexcept
         pfm_file.close( );
         goto FILE_ERROR;
     }
+    switch ( magic_number[ 1 ] ) {
+    case 'f':
+        magic_number[ 1 ] = '5';
+        break;
+    case 'F':
+        magic_number[ 1 ] = '6';
+        break;
+    default:
+        pfm_file.close( );
+        goto FILE_ERROR;
+        break;
+    }
 
     m_width = 0;
     m_height = 0;
@@ -722,8 +736,8 @@ image::loadPFM( std::string const & file_path ) noexcept
     width_block_number = ( m_width - 1 ) / 8;
     width_block_end = width_block_number * 8;
 
-    switch ( static_cast< pfm_t >( magic_number[ 1 ] ) ) {
-    case pfm_t::BinaryGreymap:
+    switch ( magic_number[ 1 ] ) {
+    case BinaryGreymap:
 
         if ( pfm_endianess == PFM_LITTLE_ENDIAN ) {
             for ( uint32_t i = m_height - 1; i != 0; --i ) {
@@ -782,7 +796,7 @@ image::loadPFM( std::string const & file_path ) noexcept
         }
         break;
 
-    case pfm_t::BinaryColormap:
+    case BinaryColormap:
         if ( pfm_endianess == PFM_LITTLE_ENDIAN ) {
             for ( uint32_t i = m_height - 1; i != 0; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
@@ -866,12 +880,16 @@ FILE_ERROR:
 
 int32_t
 image::savePFM( 
-    std::string const & file_path, pfm_t magic_number 
+    std::string const & file_path, saveFormat magic_number 
 ) const noexcept {
     /* Always save in little endian. */
     std::ofstream pfm_file;
     uint32_t width_block_number;
     uint32_t width_block_end;
+
+    if ( ( magic_number != '5' ) || ( magic_number != '6' ) ) {
+        goto FILE_ERROR;
+    }
 
     pfm_file.open( 
         file_path.c_str( ), 
@@ -882,15 +900,27 @@ image::savePFM(
     }
 
     pfm_file.put( 'P' );
-    pfm_file.put( static_cast< char >( magic_number ) );
+    switch ( magic_number ) {
+    case '5':
+        pfm_file.put( static_cast< char >( 'f' ) );
+        break;
+    case '6':
+        pfm_file.put( static_cast< char >( 'F' ) );
+        break;
+    default:
+        pfm_file.close( );
+        goto FILE_ERROR;
+        break;
+    }
+
 
     pfm_file << "\n" << m_width << " " << m_height << "\n" << -1.0 << "\n";
 
     width_block_number = ( m_width - 1 ) / 8;
     width_block_end = width_block_number * 8;
 
-    switch ( static_cast< pfm_t >( magic_number ) ) {
-    case pfm_t::BinaryGreymap:
+    switch ( magic_number ) {
+    case BinaryGreymap:
 
         for ( uint32_t i = m_height - 1; i != 0; --i ) {
             for ( uint32_t j = 0; j < width_block_number; ++j ) {
@@ -918,7 +948,7 @@ image::savePFM(
         }
         break;
 
-    case pfm_t::BinaryColormap:
+    case BinaryColormap:
 
         for ( uint32_t i = m_height - 1; i != 0; --i ) {
             for ( uint32_t j = 0; j < width_block_number; ++j ) {
