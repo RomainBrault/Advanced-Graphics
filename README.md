@@ -25,7 +25,7 @@ $ ./install.sh -cmifp --compiler-cxx=g++ --compiler-c=gcc
 
 # Current Features
 
-- class image (~50%)
+- class image (~70%)
 
 - loadPNM (4/6 implemented)
 
@@ -48,11 +48,3 @@ $ ./install.sh -cmifp --compiler-cxx=g++ --compiler-c=gcc
 - cd /bin/usr/local/bin
 
 - ./HDRimage memorial1.pfm memorial2.pfm memorial3.pfm memorial4.pfm memorial5.pfm memorial6.pfm memorial7.pfm
-
-# TODO
-
-- loadLFM
-
-- saveLFM
-
-- rest of the coursework...
