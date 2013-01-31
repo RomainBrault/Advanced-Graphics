@@ -8,7 +8,7 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o"
   "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/main.cpp" "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/HDRimage.dir/src/main.cpp.o"
   )
-SET(CMAKE_CXX_COMPILER_ID "GNU")
+SET(CMAKE_CXX_COMPILER_ID "Intel")
 
 # Preprocessor definitions for this target.
 SET(CMAKE_TARGET_DEFINITIONS

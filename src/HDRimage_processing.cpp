@@ -103,20 +103,20 @@ image::gamma( float pow_val ) noexcept
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
                 m_data_2D[ i ][ j ].r[ k ] = 
-                    pow( m_data_2D[ i ][ j ].r[ k ], gamma_val );
+                    std::pow( m_data_2D[ i ][ j ].r[ k ], gamma_val );
                 m_data_2D[ i ][ j ].g[ k ] = 
-                    pow( m_data_2D[ i ][ j ].g[ k ], gamma_val );
+                    std::pow( m_data_2D[ i ][ j ].g[ k ], gamma_val );
                 m_data_2D[ i ][ j ].b[ k ] = 
-                    pow( m_data_2D[ i ][ j ].b[ k ], gamma_val );
+                    std::pow( m_data_2D[ i ][ j ].b[ k ], gamma_val );
             }
         }
         for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
             m_data_2D[ i ][ wblock_index ].r[ k ] = 
-                pow( m_data_2D[ i ][ wblock_index ].r[ k ], gamma_val );
+                std::pow( m_data_2D[ i ][ wblock_index ].r[ k ], gamma_val );
             m_data_2D[ i ][ wblock_index ].g[ k ] = 
-                pow( m_data_2D[ i ][ wblock_index ].g[ k ], gamma_val );
+                std::pow( m_data_2D[ i ][ wblock_index ].g[ k ], gamma_val );
             m_data_2D[ i ][ wblock_index ].b[ k ] = 
-                pow( m_data_2D[ i ][ wblock_index ].b[ k ], gamma_val );
+                std::pow( m_data_2D[ i ][ wblock_index ].b[ k ], gamma_val );
         }
     }
 }
