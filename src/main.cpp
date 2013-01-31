@@ -18,13 +18,14 @@ int main( int argc, char* argv[] ) {
 	test6.loadPFM( argv[ 6 ] );
 	test7.loadPFM( argv[ 7 ] );
 
-	res.createHDR< hinge_cwf >( 
+	res.createHDR< pol_cwf >( 
 		test1, test2, test3, test4, test5, test6, test7 
 	);
-	// res.troncate( 0.005, 0.92 ); 
-	res.linearToneMap( 7 );
+	std::cout << res.dynamicRange( )  << std::endl<< std::endl;
+	res.normalise( 1 );
+	res.linearToneMap( atoi( argv[ 8 ] ) );
 	res.troncate( 0, 1 );
-	res.gamma( 2.2 );
+	res.gamma( atof( argv[ 9 ] ) );
 	res.normalise( 255 );
 	res.savePNM( "temp.ppm", BinaryColormap );
     return 0;

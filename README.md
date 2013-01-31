@@ -47,4 +47,4 @@ $ ./install.sh -cmifp --compiler-cxx=g++ --compiler-c=gcc
 
 - cd /bin/usr/local/bin
 
-- ./HDRimage memorial1.pfm memorial2.pfm memorial3.pfm memorial4.pfm memorial5.pfm memorial6.pfm memorial7.pfm
+- ./HDRimage memorial1.pfm memorial2.pfm memorial3.pfm memorial4.pfm memorial5.pfm memorial6.pfm memorial7.pfm 9 1.8
