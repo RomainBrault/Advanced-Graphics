@@ -28,30 +28,30 @@ The CXX compiler identification is GNU, found in "/home/romain/Dropbox/Imperial 
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec3898149116/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3898149116.dir/build.make CMakeFiles/cmTryCompileExec3898149116.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec520228686/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec520228686.dir/build.make CMakeFiles/cmTryCompileExec520228686.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec3898149116.dir/testCCompiler.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec3898149116.dir/testCCompiler.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/testCCompiler.c"
-Linking C executable cmTryCompileExec3898149116
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3898149116.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec3898149116.dir/testCCompiler.c.o  -o cmTryCompileExec3898149116 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec520228686.dir/testCCompiler.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec520228686.dir/testCCompiler.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/testCCompiler.c"
+Linking C executable cmTryCompileExec520228686
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec520228686.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec520228686.dir/testCCompiler.c.o  -o cmTryCompileExec520228686 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec2203701049/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2203701049.dir/build.make CMakeFiles/cmTryCompileExec2203701049.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec2197735846/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2197735846.dir/build.make CMakeFiles/cmTryCompileExec2197735846.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
-Linking C executable cmTryCompileExec2203701049
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2203701049.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc       -v CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec2203701049 -rdynamic  
+Building C object CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+Linking C executable cmTryCompileExec2197735846
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2197735846.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc       -v CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec2197735846 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/gcc
 COLLECT_LTO_WRAPPER=/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/lto-wrapper
@@ -61,8 +61,8 @@ Thread model: posix
 gcc version 4.7.2 (GCC) 
 COMPILER_PATH=/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/
 LIBRARY_PATH=/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec2203701049' '-rdynamic' '-mtune=generic' '-march=x86-64'
- /opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec2203701049 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../.. CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtend.o /lib/../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec2197735846' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec2197735846 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../.. CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtend.o /lib/../lib64/crtn.o
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
@@ -70,15 +70,15 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec2203701049/fast"]
-  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2203701049.dir/build.make CMakeFiles/cmTryCompileExec2203701049.dir/build]
+  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec2197735846/fast"]
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2197735846.dir/build.make CMakeFiles/cmTryCompileExec2197735846.dir/build]
   ignore line: [gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp']
   ignore line: [/usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1]
-  ignore line: [Building C object CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTryCompileExec2203701049]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2203701049.dir/link.txt --verbose=1]
-  ignore line: [/usr/lib64/ccache/gcc       -v CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec2203701049 -rdynamic  ]
+  ignore line: [Building C object CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTryCompileExec2197735846]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2197735846.dir/link.txt --verbose=1]
+  ignore line: [/usr/lib64/ccache/gcc       -v CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec2197735846 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/gcc]
   ignore line: [COLLECT_LTO_WRAPPER=/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/lto-wrapper]
@@ -88,8 +88,8 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 4.7.2 (GCC) ]
   ignore line: [COMPILER_PATH=/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/]
   ignore line: [LIBRARY_PATH=/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec2203701049' '-rdynamic' '-mtune=generic' '-march=x86-64']
-  link line: [ /opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec2203701049 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../.. CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtend.o /lib/../lib64/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec2197735846' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec2197735846 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../.. CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtend.o /lib/../lib64/crtn.o]
     arg [/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2] ==> ignore
     arg [--eh-frame-hdr] ==> ignore
     arg [-m] ==> ignore
@@ -98,7 +98,7 @@ Parsed C implicit link information from above output:
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec2203701049] ==> ignore
+    arg [cmTryCompileExec2197735846] ==> ignore
     arg [/lib/../lib64/crt1.o] ==> ignore
     arg [/lib/../lib64/crti.o] ==> ignore
     arg [/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o] ==> ignore
@@ -119,7 +119,7 @@ Parsed C implicit link information from above output:
     arg [-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64]
     arg [-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64]
     arg [-L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../..] ==> dir [/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../..]
-    arg [CMakeFiles/cmTryCompileExec2203701049.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTryCompileExec2197735846.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -159,30 +159,30 @@ Parsed C implicit link information from above output:
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec2315374651/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2315374651.dir/build.make CMakeFiles/cmTryCompileExec2315374651.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1642961860/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1642961860.dir/build.make CMakeFiles/cmTryCompileExec1642961860.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building CXX object CMakeFiles/cmTryCompileExec2315374651.dir/testCXXCompiler.cxx.o
-/usr/lib64/ccache/g++     -o CMakeFiles/cmTryCompileExec2315374651.dir/testCXXCompiler.cxx.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx"
-Linking CXX executable cmTryCompileExec2315374651
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2315374651.dir/link.txt --verbose=1
-/usr/lib64/ccache/g++          CMakeFiles/cmTryCompileExec2315374651.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec2315374651 -rdynamic 
+Building CXX object CMakeFiles/cmTryCompileExec1642961860.dir/testCXXCompiler.cxx.o
+/usr/lib64/ccache/g++     -o CMakeFiles/cmTryCompileExec1642961860.dir/testCXXCompiler.cxx.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx"
+Linking CXX executable cmTryCompileExec1642961860
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1642961860.dir/link.txt --verbose=1
+/usr/lib64/ccache/g++          CMakeFiles/cmTryCompileExec1642961860.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec1642961860 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec2463743146/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2463743146.dir/build.make CMakeFiles/cmTryCompileExec2463743146.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec3185495096/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3185495096.dir/build.make CMakeFiles/cmTryCompileExec3185495096.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building CXX object CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o
-/usr/lib64/ccache/g++     -o CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTryCompileExec2463743146
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2463743146.dir/link.txt --verbose=1
-/usr/lib64/ccache/g++        -v CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec2463743146 -rdynamic  
+Building CXX object CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o
+/usr/lib64/ccache/g++     -o CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTryCompileExec3185495096
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3185495096.dir/link.txt --verbose=1
+/usr/lib64/ccache/g++        -v CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec3185495096 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/g++
 COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/lto-wrapper
@@ -192,8 +192,8 @@ Thread model: posix
 gcc version 4.7.2 20120921 (Red Hat 4.7.2-2) (GCC) 
 COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/:/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/4.7.2/:/usr/lib/gcc/x86_64-redhat-linux/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/4.7.2/:/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec2463743146' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/libexec/gcc/x86_64-redhat-linux/4.7.2/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec2463743146 /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../.. CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec3185495096' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/libexec/gcc/x86_64-redhat-linux/4.7.2/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec3185495096 /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../.. CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
@@ -201,15 +201,15 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec2463743146/fast"]
-  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2463743146.dir/build.make CMakeFiles/cmTryCompileExec2463743146.dir/build]
+  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec3185495096/fast"]
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3185495096.dir/build.make CMakeFiles/cmTryCompileExec3185495096.dir/build]
   ignore line: [gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp']
   ignore line: [/usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1]
-  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/lib64/ccache/g++     -o CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTryCompileExec2463743146]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2463743146.dir/link.txt --verbose=1]
-  ignore line: [/usr/lib64/ccache/g++        -v CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec2463743146 -rdynamic  ]
+  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/lib64/ccache/g++     -o CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTryCompileExec3185495096]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3185495096.dir/link.txt --verbose=1]
+  ignore line: [/usr/lib64/ccache/g++        -v CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec3185495096 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/g++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/lto-wrapper]
@@ -219,8 +219,8 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 4.7.2 20120921 (Red Hat 4.7.2-2) (GCC) ]
   ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/:/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/:/usr/libexec/gcc/x86_64-redhat-linux/:/usr/lib/gcc/x86_64-redhat-linux/4.7.2/:/usr/lib/gcc/x86_64-redhat-linux/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-redhat-linux/4.7.2/:/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec2463743146' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/libexec/gcc/x86_64-redhat-linux/4.7.2/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec2463743146 /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../.. CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec3185495096' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/libexec/gcc/x86_64-redhat-linux/4.7.2/collect2 --build-id --no-add-needed --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec3185495096 /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../.. CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o]
     arg [/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/collect2] ==> ignore
     arg [--build-id] ==> ignore
     arg [--no-add-needed] ==> ignore
@@ -232,7 +232,7 @@ Parsed CXX implicit link information from above output:
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec2463743146] ==> ignore
+    arg [cmTryCompileExec3185495096] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o] ==> ignore
@@ -253,7 +253,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64]
     arg [-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64]
     arg [-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../..] ==> dir [/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../..]
-    arg [CMakeFiles/cmTryCompileExec2463743146.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTryCompileExec3185495096.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -291,75 +291,75 @@ Parsed CXX implicit link information from above output:
 Determining if the include file sys/types.h exists passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec3768456603/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3768456603.dir/build.make CMakeFiles/cmTryCompileExec3768456603.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec2549111783/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2549111783.dir/build.make CMakeFiles/cmTryCompileExec2549111783.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec3768456603.dir/CheckIncludeFile.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec3768456603.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
-Linking C executable cmTryCompileExec3768456603
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3768456603.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec3768456603.dir/CheckIncludeFile.c.o  -o cmTryCompileExec3768456603 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec2549111783.dir/CheckIncludeFile.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec2549111783.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
+Linking C executable cmTryCompileExec2549111783
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2549111783.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec2549111783.dir/CheckIncludeFile.c.o  -o cmTryCompileExec2549111783 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Determining if the include file stdint.h exists passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec687470747/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec687470747.dir/build.make CMakeFiles/cmTryCompileExec687470747.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec2684703490/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2684703490.dir/build.make CMakeFiles/cmTryCompileExec2684703490.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec687470747.dir/CheckIncludeFile.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec687470747.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
-Linking C executable cmTryCompileExec687470747
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec687470747.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec687470747.dir/CheckIncludeFile.c.o  -o cmTryCompileExec687470747 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec2684703490.dir/CheckIncludeFile.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec2684703490.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
+Linking C executable cmTryCompileExec2684703490
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2684703490.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec2684703490.dir/CheckIncludeFile.c.o  -o cmTryCompileExec2684703490 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Determining if the include file stddef.h exists passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec3379478405/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3379478405.dir/build.make CMakeFiles/cmTryCompileExec3379478405.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1115875999/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1115875999.dir/build.make CMakeFiles/cmTryCompileExec1115875999.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec3379478405.dir/CheckIncludeFile.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec3379478405.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
-Linking C executable cmTryCompileExec3379478405
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3379478405.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec3379478405.dir/CheckIncludeFile.c.o  -o cmTryCompileExec3379478405 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec1115875999.dir/CheckIncludeFile.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec1115875999.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
+Linking C executable cmTryCompileExec1115875999
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1115875999.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec1115875999.dir/CheckIncludeFile.c.o  -o cmTryCompileExec1115875999 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Determining size of unsigned short passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec436826024/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec436826024.dir/build.make CMakeFiles/cmTryCompileExec436826024.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec438764997/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec438764997.dir/build.make CMakeFiles/cmTryCompileExec438764997.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec436826024.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec436826024.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CheckTypeSize/CMAKE_SIZEOF_UNSIGNED_SHORT.c"
-Linking C executable cmTryCompileExec436826024
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec436826024.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec436826024.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o  -o cmTryCompileExec436826024 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec438764997.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec438764997.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CheckTypeSize/CMAKE_SIZEOF_UNSIGNED_SHORT.c"
+Linking C executable cmTryCompileExec438764997
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec438764997.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec438764997.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o  -o cmTryCompileExec438764997 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED succeded with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec696134313/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec696134313.dir/build.make CMakeFiles/cmTryCompileExec696134313.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1178017026/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1178017026.dir/build.make CMakeFiles/cmTryCompileExec1178017026.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec696134313.dir/src.c.o
-/usr/lib64/ccache/gcc   -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTryCompileExec696134313.dir/src.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/src.c"
-Linking C executable cmTryCompileExec696134313
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec696134313.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc     -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTryCompileExec696134313.dir/src.c.o  -o cmTryCompileExec696134313 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec1178017026.dir/src.c.o
+/usr/lib64/ccache/gcc   -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTryCompileExec1178017026.dir/src.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/src.c"
+Linking C executable cmTryCompileExec1178017026
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1178017026.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc     -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTryCompileExec1178017026.dir/src.c.o  -o cmTryCompileExec1178017026 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -376,15 +376,15 @@ int main() {
 Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED succeded with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec1963496927/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1963496927.dir/build.make CMakeFiles/cmTryCompileExec1963496927.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec2391122212/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2391122212.dir/build.make CMakeFiles/cmTryCompileExec2391122212.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building CXX object CMakeFiles/cmTryCompileExec1963496927.dir/src.cxx.o
-/usr/lib64/ccache/g++    -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTryCompileExec1963496927.dir/src.cxx.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/src.cxx"
-Linking CXX executable cmTryCompileExec1963496927
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1963496927.dir/link.txt --verbose=1
-/usr/lib64/ccache/g++      -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTryCompileExec1963496927.dir/src.cxx.o  -o cmTryCompileExec1963496927 -rdynamic 
+Building CXX object CMakeFiles/cmTryCompileExec2391122212.dir/src.cxx.o
+/usr/lib64/ccache/g++    -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTryCompileExec2391122212.dir/src.cxx.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/src.cxx"
+Linking CXX executable cmTryCompileExec2391122212
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2391122212.dir/link.txt --verbose=1
+/usr/lib64/ccache/g++      -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTryCompileExec2391122212.dir/src.cxx.o  -o cmTryCompileExec2391122212 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 Source file was:

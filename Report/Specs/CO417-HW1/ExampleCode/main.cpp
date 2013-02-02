@@ -145,9 +145,9 @@ void LoadPFMAndSavePPM(const char *image_in, const char *image_out)
 				uint index = i*width*numComponents + j*numComponents + k; //index within the image
 
 				//typecast 0.0f -> 1.0f values to the 0 - 255 range 
-				img_out[index] = static_cast<unsigned char>(img_in[index]*255.0f); //R
-				img_out[index + 1] = static_cast<unsigned char>(img_in[index + 1]*255.0f);//G
-				img_out[index + 2] = static_cast<unsigned char>(img_in[index + 2]*255.0f);//B
+				img_out[index] = static_cast<unsigned char>(img_in[index]*255); //R
+				img_out[index + 1] = static_cast<unsigned char>(img_in[index + 1]*255);//G
+				img_out[index + 2] = static_cast<unsigned char>(img_in[index + 2]*255);//B
 				
 			}
 
@@ -174,7 +174,7 @@ int main(int argc, char** argv)
     return 0;
   }        
 
-  LoadAndSavePPM(argv[1], argv[2]);
+  LoadPFMAndSavePPM(argv[1], argv[2]);
 
 //   if(count == 2)
 //   {  

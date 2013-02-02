@@ -7,10 +7,10 @@ SET(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 SET(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
+  "../AdvancedGraphicsConfig.hpp.in"
   "../CMake/Compiler/Compiler.cmake"
   "../CMake/cpp11/CheckCXX11Features.cmake"
   "../CMakeLists.txt"
-  "../HDRimageConfig.hpp.in"
   "CMakeFiles/CMakeCCompiler.cmake"
   "CMakeFiles/CMakeCXXCompiler.cmake"
   "CMakeFiles/CMakeSystem.cmake"
@@ -52,4 +52,5 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/HDRimage.dir/DependInfo.cmake"
+  "CMakeFiles/relightning.dir/DependInfo.cmake"
   )

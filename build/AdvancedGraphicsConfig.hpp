@@ -51,6 +51,9 @@
 #include <string>
 #include <memory>
 #include <limits>
-#include <chrono>
+#include <cassert>
+#include <array>
+#include <cmath>
+#include <cstring>
 
 #endif

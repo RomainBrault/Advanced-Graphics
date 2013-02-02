@@ -1,68 +1,47 @@
 #ifndef HDRIMAGE_HPP_INCLUDED
 #define HDRIMAGE_HPP_INCLUDED
 
-#include <AdvancedGraphicsConfig.hpp>
+#include <HDRimageConfig.hpp>
+#include <cassert>
+#include <array>
+#include <cmath>
+
+#define hdr_in_range( x, y, z ) \
+    std::min( std::max( x, y ), z )
 
 namespace details {
 
 // Copy n values from the parameter pack to an output iterator
 template < typename OutputIterator >
-void move_n( size_t, OutputIterator )
+void copy_n( size_t, OutputIterator )
 {
 }
 
 template < typename OutputIterator, typename T, typename... Args >
-void move_n( size_t n, OutputIterator out, T & value, Args... args )
+void copy_n( size_t n, OutputIterator out, T const & value, Args... args )
 {
   if ( n > 0 ) {
-    *out = std::move( value );
-    move_n( n - 1, ++out, args... );
+    *out = value;
+    copy_n( n - 1, ++out, args... );
   }
 }
 
 // Copy n values from the parameter pack to an output iterator, starting at
 // the "beginth" element
 template < typename OutputIterator >
-void move_range( size_t, size_t, OutputIterator )
+void copy_range( size_t, size_t, OutputIterator )
 {
 }
 
 template < typename OutputIterator, typename T, typename... Args >
-void move_range(
+void copy_range( 
     size_t begin, size_t size, OutputIterator out, T value, Args... args
 ) {
     if ( begin == 0 ) {
-        move_n( size, out, value, args... );
+        copy_n( size, out, value, args... );
     }
     else {
-        move_range( begin - 1, size, out, args... );
-    }
-}
-
-template < class CWF >
-static INLINE void
-merge_block(
-    float pix_red, float pix_green, float pix_blue,
-    float & acc_wred, float & acc_wgreen, float & acc_wblue,
-    float & acc_red , float & acc_green , float & acc_blue,
-    uint32_t exposure_time
-) noexcept {
-
-    CWF w;
-    if ( ( pix_red > 0.005 ) && ( pix_red < 0.92 ) ) {
-        float w_red = w( pix_red );
-        acc_red  += std::log( pix_red / exposure_time ) * w_red;
-        acc_wred += w_red;
-    }
-    if ( ( pix_green > 0.005 ) && ( pix_green < 0.92 ) ) {
-        float w_green = w( pix_green );
-        acc_green  += std::log( pix_green / exposure_time ) * w_green;
-        acc_wgreen += w_green;
-    }
-    if ( ( pix_blue > 0.005 ) && ( pix_blue < 0.92 ) ) {
-        float w_blue = w( pix_blue );
-        acc_blue  += std::log( pix_blue / exposure_time ) * w_blue;
-        acc_wblue += w_blue;
+        copy_range( begin - 1, size, out, args... );
     }
 }
 
@@ -71,7 +50,7 @@ merge_block(
 namespace hdr {
 
 typedef struct {
-    /* Define a block of pixel to vectorize code.
+    /* Define a block of pixel to vectorize code. 
      * AVX format
      */
     float r[ 8 ];
@@ -92,93 +71,73 @@ enum saveFormat : uint32_t {
     BinaryGreymap  = '5',
     BinaryColormap = '6'
 };
-
 class image {
 
 /* Row major matrix of pixelBlock */
 public:
     image( void ) noexcept;
-    image( uint32_t, uint32_t, float = 1 ) noexcept;
-    image( image const &  ) noexcept;
-    image( image       && ) noexcept;
+    image( uint32_t, uint32_t, uint32_t = 1 ) noexcept;
+    image( image const & ) noexcept;
 
-    image & operator= ( image const &  ) noexcept;
-    image & operator= ( image       && ) noexcept;
+    // move constructor
+    // overload operator= (move)
 
-    image & create( uint32_t, uint32_t, float = 1 ) noexcept;
+    image & operator= ( image const & ) noexcept;
+
+    image & create( uint32_t, uint32_t, uint32_t = 1 ) noexcept;
     image & copy  ( image const & ) noexcept;
-
-    image & swap( image & ) noexcept;
 
     INLINE uint32_t getWidth     ( void ) const noexcept;
     INLINE uint32_t getHeight    ( void ) const noexcept;
     INLINE size_t   getPadd      ( void ) const noexcept;
     INLINE float    getMaxChanel ( void ) const noexcept;
-    INLINE float    getMinChanel ( void ) const noexcept;
 
     INLINE void setMaxChanel( float ) noexcept;
-    INLINE void setMinChanel( float ) noexcept;
 
     void updateMaxChanel( void ) noexcept;
-    void updateMinChanel( void ) noexcept;
 
     INLINE bool isEmpty( void ) const noexcept;
 
     void free ( void ) noexcept;
 
-    void fill     ( float val      ) noexcept;
-    void normalise( float = 1      ) noexcept;
-    void troncate ( float, float   ) noexcept;
-    void gamma    ( float          ) noexcept;
+    void fill     ( float val ) noexcept;
+    void normalise( float = 1    ) noexcept;
+    void troncate ( float, float ) noexcept;
+    void gamma    ( float        ) noexcept;
 
     float maxPixelValue( void ) const noexcept;
     float minPixelValue( void ) const noexcept;
     float dynamicRange ( void ) const noexcept;
 
-    INLINE void setPixel( uint32_t, uint32_t, float, float, float ) noexcept;
-           void circle  ( uint32_t, uint32_t, uint32_t            ) noexcept;
-           void line    ( uint32_t, uint32_t, uint32_t, uint32_t  ) noexcept;
-           void negatif ( void                                    ) noexcept;
-
-           void circleFilled( uint32_t, uint32_t, uint32_t ) noexcept;
-
-    int32_t loadPNM(
+    int32_t loadPNM( 
         std::string const &
     ) noexcept;
-    int32_t savePNM(
-        std::string const &, saveFormat = BinaryColormap
+    int32_t savePNM( 
+        std::string const &, saveFormat = BinaryColormap 
     ) const noexcept;
 
-    int32_t loadPFM(
+    int32_t loadPFM( 
         std::string const &
     ) noexcept;
-    int32_t savePFM(
-        std::string const &, saveFormat = BinaryColormap
+    int32_t savePFM( 
+        std::string const &, saveFormat = BinaryColormap 
     ) const noexcept;
 
     template < class CWF, class... Args >
     int32_t createHDR( const Args&... args ) noexcept;
 
-    void linearToneMap( float stops    ) noexcept;
-    void histEqToneMap( uint32_t = 256 ) noexcept;
+    void linearToneMap( uint32_t stops ) noexcept;
 
     ~image( void ) noexcept;
 
 protected:
     void alloc( uint32_t, uint32_t ) noexcept;
 
-    void plot8Points( uint32_t, uint32_t, uint32_t, uint32_t ) noexcept;
-    void plot4Points( uint32_t, uint32_t, uint32_t, uint32_t ) noexcept;
-
-    void plot4Lines ( uint32_t, uint32_t, uint32_t, uint32_t ) noexcept;
-    void plot2Lines ( uint32_t, uint32_t, uint32_t, uint32_t ) noexcept;
-
 private:
     uint32_t      m_width;
     uint32_t      m_height;
     size_t        m_padd;
     float         m_max_pixel_chanel;
-    float         m_min_pixel_chanel;
     pixelBlock**  m_data_2D;
     pixelBlock*   m_data_1D;
 };
@@ -198,26 +157,26 @@ public:
 private:
 };
 
-uint32_t
+uint32_t 
 image::getWidth( void ) const noexcept
 {
     return m_width;
 }
 
-uint32_t
+uint32_t 
 image::getHeight( void ) const noexcept
 {
     return m_height;
 }
 
-size_t
+size_t 
 image::getPadd( void ) const noexcept
 {
     return m_padd;
 }
 
-bool
-image::isEmpty( void ) const noexcept
+bool 
+image::isEmpty( void ) const noexcept 
 {
     return m_data_1D == nullptr;
 }
@@ -234,36 +193,41 @@ image::setMaxChanel( float val ) noexcept
     m_max_pixel_chanel = val;
 }
 
-float
-image::getMinChanel( void ) const noexcept
-{
-    return m_min_pixel_chanel;
-}
+template < class CWF >
+static INLINE void
+hdr_merge_block( 
+    float pix_red, float pix_green, float pix_blue,
+    float & acc_wred, float & acc_wgreen, float & acc_wblue,
+    float & acc_red , float & acc_green , float & acc_blue, 
+    uint32_t exposure_time
+) noexcept {
 
-void
-image::setMinChanel( float val ) noexcept
-{
-    m_min_pixel_chanel = val;
-}
-
-void
-image::setPixel( uint32_t x, uint32_t y, float r, float g, float b ) noexcept
-{
-    uint32_t x_block = x / 8;
-    uint32_t x_index = x % 8;
-    m_data_2D[ y ][ x_block ].r[ x_index ] = r;
-    m_data_2D[ y ][ x_block ].g[ x_index ] = g;
-    m_data_2D[ y ][ x_block ].b[ x_index ] = b;
+    CWF w;
+    float pix_grey = ( pix_red + pix_green + pix_blue ) / 3;
+    if ( ( pix_grey > 0.005 ) && ( pix_grey < 0.92 ) ) { // perf killer
+        float w_red   = w( pix_red   );
+        float w_green = w( pix_green );
+        float w_blue  = w( pix_blue  );
+        float radiance_red   = pix_red   / exposure_time;
+        float radiance_green = pix_green / exposure_time;
+        float radiance_blue  = pix_blue  / exposure_time;
+        acc_red    += std::log( radiance_red   ) * w_red;
+        acc_green  += std::log( radiance_green ) * w_green;
+        acc_blue   += std::log( radiance_blue  ) * w_blue;
+        acc_wred   += w_red;
+        acc_wgreen += w_green;
+        acc_wblue  += w_blue;
+    }
 }
 
 template < class CWF, class... Args >
-int32_t
+int32_t 
 image::createHDR( Args const &... args ) noexcept {
 
     uint32_t constexpr N( sizeof... ( Args ) );
     std::array< hdr::image, N > image_set;
 
-    details::move_range( 0, N, image_set.begin( ), args... );
+    details::copy_range( 0, N, image_set.begin( ), args... );
 
     uint32_t width  = image_set[ 0 ].m_width;
     uint32_t height = image_set[ 0 ].m_height;
@@ -283,7 +247,7 @@ image::createHDR( Args const &... args ) noexcept {
 #pragma omp parallel for
     for ( uint32_t i = 0; i < height; ++i ) {
         for ( uint32_t j = 0; j < width_block_number; ++j ) {
-            float acc_red   [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+            float acc_red   [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 }; 
             float acc_green [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
             float acc_blue  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
             float acc_wred  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -292,33 +256,27 @@ image::createHDR( Args const &... args ) noexcept {
             uint32_t exposure_time( 1 );
             for ( uint32_t l = 0; l < N; ++l ) {
                 for ( uint32_t k = 0; k < 8; ++k ) {
-                    details::merge_block< CWF >(
+                    hdr_merge_block< CWF >( 
                         image_set[ l ].m_data_2D[ i ][ j ].r[ k ],
                         image_set[ l ].m_data_2D[ i ][ j ].g[ k ],
                         image_set[ l ].m_data_2D[ i ][ j ].b[ k ],
                         acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ],
-                        acc_red [ k ], acc_green [ k ], acc_blue [ k ],
-                        exposure_time
+                        acc_red [ k ], acc_green [ k ], acc_blue [ k ], 
+                        exposure_time 
                     );
                 }
                 exposure_time <<= 2;
             }
             for ( uint32_t k = 0; k < 8; ++k ) {
-                m_data_2D[ i ][ j ].r[ k ] =
-                    ( acc_wred  [ k ] == 0 ) ?
-                    m_max_pixel_chanel :
+                m_data_2D[ i ][ j ].r[ k ] = 
                     std::exp( acc_red  [ k ] / acc_wred  [ k ] );
                 m_data_2D[ i ][ j ].g[ k ] =
-                    ( acc_wgreen[ k ] == 0 ) ?
-                    m_max_pixel_chanel :
                     std::exp( acc_green[ k ] / acc_wgreen[ k ] );
-                m_data_2D[ i ][ j ].b[ k ] =
-                    ( acc_wblue[ k ] == 0 ) ?
-                    m_max_pixel_chanel :
-                    std::exp( acc_blue[ k ] / acc_wblue[ k ] );
+                m_data_2D[ i ][ j ].b[ k ] = 
+                    std::exp( acc_blue [ k ] / acc_wblue [ k ] );
             }
         }
-        float acc_red   [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        float acc_red   [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 }; 
         float acc_green [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
         float acc_blue  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
         float acc_wred  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -327,50 +285,32 @@ image::createHDR( Args const &... args ) noexcept {
         uint32_t exposure_time( 1 );
         for ( uint32_t l = 0; l < N; ++l ) {
             for ( uint32_t k = 0; width_block_end + k < width; ++k ) {
-                details::merge_block< CWF >(
+                hdr_merge_block< CWF >( 
                     image_set[ l ].m_data_2D[ i ][ width_block_number ].r[ k ],
                     image_set[ l ].m_data_2D[ i ][ width_block_number ].g[ k ],
                     image_set[ l ].m_data_2D[ i ][ width_block_number ].b[ k ],
-                    acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ],
-                    acc_red [ k ], acc_green [ k ], acc_blue [ k ],
-                    exposure_time
-                );
+                    acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ], 
+                    acc_red [ k ], acc_green [ k ], acc_blue [ k ], 
+                    exposure_time 
+                );        
             }
             exposure_time <<= 2;
         }
         for ( uint32_t k = 0; width_block_end + k < width; ++k ) {
-                m_data_2D[ i ][ width_block_number ].r[ k ] =
-                    ( acc_wred  [ k ] == 0 ) ?
-                    m_max_pixel_chanel :
-                    std::exp( acc_red  [ k ] / acc_wred[ k ] );
-                m_data_2D[ i ][ width_block_number ].g[ k ] =
-                    ( acc_wgreen[ k ] == 0 ) ?
-                    m_max_pixel_chanel :
-                    std::exp( acc_green[ k ] / acc_wgreen[ k ] );
-                m_data_2D[ i ][ width_block_number ].b[ k ] =
-                    ( acc_wblue[ k ] == 0 ) ?
-                    m_max_pixel_chanel :
-                    std::exp( acc_blue[ k ] / acc_wblue[ k ] );
+            m_data_2D[ i ][ width_block_number ].r[ k ] =
+                std::exp( acc_red   [ k ]/ acc_wred[ k ] );
+            m_data_2D[ i ][ width_block_number ].g[ k ] = 
+                std::exp( acc_green [ k ]/ acc_wgreen[ k ] );
+            m_data_2D[ i ][ width_block_number ].b[ k ] =
+                std::exp( acc_blue  [ k ]/ acc_wblue[ k ] );
         }
     }
+
+#undef HDR_MERGE_BLOCK
 
     return 0;
 }
 
 } // namespace hdr
-
-namespace std {
-
-    static INLINE void
-    swap( hdr::image & im1, hdr::image & im2 )
-        noexcept(
-            ( is_nothrow_move_constructible< hdr::image >::value ) &&
-            ( is_nothrow_move_assignable< hdr::image >::value    )
-        )
-    {
-        im1.swap( im2 );
-    }
-
-} // namespace std
 
 #endif

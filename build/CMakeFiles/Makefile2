@@ -91,6 +91,41 @@ clean: CMakeFiles/HDRimage.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/relightning.dir
+
+# All Build rule for target.
+CMakeFiles/relightning.dir/all:
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/depend
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles"  4 5 6
+	@echo "Built target relightning"
+.PHONY : CMakeFiles/relightning.dir/all
+
+# Include target in all.
+all: CMakeFiles/relightning.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/relightning.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/relightning.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" 0
+.PHONY : CMakeFiles/relightning.dir/rule
+
+# Convenience name for target.
+relightning: CMakeFiles/relightning.dir/rule
+.PHONY : relightning
+
+# clean rule for target.
+CMakeFiles/relightning.dir/clean:
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/clean
+.PHONY : CMakeFiles/relightning.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/relightning.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.

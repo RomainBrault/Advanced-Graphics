@@ -1,6 +1,6 @@
 FILE(REMOVE_RECURSE
+  "CMakeFiles/HDRimage.dir/part1/question1.cpp.o"
   "CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o"
-  "CMakeFiles/HDRimage.dir/src/main.cpp.o"
   "CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o"
   "HDRimage.pdb"
   "HDRimage"

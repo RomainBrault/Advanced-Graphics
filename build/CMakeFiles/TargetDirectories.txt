@@ -1,1 +1,2 @@
 /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/HDRimage.dir
+/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/relightning.dir

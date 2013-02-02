@@ -175,12 +175,74 @@ HDRimage/fast:
 	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/build
 .PHONY : HDRimage/fast
 
+#=============================================================================
+# Target rules for targets named relightning
+
+# Build rule for target.
+relightning: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 relightning
+.PHONY : relightning
+
+# fast build rule for target.
+relightning/fast:
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/build
+.PHONY : relightning/fast
+
+part1/question1.o: part1/question1.cpp.o
+.PHONY : part1/question1.o
+
+# target to build an object file
+part1/question1.cpp.o:
+	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/part1/question1.cpp.o
+.PHONY : part1/question1.cpp.o
+
+part1/question1.i: part1/question1.cpp.i
+.PHONY : part1/question1.i
+
+# target to preprocess a source file
+part1/question1.cpp.i:
+	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/part1/question1.cpp.i
+.PHONY : part1/question1.cpp.i
+
+part1/question1.s: part1/question1.cpp.s
+.PHONY : part1/question1.s
+
+# target to generate assembly for a file
+part1/question1.cpp.s:
+	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/part1/question1.cpp.s
+.PHONY : part1/question1.cpp.s
+
+part2/question2.o: part2/question2.cpp.o
+.PHONY : part2/question2.o
+
+# target to build an object file
+part2/question2.cpp.o:
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/part2/question2.cpp.o
+.PHONY : part2/question2.cpp.o
+
+part2/question2.i: part2/question2.cpp.i
+.PHONY : part2/question2.i
+
+# target to preprocess a source file
+part2/question2.cpp.i:
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/part2/question2.cpp.i
+.PHONY : part2/question2.cpp.i
+
+part2/question2.s: part2/question2.cpp.s
+.PHONY : part2/question2.s
+
+# target to generate assembly for a file
+part2/question2.cpp.s:
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/part2/question2.cpp.s
+.PHONY : part2/question2.cpp.s
+
 src/HDRimage_io.o: src/HDRimage_io.cpp.o
 .PHONY : src/HDRimage_io.o
 
 # target to build an object file
 src/HDRimage_io.cpp.o:
 	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o
 .PHONY : src/HDRimage_io.cpp.o
 
 src/HDRimage_io.i: src/HDRimage_io.cpp.i
@@ -189,6 +251,7 @@ src/HDRimage_io.i: src/HDRimage_io.cpp.i
 # target to preprocess a source file
 src/HDRimage_io.cpp.i:
 	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.i
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/src/HDRimage_io.cpp.i
 .PHONY : src/HDRimage_io.cpp.i
 
 src/HDRimage_io.s: src/HDRimage_io.cpp.s
@@ -197,6 +260,7 @@ src/HDRimage_io.s: src/HDRimage_io.cpp.s
 # target to generate assembly for a file
 src/HDRimage_io.cpp.s:
 	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.s
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/src/HDRimage_io.cpp.s
 .PHONY : src/HDRimage_io.cpp.s
 
 src/HDRimage_processing.o: src/HDRimage_processing.cpp.o
@@ -205,6 +269,7 @@ src/HDRimage_processing.o: src/HDRimage_processing.cpp.o
 # target to build an object file
 src/HDRimage_processing.cpp.o:
 	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o
 .PHONY : src/HDRimage_processing.cpp.o
 
 src/HDRimage_processing.i: src/HDRimage_processing.cpp.i
@@ -213,6 +278,7 @@ src/HDRimage_processing.i: src/HDRimage_processing.cpp.i
 # target to preprocess a source file
 src/HDRimage_processing.cpp.i:
 	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.i
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.i
 .PHONY : src/HDRimage_processing.cpp.i
 
 src/HDRimage_processing.s: src/HDRimage_processing.cpp.s
@@ -221,31 +287,8 @@ src/HDRimage_processing.s: src/HDRimage_processing.cpp.s
 # target to generate assembly for a file
 src/HDRimage_processing.cpp.s:
 	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.s
+	$(MAKE) -f CMakeFiles/relightning.dir/build.make CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.s
 .PHONY : src/HDRimage_processing.cpp.s
-
-src/main.o: src/main.cpp.o
-.PHONY : src/main.o
-
-# target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
-
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -262,15 +305,19 @@ help:
 	@echo "... package"
 	@echo "... package_source"
 	@echo "... rebuild_cache"
+	@echo "... relightning"
+	@echo "... part1/question1.o"
+	@echo "... part1/question1.i"
+	@echo "... part1/question1.s"
+	@echo "... part2/question2.o"
+	@echo "... part2/question2.i"
+	@echo "... part2/question2.s"
 	@echo "... src/HDRimage_io.o"
 	@echo "... src/HDRimage_io.i"
 	@echo "... src/HDRimage_io.s"
 	@echo "... src/HDRimage_processing.o"
 	@echo "... src/HDRimage_processing.i"
 	@echo "... src/HDRimage_processing.s"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
 .PHONY : help
 
 

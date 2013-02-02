@@ -4,9 +4,9 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp" "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/HDRimage.dir/part1/question1.cpp.o"
-  "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o"
-  "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o"
+  "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp" "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/relightning.dir/part2/question2.cpp.o"
+  "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o"
+  "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
-project(HDRimage)
+project(AdvancedGraphics)
 # The version number.
-set(HDRimage_VERSION_MAJOR 1)
-set(HDRimage_VERSION_MINOR 0)
+set(AdvancedGraphics_VERSION_MAJOR 1)
+set(AdvancedGraphics_VERSION_MINOR 0)
 
 # Initialize CXXFLAGS.
 SET(CMAKE_BUILD_TYPE Release)
@@ -15,11 +15,15 @@ SET(COMPILER_INFORMATION
 # so that we will find HDRimageConfig.h
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("${PROJECT_SOURCE_DIR}/src")
 
 # add the executable
 file(GLOB_RECURSE source_files src/*.*pp)
 file(GLOB_RECURSE public_header_files include/*.hpp)
-add_executable(HDRimage ${source_files} ${public_header_files})
+file(GLOB_RECURSE source_part1 part1/*.*pp)
+file(GLOB_RECURSE source_part2 part2/*.*pp)
+add_executable(HDRimage    ${source_part1} ${source_files} ${public_header_files})
+add_executable(relightning ${source_part2} ${source_files} ${public_header_files})
 
 # Check endianess
 include(TestBigEndian)
@@ -37,6 +41,8 @@ include("${CMAKE_SOURCE_DIR}/CMake/cpp11/CheckCXX11Features.cmake")
 foreach(flag ${CXX11_FEATURE_LIST})
     set_property(TARGET HDRimage
       APPEND PROPERTY COMPILE_DEFINITIONS ${flag})
+    set_property(TARGET relightning
+      APPEND PROPERTY COMPILE_DEFINITIONS ${flag})
 endforeach(flag ${CXX11_FEATURE_LIST})
 
 # OpenMP
@@ -53,15 +59,17 @@ include("${CMAKE_SOURCE_DIR}/CMake/Compiler/Compiler.cmake")
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
-  "${PROJECT_SOURCE_DIR}/HDRimageConfig.hpp.in"
-  "${PROJECT_BINARY_DIR}/HDRimageConfig.hpp"
+  "${PROJECT_SOURCE_DIR}/AdvancedGraphicsConfig.hpp.in"
+  "${PROJECT_BINARY_DIR}/AdvancedGraphicsConfig.hpp"
   )
 
 # add the install targets
-install(TARGETS HDRimage DESTINATION bin)
+install(TARGETS HDRimage    DESTINATION bin)
+install(TARGETS relightning DESTINATION bin)
 
 # does the application run
-add_test(HDRimageRuns HDRimage)
+add_test(HDRimageRuns    HDRimage)
+add_test(relightningRuns relightning)
 
 # build a CPack driven installer package
 include(InstallRequiredSystemLibraries)

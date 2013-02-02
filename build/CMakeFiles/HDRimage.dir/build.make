@@ -52,9 +52,32 @@ include CMakeFiles/HDRimage.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/HDRimage.dir/flags.make
 
+CMakeFiles/HDRimage.dir/part1/question1.cpp.o: CMakeFiles/HDRimage.dir/flags.make
+CMakeFiles/HDRimage.dir/part1/question1.cpp.o: ../part1/question1.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/HDRimage.dir/part1/question1.cpp.o"
+	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/part1/question1.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp"
+
+CMakeFiles/HDRimage.dir/part1/question1.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HDRimage.dir/part1/question1.cpp.i"
+	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp" > CMakeFiles/HDRimage.dir/part1/question1.cpp.i
+
+CMakeFiles/HDRimage.dir/part1/question1.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HDRimage.dir/part1/question1.cpp.s"
+	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp" -o CMakeFiles/HDRimage.dir/part1/question1.cpp.s
+
+CMakeFiles/HDRimage.dir/part1/question1.cpp.o.requires:
+.PHONY : CMakeFiles/HDRimage.dir/part1/question1.cpp.o.requires
+
+CMakeFiles/HDRimage.dir/part1/question1.cpp.o.provides: CMakeFiles/HDRimage.dir/part1/question1.cpp.o.requires
+	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/part1/question1.cpp.o.provides.build
+.PHONY : CMakeFiles/HDRimage.dir/part1/question1.cpp.o.provides
+
+CMakeFiles/HDRimage.dir/part1/question1.cpp.o.provides.build: CMakeFiles/HDRimage.dir/part1/question1.cpp.o
+
 CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o: CMakeFiles/HDRimage.dir/flags.make
 CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o: ../src/HDRimage_io.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o"
 	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp"
 
@@ -74,29 +97,6 @@ CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o.provides: CMakeFiles/HDRimage.dir/
 .PHONY : CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o.provides
 
 CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o.provides.build: CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o
-
-CMakeFiles/HDRimage.dir/src/main.cpp.o: CMakeFiles/HDRimage.dir/flags.make
-CMakeFiles/HDRimage.dir/src/main.cpp.o: ../src/main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_2)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/HDRimage.dir/src/main.cpp.o"
-	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/src/main.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/main.cpp"
-
-CMakeFiles/HDRimage.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HDRimage.dir/src/main.cpp.i"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/main.cpp" > CMakeFiles/HDRimage.dir/src/main.cpp.i
-
-CMakeFiles/HDRimage.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HDRimage.dir/src/main.cpp.s"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/main.cpp" -o CMakeFiles/HDRimage.dir/src/main.cpp.s
-
-CMakeFiles/HDRimage.dir/src/main.cpp.o.requires:
-.PHONY : CMakeFiles/HDRimage.dir/src/main.cpp.o.requires
-
-CMakeFiles/HDRimage.dir/src/main.cpp.o.provides: CMakeFiles/HDRimage.dir/src/main.cpp.o.requires
-	$(MAKE) -f CMakeFiles/HDRimage.dir/build.make CMakeFiles/HDRimage.dir/src/main.cpp.o.provides.build
-.PHONY : CMakeFiles/HDRimage.dir/src/main.cpp.o.provides
-
-CMakeFiles/HDRimage.dir/src/main.cpp.o.provides.build: CMakeFiles/HDRimage.dir/src/main.cpp.o
 
 CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o: CMakeFiles/HDRimage.dir/flags.make
 CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o: ../src/HDRimage_processing.cpp
@@ -123,15 +123,15 @@ CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o.provides.build: CMakeFiles
 
 # Object files for target HDRimage
 HDRimage_OBJECTS = \
+"CMakeFiles/HDRimage.dir/part1/question1.cpp.o" \
 "CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o" \
-"CMakeFiles/HDRimage.dir/src/main.cpp.o" \
 "CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o"
 
 # External object files for target HDRimage
 HDRimage_EXTERNAL_OBJECTS =
 
+HDRimage: CMakeFiles/HDRimage.dir/part1/question1.cpp.o
 HDRimage: CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o
-HDRimage: CMakeFiles/HDRimage.dir/src/main.cpp.o
 HDRimage: CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o
 HDRimage: CMakeFiles/HDRimage.dir/build.make
 HDRimage: CMakeFiles/HDRimage.dir/link.txt
@@ -142,8 +142,8 @@ HDRimage: CMakeFiles/HDRimage.dir/link.txt
 CMakeFiles/HDRimage.dir/build: HDRimage
 .PHONY : CMakeFiles/HDRimage.dir/build
 
+CMakeFiles/HDRimage.dir/requires: CMakeFiles/HDRimage.dir/part1/question1.cpp.o.requires
 CMakeFiles/HDRimage.dir/requires: CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o.requires
-CMakeFiles/HDRimage.dir/requires: CMakeFiles/HDRimage.dir/src/main.cpp.o.requires
 CMakeFiles/HDRimage.dir/requires: CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o.requires
 .PHONY : CMakeFiles/HDRimage.dir/requires
 

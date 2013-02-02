@@ -23,7 +23,7 @@ endian_swap( float val )
     return n.f;
 }
 
-static void 
+static void
 skip( std::ifstream & file ) noexcept
 /* Read at least 1 char. */
 {
@@ -32,8 +32,8 @@ skip( std::ifstream & file ) noexcept
         temp = static_cast< char >( file.get( ) );
         if ( temp == '#') // skip this line:
             file.ignore( std::numeric_limits< std::streamsize >::max( ), '\n' );
-    } while ( 
-        ( ( temp == ' ' )  || ( temp == '\t' )   || 
+    } while (
+        ( ( temp == ' ' )  || ( temp == '\t' )   ||
           ( temp == '\n' ) || ( temp == '#'  ) ) &&
         ( !file.eof( ) )
     );
@@ -47,16 +47,18 @@ image::image( void ) :
     m_height( 0 ),
     m_padd( 0 ),
     m_max_pixel_chanel( 0 ),
+    m_min_pixel_chanel( 1 ),
     m_data_2D( nullptr ),
     m_data_1D( nullptr )
 {
 
 }
 
-image::image( uint32_t width, uint32_t height, uint32_t chanel ) :
+image::image( uint32_t width, uint32_t height, float chanel ) :
     m_width( width ),
     m_height( height ),
-    m_max_pixel_chanel( chanel )
+    m_max_pixel_chanel( chanel ),
+    m_min_pixel_chanel( 0 )
 {
     alloc( PAGE_SIZE, SSE_ALIGN );
 }
@@ -64,7 +66,8 @@ image::image( uint32_t width, uint32_t height, uint32_t chanel ) :
 image::image( image const & im ) :
     m_width( im.m_width ),
     m_height( im.m_height ),
-    m_max_pixel_chanel( im.m_max_pixel_chanel )
+    m_max_pixel_chanel( im.m_max_pixel_chanel ),
+    m_min_pixel_chanel( im.m_min_pixel_chanel )
 {
     alloc( PAGE_SIZE, SSE_ALIGN );
     if ( im.m_padd < m_padd ) {
@@ -76,16 +79,34 @@ image::image( image const & im ) :
     }
 }
 
-image::~image( void ) 
+image::image( image && im ) :
+    m_width( im.m_width ),
+    m_height( im.m_height ),
+    m_padd( im.m_padd ),
+    m_max_pixel_chanel( im.m_max_pixel_chanel ),
+    m_min_pixel_chanel( im.m_min_pixel_chanel ),
+    m_data_2D( im.m_data_2D ),
+    m_data_1D( im.m_data_1D )
+{
+    im.m_width = 0;
+    im.m_width = 0;
+    im.m_padd  = 0;
+    im.m_max_pixel_chanel = 0;
+    im.m_min_pixel_chanel = 0;
+    im.m_data_2D = nullptr;
+    im.m_data_1D = nullptr;
+}
+
+image::~image( void )
 {
     std::free( m_data_2D );
     std::free( m_data_1D );
 }
 
 image &
-image::create( uint32_t width, uint32_t height, uint32_t chanel ) noexcept
+image::create( uint32_t width, uint32_t height, float chanel ) noexcept
 {
-    if ( 
+    if (
         ( m_height != height ) ||
         ( m_width  != width  )
     ) {
@@ -95,10 +116,11 @@ image::create( uint32_t width, uint32_t height, uint32_t chanel ) noexcept
         alloc( PAGE_SIZE, SSE_ALIGN );
     }
     m_max_pixel_chanel = chanel;
+    m_min_pixel_chanel = 0;
     return *this;
 }
 
-image & 
+image &
 image::copy( image const & im ) noexcept
 {
     if ( &im == this ) {
@@ -115,16 +137,39 @@ image::copy( image const & im ) noexcept
     return *this;
 }
 
-image & 
-image::operator= ( image const & im ) noexcept {
+image &
+image::swap( image & im ) noexcept
+{
+    if ( &im == this ) {
+        return *this;
+    }
+    std::swap( m_width , im.m_width );
+    std::swap( m_height, im.m_height );
+    std::swap( m_padd  , im.m_padd  );
+    std::swap( m_min_pixel_chanel, im.m_min_pixel_chanel );
+    std::swap( m_max_pixel_chanel, im.m_max_pixel_chanel );
+    std::swap( m_data_2D, im.m_data_2D );
+    std::swap( m_data_1D, im.m_data_1D );
+    return *this;
+}
+
+image &
+image::operator= ( image const & im ) noexcept
+{
     return copy( im );
 }
 
-void 
+image &
+image::operator= ( image && im ) noexcept
+{
+    return swap( im );
+}
+
+void
 image::alloc( uint32_t align, uint32_t padding ) noexcept {
-    if ( 
-        ( is_power_of_two( align ) == false ) || 
-        ( align < sizeof( std::ptrdiff_t ) ) 
+    if (
+        ( is_power_of_two( align ) == false ) ||
+        ( align < sizeof( std::ptrdiff_t ) )
     ) {
         m_data_1D = nullptr;
         m_data_2D = nullptr;
@@ -182,7 +227,7 @@ ERROR:
     m_padd = 0;
 }
 
-void 
+void
 image::free( void ) noexcept
 {
     if ( m_data_2D != nullptr ) std::free( m_data_2D );
@@ -192,6 +237,8 @@ image::free( void ) noexcept
     m_width = 0;
     m_height = 0;
     m_padd = 0;
+    m_min_pixel_chanel = 0;
+    m_max_pixel_chanel = 0;
 }
 
 int32_t
@@ -308,32 +355,32 @@ image::loadPNM( std::string const & file_path ) noexcept
             for ( uint32_t i = 0; i < m_height; ++i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     uint8_t buffer[ 8 ];
-                    pnm_file.read( 
-                        reinterpret_cast< char * >( buffer ), 
-                        8 * sizeof ( uint8_t ) 
+                    pnm_file.read(
+                        reinterpret_cast< char * >( buffer ),
+                        8 * sizeof ( uint8_t )
                     );
                     skip( pnm_file );
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        m_data_2D[ i ][ j ].r[ k ] = 
+                        m_data_2D[ i ][ j ].r[ k ] =
                             static_cast< float >( buffer[ k ] );
-                        m_data_2D[ i ][ j ].g[ k ] = 
+                        m_data_2D[ i ][ j ].g[ k ] =
                             static_cast< float >( buffer[ k ] );
-                        m_data_2D[ i ][ j ].b[ k ] = 
+                        m_data_2D[ i ][ j ].b[ k ] =
                             static_cast< float >( buffer[ k ] );
                     }
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                     uint8_t grey_val( 0 );
-                    pnm_file.read( 
-                        reinterpret_cast< char * >( &grey_val ), 
-                        sizeof ( uint8_t ) 
+                    pnm_file.read(
+                        reinterpret_cast< char * >( &grey_val ),
+                        sizeof ( uint8_t )
                     );
                     skip( pnm_file );
-                    m_data_2D[ i ][ width_block_number ].r[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].r[ k ] =
                         static_cast< float >( grey_val );
-                    m_data_2D[ i ][ width_block_number ].g[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].g[ k ] =
                         static_cast< float >( grey_val );
-                    m_data_2D[ i ][ width_block_number ].b[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].b[ k ] =
                         static_cast< float >( grey_val );
                 }
             }
@@ -342,32 +389,32 @@ image::loadPNM( std::string const & file_path ) noexcept
             for ( uint32_t i = 0; i < m_height; ++i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     uint16_t buffer[ 24 ];
-                    pnm_file.read( 
-                        reinterpret_cast< char * >( buffer ), 
-                        24 * sizeof ( uint16_t ) 
+                    pnm_file.read(
+                        reinterpret_cast< char * >( buffer ),
+                        24 * sizeof ( uint16_t )
                     );
                     skip( pnm_file );
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        m_data_2D[ i ][ j ].r[ k ] = 
+                        m_data_2D[ i ][ j ].r[ k ] =
                             static_cast< float >( buffer[ k ] );
-                        m_data_2D[ i ][ j ].g[ k ] = 
+                        m_data_2D[ i ][ j ].g[ k ] =
                             static_cast< float >( buffer[ k ] );
-                        m_data_2D[ i ][ j ].b[ k ] = 
+                        m_data_2D[ i ][ j ].b[ k ] =
                             static_cast< float >( buffer[ k ] );
                     }
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                     uint16_t grey_val( 0 );
-                    pnm_file.read( 
-                        reinterpret_cast< char * >( &grey_val ), 
-                        sizeof ( uint16_t ) 
+                    pnm_file.read(
+                        reinterpret_cast< char * >( &grey_val ),
+                        sizeof ( uint16_t )
                     );
                     skip( pnm_file );
-                    m_data_2D[ i ][ width_block_number ].r[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].r[ k ] =
                         static_cast< float >( grey_val );
-                    m_data_2D[ i ][ width_block_number ].g[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].g[ k ] =
                         static_cast< float >( grey_val );
-                    m_data_2D[ i ][ width_block_number ].b[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].b[ k ] =
                         static_cast< float >( grey_val );
                 }
             }
@@ -385,30 +432,30 @@ image::loadPNM( std::string const & file_path ) noexcept
             for ( uint32_t i = 0; i < m_height; ++i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     uint8_t buffer[ 24 ];
-                    pnm_file.read( 
-                        reinterpret_cast< char * >( buffer ), 
-                        24 * sizeof ( uint8_t ) 
+                    pnm_file.read(
+                        reinterpret_cast< char * >( buffer ),
+                        24 * sizeof ( uint8_t )
                     );
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        m_data_2D[ i ][ j ].r[ k ] = 
+                        m_data_2D[ i ][ j ].r[ k ] =
                             static_cast< float >( buffer[ 3 * k     ] );
-                        m_data_2D[ i ][ j ].g[ k ] = 
+                        m_data_2D[ i ][ j ].g[ k ] =
                             static_cast< float >( buffer[ 3 * k + 1 ] );
-                        m_data_2D[ i ][ j ].b[ k ] = 
+                        m_data_2D[ i ][ j ].b[ k ] =
                             static_cast< float >( buffer[ 3 * k + 2 ] );
                     }
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                     uint8_t colors[ 3 ];
-                    pnm_file.read( 
-                        reinterpret_cast< char * >( colors ), 
-                        3 * sizeof ( uint8_t ) 
+                    pnm_file.read(
+                        reinterpret_cast< char * >( colors ),
+                        3 * sizeof ( uint8_t )
                     );
-                    m_data_2D[ i ][ width_block_number ].r[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].r[ k ] =
                         static_cast< float >( colors[ 0 ] );
-                    m_data_2D[ i ][ width_block_number ].g[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].g[ k ] =
                         static_cast< float >( colors[ 1 ] );
-                    m_data_2D[ i ][ width_block_number ].b[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].b[ k ] =
                         static_cast< float >( colors[ 2 ] );
                 }
             }
@@ -417,32 +464,32 @@ image::loadPNM( std::string const & file_path ) noexcept
             for ( uint32_t i = 0; i < m_height; ++i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     uint16_t buffer[ 24 ];
-                    pnm_file.read( 
-                        reinterpret_cast< char * >( buffer ), 
-                        24 * sizeof ( uint16_t ) 
+                    pnm_file.read(
+                        reinterpret_cast< char * >( buffer ),
+                        24 * sizeof ( uint16_t )
                     );
                     skip( pnm_file );
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        m_data_2D[ i ][ j ].r[ k ] = 
+                        m_data_2D[ i ][ j ].r[ k ] =
                             static_cast< float >( buffer[ 3 * k     ] );
-                        m_data_2D[ i ][ j ].g[ k ] = 
+                        m_data_2D[ i ][ j ].g[ k ] =
                             static_cast< float >( buffer[ 3 * k + 1 ] );
-                        m_data_2D[ i ][ j ].b[ k ] = 
+                        m_data_2D[ i ][ j ].b[ k ] =
                             static_cast< float >( buffer[ 3 * k + 2 ] );
                     }
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                     uint16_t colors[ 3 ];
-                    pnm_file.read( 
-                        reinterpret_cast< char * >( colors ), 
-                        3 * sizeof ( uint16_t ) 
+                    pnm_file.read(
+                        reinterpret_cast< char * >( colors ),
+                        3 * sizeof ( uint16_t )
                     );
                     skip( pnm_file );
-                    m_data_2D[ i ][ width_block_number ].r[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].r[ k ] =
                         static_cast< float >( colors[ 0 ] );
-                    m_data_2D[ i ][ width_block_number ].g[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].g[ k ] =
                         static_cast< float >( colors[ 1 ] );
-                    m_data_2D[ i ][ width_block_number ].b[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].b[ k ] =
                         static_cast< float >( colors[ 2 ] );
                 }
             }
@@ -459,29 +506,33 @@ image::loadPNM( std::string const & file_path ) noexcept
     if ( !pnm_file ) {
         goto FILE_ERROR;
     }
+    m_min_pixel_chanel = 0;
     return 0;
 
 
 FILE_ERROR:
-    std::cerr << "Cannot read file '" 
-                      << file_path 
-                      << "'." 
+    std::cerr << "Cannot read file '"
+                      << file_path
+                      << "'."
                       << std::endl;
     free( );
     return -1;
 }
 
-int32_t 
-image::savePNM( 
-    std::string const & file_path, saveFormat magic_number 
+int32_t
+image::savePNM(
+    std::string const & file_path, saveFormat magic_number
 ) const noexcept {
     std::ofstream pnm_file;
     uint32_t width_block_number;
     uint32_t width_block_end;
     uint32_t elt_size;
 
-    pnm_file.open( 
-        file_path.c_str( ), 
+    if ( isEmpty( ) == true ) {
+        return -1;
+    }
+    pnm_file.open(
+        file_path.c_str( ),
         std::ios::out | std::ios::binary | std::ios::trunc
     );
     if ( !pnm_file ) {
@@ -525,15 +576,15 @@ image::savePNM(
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     uint8_t buffer[ 8 ];
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        buffer[ k ] = static_cast< uint8_t >( 
+                        buffer[ k ] = static_cast< uint8_t >(
                             ( m_data_2D[ i ][ j ].r[ k ] +
                               m_data_2D[ i ][ j ].g[ k ] +
                               m_data_2D[ i ][ j ].b[ k ] ) /3
                         );
                     }
-                    pnm_file.write( 
-                        reinterpret_cast< char * >( buffer ), 
-                        8 * sizeof ( uint8_t ) 
+                    pnm_file.write(
+                        reinterpret_cast< char * >( buffer ),
+                        8 * sizeof ( uint8_t )
                     );
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
@@ -543,9 +594,9 @@ image::savePNM(
                           m_data_2D[ i ][ width_block_number ].g[ k ] +
                           m_data_2D[ i ][ width_block_number ].b[ k ] ) / 3
                     );
-                    pnm_file.write( 
-                        reinterpret_cast< char * >( &grey_val ), 
-                        sizeof ( uint8_t ) 
+                    pnm_file.write(
+                        reinterpret_cast< char * >( &grey_val ),
+                        sizeof ( uint8_t )
                     );
                 }
             }
@@ -555,15 +606,15 @@ image::savePNM(
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     uint16_t buffer[ 8 ];
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        buffer[ k ] = static_cast< uint16_t >( 
+                        buffer[ k ] = static_cast< uint16_t >(
                             ( m_data_2D[ i ][ j ].r[ k ] +
                               m_data_2D[ i ][ j ].g[ k ] +
                               m_data_2D[ i ][ j ].b[ k ] ) /3
                         );
                     }
-                    pnm_file.write( 
-                        reinterpret_cast< char * >( buffer ), 
-                        8 * sizeof ( uint16_t ) 
+                    pnm_file.write(
+                        reinterpret_cast< char * >( buffer ),
+                        8 * sizeof ( uint16_t )
                     );
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
@@ -573,9 +624,9 @@ image::savePNM(
                           m_data_2D[ i ][ width_block_number ].g[ k ] +
                           m_data_2D[ i ][ width_block_number ].b[ k ] ) / 3
                     );
-                    pnm_file.write( 
-                        reinterpret_cast< char * >( &grey_val ), 
-                        sizeof ( uint16_t ) 
+                    pnm_file.write(
+                        reinterpret_cast< char * >( &grey_val ),
+                        sizeof ( uint16_t )
                     );
                 }
             }
@@ -592,19 +643,19 @@ image::savePNM(
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     uint8_t buffer[ 24 ];
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        buffer[ 3 * k     ] = static_cast< uint8_t >( 
-                            m_data_2D[ i ][ j ].r[ k ] 
+                        buffer[ 3 * k     ] = static_cast< uint8_t >(
+                            m_data_2D[ i ][ j ].r[ k ]
                         );
-                        buffer[ 3 * k + 1 ] = static_cast< uint8_t >( 
-                            m_data_2D[ i ][ j ].g[ k ] 
+                        buffer[ 3 * k + 1 ] = static_cast< uint8_t >(
+                            m_data_2D[ i ][ j ].g[ k ]
                         );
-                        buffer[ 3 * k + 2 ] = static_cast< uint8_t >( 
-                            m_data_2D[ i ][ j ].b[ k ] 
+                        buffer[ 3 * k + 2 ] = static_cast< uint8_t >(
+                            m_data_2D[ i ][ j ].b[ k ]
                         );
                     }
-                    pnm_file.write( 
-                        reinterpret_cast< char * >( buffer ), 
-                        24 * sizeof ( uint8_t ) 
+                    pnm_file.write(
+                        reinterpret_cast< char * >( buffer ),
+                        24 * sizeof ( uint8_t )
                     );
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
@@ -618,9 +669,9 @@ image::savePNM(
                     colors[ 2 ] = static_cast< uint8_t >(
                         m_data_2D[ i ][ width_block_number ].b[ k ]
                     );
-                    pnm_file.write( 
-                        reinterpret_cast< char * >( colors ), 
-                        3 * sizeof ( uint8_t ) 
+                    pnm_file.write(
+                        reinterpret_cast< char * >( colors ),
+                        3 * sizeof ( uint8_t )
                     );
                 }
             }
@@ -630,19 +681,19 @@ image::savePNM(
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     uint16_t buffer[ 24 ];
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        buffer[ 3 * k     ] = static_cast< uint16_t >( 
-                            m_data_2D[ i ][ j ].r[ k ] 
+                        buffer[ 3 * k     ] = static_cast< uint16_t >(
+                            m_data_2D[ i ][ j ].r[ k ]
                         );
-                        buffer[ 3 * k + 1 ] = static_cast< uint16_t >( 
-                            m_data_2D[ i ][ j ].g[ k ] 
+                        buffer[ 3 * k + 1 ] = static_cast< uint16_t >(
+                            m_data_2D[ i ][ j ].g[ k ]
                         );
-                        buffer[ 3 * k + 2 ] = static_cast< uint16_t >( 
-                            m_data_2D[ i ][ j ].b[ k ] 
+                        buffer[ 3 * k + 2 ] = static_cast< uint16_t >(
+                            m_data_2D[ i ][ j ].b[ k ]
                         );
                     }
-                    pnm_file.write( 
-                        reinterpret_cast< char * >( buffer ), 
-                        24 * sizeof ( uint16_t ) 
+                    pnm_file.write(
+                        reinterpret_cast< char * >( buffer ),
+                        24 * sizeof ( uint16_t )
                     );
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
@@ -656,9 +707,9 @@ image::savePNM(
                     colors[ 2 ] = static_cast< uint16_t >(
                         m_data_2D[ i ][ width_block_number ].b[ k ]
                     );
-                    pnm_file.write( 
-                        reinterpret_cast< char * >( colors ), 
-                        3 * sizeof ( uint16_t ) 
+                    pnm_file.write(
+                        reinterpret_cast< char * >( colors ),
+                        3 * sizeof ( uint16_t )
                     );
                 }
             }
@@ -678,9 +729,9 @@ image::savePNM(
     return 0;
 
 FILE_ERROR:
-    std::cerr << "Failed to create consistent file '" 
-                      << file_path 
-                      << "'." 
+    std::cerr << "Failed to create consistent file '"
+                      << file_path
+                      << "'."
                       << std::endl;
     return -1;
 }
@@ -691,7 +742,7 @@ image::loadPFM( std::string const & file_path ) noexcept
     std::ifstream pfm_file;
     uint32_t width_block_number;
     uint32_t width_block_end;
-    int32_t  pfm_endianess;
+    float  pfm_endianess;
 
     pfm_file.open( file_path.c_str( ), std::ios::in | std::ios::binary );
     if ( !pfm_file ) {
@@ -743,9 +794,9 @@ image::loadPFM( std::string const & file_path ) noexcept
             for ( uint32_t i = m_height - 1; i != 0; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 8 ];
-                    pfm_file.read( 
-                        reinterpret_cast< char * >( buffer ), 
-                        8 * sizeof ( float ) 
+                    pfm_file.read(
+                        reinterpret_cast< char * >( buffer ),
+                        8 * sizeof ( float )
                     );
                     for ( uint32_t k = 0; k < 8; ++k ) {
                         m_data_2D[ i ][ j ].r[ k ] = buffer[ k ];
@@ -755,9 +806,9 @@ image::loadPFM( std::string const & file_path ) noexcept
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                     float grey_val;
-                    pfm_file.read( 
-                        reinterpret_cast< char * >( &grey_val ), 
-                        sizeof ( float ) 
+                    pfm_file.read(
+                        reinterpret_cast< char * >( &grey_val ),
+                        sizeof ( float )
                     );
                     m_data_2D[ i ][ width_block_number ].r[ k ] = grey_val;
                     m_data_2D[ i ][ width_block_number ].g[ k ] = grey_val;
@@ -769,9 +820,9 @@ image::loadPFM( std::string const & file_path ) noexcept
             for ( uint32_t i = m_height - 1; i != 0; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 8 ];
-                    pfm_file.read( 
-                        reinterpret_cast< char * >( buffer ), 
-                        8 * sizeof ( float ) 
+                    pfm_file.read(
+                        reinterpret_cast< char * >( buffer ),
+                        8 * sizeof ( float )
                     );
                     for ( uint32_t k = 0; k < 8; ++k ) {
                         m_data_2D[ i ][ j ].r[ k ] = endian_swap( buffer[ k ] );
@@ -781,15 +832,15 @@ image::loadPFM( std::string const & file_path ) noexcept
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                     float grey_val;
-                    pfm_file.read( 
-                        reinterpret_cast< char * >( &grey_val ), 
-                        sizeof ( float ) 
+                    pfm_file.read(
+                        reinterpret_cast< char * >( &grey_val ),
+                        sizeof ( float )
                     );
                     m_data_2D[ i ][ width_block_number ].r[ k ] =
                         endian_swap( grey_val );
                     m_data_2D[ i ][ width_block_number ].g[ k ] =
                         endian_swap( grey_val );
-                    m_data_2D[ i ][ width_block_number ].b[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].b[ k ] =
                         endian_swap( grey_val );
                 }
             }
@@ -798,28 +849,28 @@ image::loadPFM( std::string const & file_path ) noexcept
 
     case BinaryColormap:
         if ( pfm_endianess == PFM_LITTLE_ENDIAN ) {
-            for ( uint32_t i = m_height - 1; i != 0; --i ) {
+            for ( uint32_t i = m_height - 1; i != 0xFFFFFFFF; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 24 ];
-                    pfm_file.read( 
-                        reinterpret_cast< char * >( buffer ), 
-                        24 * sizeof ( float ) 
+                    pfm_file.read(
+                        reinterpret_cast< char * >( buffer ),
+                        24 * sizeof ( float )
                     );
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        m_data_2D[ i ][ j ].r[ k ] = buffer[ 3 * k + 2 ];
-                        m_data_2D[ i ][ j ].g[ k ] = buffer[ 3 * k     ];
-                        m_data_2D[ i ][ j ].b[ k ] = buffer[ 3 * k + 1 ];
+                        m_data_2D[ i ][ j ].r[ k ] = buffer[ 3 * k     ];
+                        m_data_2D[ i ][ j ].g[ k ] = buffer[ 3 * k + 1 ];
+                        m_data_2D[ i ][ j ].b[ k ] = buffer[ 3 * k + 2 ];
                     }
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                     float colors[ 3 ];
-                    pfm_file.read( 
-                        reinterpret_cast< char * >( colors ), 
-                        3 * sizeof ( float ) 
+                    pfm_file.read(
+                        reinterpret_cast< char * >( colors ),
+                        3 * sizeof ( float )
                     );
-                    m_data_2D[ i ][ width_block_number ].r[ k ] = colors[ 2 ];
-                    m_data_2D[ i ][ width_block_number ].g[ k ] = colors[ 0 ];
-                    m_data_2D[ i ][ width_block_number ].b[ k ] = colors[ 1 ];
+                    m_data_2D[ i ][ width_block_number ].r[ k ] = colors[ 0 ];
+                    m_data_2D[ i ][ width_block_number ].g[ k ] = colors[ 1 ];
+                    m_data_2D[ i ][ width_block_number ].b[ k ] = colors[ 2 ];
                 }
             }
         }
@@ -827,31 +878,31 @@ image::loadPFM( std::string const & file_path ) noexcept
             for ( uint32_t i = m_height - 1; i != 0; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 24 ];
-                    pfm_file.read( 
-                        reinterpret_cast< char * >( buffer ), 
-                        24 * sizeof ( float ) 
+                    pfm_file.read(
+                        reinterpret_cast< char * >( buffer ),
+                        24 * sizeof ( float )
                     );
                     for ( uint32_t k = 0; k < 8; ++k ) {
-                        m_data_2D[ i ][ j ].r[ k ] = 
-                            endian_swap( buffer[ 3 * k + 2 ] );
-                        m_data_2D[ i ][ j ].g[ k ] = 
+                        m_data_2D[ i ][ j ].r[ k ] =
                             endian_swap( buffer[ 3 * k     ] );
-                        m_data_2D[ i ][ j ].b[ k ] = 
+                        m_data_2D[ i ][ j ].g[ k ] =
                             endian_swap( buffer[ 3 * k + 1 ] );
+                        m_data_2D[ i ][ j ].b[ k ] =
+                            endian_swap( buffer[ 3 * k + 2 ] );
                     }
                 }
                 for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                     float colors[ 3 ];
-                    pfm_file.read( 
-                        reinterpret_cast< char * >( colors ), 
-                        3 * sizeof ( float ) 
+                    pfm_file.read(
+                        reinterpret_cast< char * >( colors ),
+                        3 * sizeof ( float )
                     );
-                    m_data_2D[ i ][ width_block_number ].r[ k ] = 
-                        endian_swap( colors[ 2 ] );
-                    m_data_2D[ i ][ width_block_number ].g[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].r[ k ] =
                         endian_swap( colors[ 0 ] );
-                    m_data_2D[ i ][ width_block_number ].b[ k ] = 
+                    m_data_2D[ i ][ width_block_number ].g[ k ] =
                         endian_swap( colors[ 1 ] );
+                    m_data_2D[ i ][ width_block_number ].b[ k ] =
+                        endian_swap( colors[ 2 ] );
                 }
             }
         }
@@ -866,33 +917,37 @@ image::loadPFM( std::string const & file_path ) noexcept
     if ( !pfm_file ) {
         goto FILE_ERROR;
     }
-    m_max_pixel_chanel = 1;
+    m_max_pixel_chanel = std::abs( pfm_endianess );
+    m_min_pixel_chanel = 0;
     return 0;
 
 FILE_ERROR:
-    std::cerr << "Cannot read file '" 
-                      << file_path 
-                      << "'." 
+    std::cerr << "Cannot read file '"
+                      << file_path
+                      << "'."
                       << std::endl;
     free( );
     return -1;
 }
 
 int32_t
-image::savePFM( 
-    std::string const & file_path, saveFormat magic_number 
+image::savePFM(
+    std::string const & file_path, saveFormat magic_number
 ) const noexcept {
     /* Always save in little endian. */
     std::ofstream pfm_file;
     uint32_t width_block_number;
     uint32_t width_block_end;
 
+    if ( isEmpty( ) == true ) {
+        return -1;
+    }
     if ( ( magic_number != '5' ) || ( magic_number != '6' ) ) {
-        goto FILE_ERROR;
+        return -1;
     }
 
-    pfm_file.open( 
-        file_path.c_str( ), 
+    pfm_file.open(
+        file_path.c_str( ),
         std::ios::out | std::ios::binary | std::ios::trunc
     );
     if ( !pfm_file ) {
@@ -914,7 +969,9 @@ image::savePFM(
     }
 
 
-    pfm_file << "\n" << m_width << " " << m_height << "\n" << -1.0 << "\n";
+    pfm_file << "\n" << m_width << " "
+             << m_height << "\n"
+             << -m_max_pixel_chanel << "\n";
 
     width_block_number = ( m_width - 1 ) / 8;
     width_block_end = width_block_number * 8;
@@ -930,9 +987,9 @@ image::savePFM(
                     buffer[ k ] = m_data_2D[ i ][ j ].g[ k ];
                     buffer[ k ] = m_data_2D[ i ][ j ].b[ k ];
                 }
-                pfm_file.write( 
-                    reinterpret_cast< char * >( buffer ), 
-                    8 * sizeof ( float ) 
+                pfm_file.write(
+                    reinterpret_cast< char * >( buffer ),
+                    8 * sizeof ( float )
                 );
             }
             for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
@@ -940,9 +997,9 @@ image::savePFM(
                 grey_val = m_data_2D[ i ][ width_block_number ].r[ k ];
                 grey_val = m_data_2D[ i ][ width_block_number ].g[ k ];
                 grey_val = m_data_2D[ i ][ width_block_number ].b[ k ];
-                pfm_file.write( 
-                    reinterpret_cast< char * >( &grey_val ), 
-                    sizeof ( float ) 
+                pfm_file.write(
+                    reinterpret_cast< char * >( &grey_val ),
+                    sizeof ( float )
                 );
             }
         }
@@ -954,23 +1011,23 @@ image::savePFM(
             for ( uint32_t j = 0; j < width_block_number; ++j ) {
                 float buffer[ 24 ];
                 for ( uint32_t k = 0; k < 8; ++k ) {
-                    buffer[ 3 * k + 2 ] = m_data_2D[ i ][ j ].r[ k ];
-                    buffer[ 3 * k     ] = m_data_2D[ i ][ j ].g[ k ];
-                    buffer[ 3 * k + 1 ] = m_data_2D[ i ][ j ].b[ k ];
+                    buffer[ 3 * k     ] = m_data_2D[ i ][ j ].r[ k ];
+                    buffer[ 3 * k + 1 ] = m_data_2D[ i ][ j ].g[ k ];
+                    buffer[ 3 * k + 2 ] = m_data_2D[ i ][ j ].b[ k ];
                 }
-                pfm_file.write( 
-                    reinterpret_cast< char * >( buffer ), 
-                    24 * sizeof ( float ) 
+                pfm_file.write(
+                    reinterpret_cast< char * >( buffer ),
+                    24 * sizeof ( float )
                 );
             }
             for ( uint32_t k = 0; width_block_end + k < m_width; ++k ) {
                 float colors[ 3 ];
-                colors[ 2 ] = m_data_2D[ i ][ width_block_number ].r[ k ];
-                colors[ 0 ] = m_data_2D[ i ][ width_block_number ].g[ k ];
-                colors[ 1 ] = m_data_2D[ i ][ width_block_number ].b[ k ];
-                pfm_file.write( 
-                    reinterpret_cast< char * >( colors ), 
-                    3 * sizeof ( float ) 
+                colors[ 0 ] = m_data_2D[ i ][ width_block_number ].r[ k ];
+                colors[ 1 ] = m_data_2D[ i ][ width_block_number ].g[ k ];
+                colors[ 2 ] = m_data_2D[ i ][ width_block_number ].b[ k ];
+                pfm_file.write(
+                    reinterpret_cast< char * >( colors ),
+                    3 * sizeof ( float )
                 );
             }
         }
@@ -988,9 +1045,9 @@ image::savePFM(
     return 0;
 
 FILE_ERROR:
-    std::cerr << "Cannot read file '" 
-                      << file_path 
-                      << "'." 
+    std::cerr << "Failed to create consistent file '"
+                      << file_path
+                      << "'."
                       << std::endl;
     return -1;
 }
