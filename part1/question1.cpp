@@ -27,8 +27,7 @@ int main( int argc, char* argv[] ) {
         std::string( "_s" ) + argv[ 8 ] + "_g" + argv[ 9 ] + "_"
     );
     std::string img_id_hist(
-        std::string( "_s" ) + argv[ 8 ] + "_g" +
-        std::to_string( gamma * 0.45 ) + "_"
+        std::string( "_g" ) + std::to_string( gamma * 0.45 ) + "_"
     );
 
     std::cout << "Dynamic range: " << res.dynamicRange( )  << std::endl;
