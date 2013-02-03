@@ -7,7 +7,7 @@
 
 namespace details {
 
-// Copy n values from the parameter pack to an output iterator
+// Swap n values from the parameter pack to an output iterator
 template < typename OutputIterator >
 void swap_n( size_t, OutputIterator )
 {
@@ -22,7 +22,7 @@ void swap_n( size_t n, OutputIterator out, T const & value, Args... args )
   }
 }
 
-// Copy n values from the parameter pack to an output iterator, starting at
+// Swap n values from the parameter pack to an output iterator, starting at
 // the "beginth" element
 template < typename OutputIterator >
 void swap_range( size_t, size_t, OutputIterator )
