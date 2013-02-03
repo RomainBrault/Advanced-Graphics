@@ -14,6 +14,18 @@ AdvancedGraphicsConfig.hpp
 HDRimage.hpp
 -
 
+/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp
+HDRimage.hpp
+-
+cstring
+-
+
+/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp
+HDRimage.hpp
+-
+algorithm
+-
+
 AdvancedGraphicsConfig.hpp
 string
 -
