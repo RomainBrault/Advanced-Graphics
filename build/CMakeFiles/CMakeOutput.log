@@ -28,30 +28,30 @@ The CXX compiler identification is Intel, found in "/home/romain/Dropbox/Imperia
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec3221979975/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3221979975.dir/build.make CMakeFiles/cmTryCompileExec3221979975.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1386276462/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1386276462.dir/build.make CMakeFiles/cmTryCompileExec1386276462.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec3221979975.dir/testCCompiler.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec3221979975.dir/testCCompiler.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/testCCompiler.c"
-Linking C executable cmTryCompileExec3221979975
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3221979975.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec3221979975.dir/testCCompiler.c.o  -o cmTryCompileExec3221979975 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec1386276462.dir/testCCompiler.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec1386276462.dir/testCCompiler.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/testCCompiler.c"
+Linking C executable cmTryCompileExec1386276462
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1386276462.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec1386276462.dir/testCCompiler.c.o  -o cmTryCompileExec1386276462 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec815461539/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec815461539.dir/build.make CMakeFiles/cmTryCompileExec815461539.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1056014975/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1056014975.dir/build.make CMakeFiles/cmTryCompileExec1056014975.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
-Linking C executable cmTryCompileExec815461539
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec815461539.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc       -v CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec815461539 -rdynamic  
+Building C object CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+Linking C executable cmTryCompileExec1056014975
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1056014975.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc       -v CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec1056014975 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/gcc
 COLLECT_LTO_WRAPPER=/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/lto-wrapper
@@ -61,8 +61,8 @@ Thread model: posix
 gcc version 4.7.2 (GCC) 
 COMPILER_PATH=/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/
 LIBRARY_PATH=/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec815461539' '-rdynamic' '-mtune=generic' '-march=x86-64'
- /opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec815461539 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../.. CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtend.o /lib/../lib64/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1056014975' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec1056014975 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../.. CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtend.o /lib/../lib64/crtn.o
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
@@ -70,15 +70,15 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec815461539/fast"]
-  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec815461539.dir/build.make CMakeFiles/cmTryCompileExec815461539.dir/build]
+  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec1056014975/fast"]
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1056014975.dir/build.make CMakeFiles/cmTryCompileExec1056014975.dir/build]
   ignore line: [gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp']
   ignore line: [/usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1]
-  ignore line: [Building C object CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTryCompileExec815461539]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec815461539.dir/link.txt --verbose=1]
-  ignore line: [/usr/lib64/ccache/gcc       -v CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec815461539 -rdynamic  ]
+  ignore line: [Building C object CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTryCompileExec1056014975]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1056014975.dir/link.txt --verbose=1]
+  ignore line: [/usr/lib64/ccache/gcc       -v CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec1056014975 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/gcc]
   ignore line: [COLLECT_LTO_WRAPPER=/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/lto-wrapper]
@@ -88,8 +88,8 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 4.7.2 (GCC) ]
   ignore line: [COMPILER_PATH=/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/]
   ignore line: [LIBRARY_PATH=/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64/:/lib/../lib64/:/usr/lib/../lib64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/:/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/:/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/:/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/:/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec815461539' '-rdynamic' '-mtune=generic' '-march=x86-64']
-  link line: [ /opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec815461539 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../.. CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtend.o /lib/../lib64/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1056014975' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2 --eh-frame-hdr -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec1056014975 /lib/../lib64/crt1.o /lib/../lib64/crti.o /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../../../lib64 -L/lib/../lib64 -L/usr/lib/../lib64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../.. CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtend.o /lib/../lib64/crtn.o]
     arg [/opt/gcc-4.7.2/libexec/gcc/x86_64-unknown-linux-gnu/4.7.2/collect2] ==> ignore
     arg [--eh-frame-hdr] ==> ignore
     arg [-m] ==> ignore
@@ -98,7 +98,7 @@ Parsed C implicit link information from above output:
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec815461539] ==> ignore
+    arg [cmTryCompileExec1056014975] ==> ignore
     arg [/lib/../lib64/crt1.o] ==> ignore
     arg [/lib/../lib64/crti.o] ==> ignore
     arg [/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/crtbegin.o] ==> ignore
@@ -119,7 +119,7 @@ Parsed C implicit link information from above output:
     arg [-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64]
     arg [-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64]
     arg [-L/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../..] ==> dir [/opt/gcc-4.7.2/lib/gcc/x86_64-unknown-linux-gnu/4.7.2/../../..]
-    arg [CMakeFiles/cmTryCompileExec815461539.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTryCompileExec1056014975.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -159,33 +159,33 @@ Parsed C implicit link information from above output:
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec2639873910/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2639873910.dir/build.make CMakeFiles/cmTryCompileExec2639873910.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec727931320/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec727931320.dir/build.make CMakeFiles/cmTryCompileExec727931320.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building CXX object CMakeFiles/cmTryCompileExec2639873910.dir/testCXXCompiler.cxx.o
-/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc     -o CMakeFiles/cmTryCompileExec2639873910.dir/testCXXCompiler.cxx.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx"
-Linking CXX executable cmTryCompileExec2639873910
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2639873910.dir/link.txt --verbose=1
-/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc          CMakeFiles/cmTryCompileExec2639873910.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec2639873910 -rdynamic 
+Building CXX object CMakeFiles/cmTryCompileExec727931320.dir/testCXXCompiler.cxx.o
+/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc     -o CMakeFiles/cmTryCompileExec727931320.dir/testCXXCompiler.cxx.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx"
+Linking CXX executable cmTryCompileExec727931320
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec727931320.dir/link.txt --verbose=1
+/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc          CMakeFiles/cmTryCompileExec727931320.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec727931320 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec2075320238/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2075320238.dir/build.make CMakeFiles/cmTryCompileExec2075320238.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec3667775958/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3667775958.dir/build.make CMakeFiles/cmTryCompileExec3667775958.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building CXX object CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o
-/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc     -o CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTryCompileExec2075320238
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2075320238.dir/link.txt --verbose=1
-/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc        -v CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec2075320238 -rdynamic  
+Building CXX object CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o
+/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc     -o CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTryCompileExec3667775958
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3667775958.dir/link.txt --verbose=1
+/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc        -v CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec3667775958 -rdynamic  
 icpc version 13.0.1 (gcc version 4.7.0 compatibility)
-/opt/intel/composer_xe_2013.1.117/bin/intel64/mcpcom    -mP1OPT_version=13.0-intel64 -mGLOB_diag_file=CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.diag -mP1OPT_print_version=FALSE -mCG_use_gas_got_workaround=F -mP2OPT_align_option_used=TRUE -mGLOB_gcc_version=470 "-mGLOB_options_string=-v -o cmTryCompileExec2075320238 -rdynamic" -mGLOB_cxx_limited_range=FALSE -mCG_extend_parms=FALSE -mGLOB_compiler_bin_directory=/opt/intel/composer_xe_2013.1.117/bin/intel64 -mGLOB_as_output_backup_file_name=/tmp/icpc2lUKPuas_.s -mIPOPT_activate -mGLOB_machine_model=GLOB_MACHINE_MODEL_EFI2 -mGLOB_product_id_code=0x22006d90 -mCG_bnl_movbe=T -mP3OPT_use_mspp_call_convention -mPGOPTI_value_profile_use=T -mP2OPT_il0_array_sections=TRUE -mP2OPT_offload_unique_var_string=icpc725966071pyCVuk -mP2OPT_hlo -mP2OPT_hpo_rtt_control=0 -mIPOPT_args_in_regs=0 -mP2OPT_disam_assume_nonstd_intent_in=FALSE -mGLOB_imf_mapping_library=/opt/intel/composer_xe_2013.1.117/bin/intel64/libiml_attr.so -mIPOPT_link -mIPOPT_ipo_activate -mIPOPT_mo_activate -mIPOPT_source_files_list=/tmp/icpcslis1fwlyR -mIPOPT_mo_global_data -mIPOPT_link_script_file=/tmp/icpcscriptioi2D4 "-mIPOPT_link_version=2.22.52.0.1-10.fc17 20120131" "-mIPOPT_cmdline_link="/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o" "-export-dynamic" "--eh-frame-hdr" "--build-id" "-dynamic-linker" "/lib64/ld-linux-x86-64.so.2" "-o" "cmTryCompileExec2075320238" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/" "-L/lib/../lib64" "-L/lib/../lib64/" "-L/usr/lib/../lib64" "-L/usr/lib/../lib64/" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../" "-L/lib64" "-L/lib/" "-L/usr/lib64" "-L/usr/lib" "CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o" "-Bstatic" "-limf" "-lsvml" "-lirng" "-Bdynamic" "-lm" "-Bstatic" "-lipgo" "-ldecimal" "--as-needed" "-Bdynamic" "-lcilkrts" "--no-as-needed" "-lstdc++" "-lgcc" "-lgcc_s" "-Bstatic" "-lirc" "-lsvml" "-Bdynamic" "-lc" "-lgcc" "-lgcc_s" "-Bstatic" "-lirc_s" "-Bdynamic" "-ldl" "-lc" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o"" -mIPOPT_il_in_obj -mIPOPT_ipo_activate_warn=FALSE -mIPOPT_obj_output_file_name=/tmp/ipo_icpc1ffp0A.o -mIPOPT_whole_archive_fixup_file_name=/tmp/icpcwarchedVzeC "-mGLOB_linker_version=2.22.52.0.1-10.fc17 20120131" -mGLOB_long_size_64 -mGLOB_routine_pointer_size_64 -mGLOB_driver_tempfile_name=/tmp/icpctempfile5LsYpP -mP3OPT_asm_target=P3OPT_ASM_TARGET_GAS -mGLOB_async_unwind_tables=TRUE -mGLOB_obj_output_file=/tmp/ipo_icpc1ffp0A.o -mGLOB_source_dialect=GLOB_SOURCE_DIALECT_NONE -mP1OPT_source_file_name=ipo_out.c CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o -mIPOPT_object_files=T -mIPOPT_assembly_files=/tmp/icpcalisrnbGb1 -mIPOPT_generated_tempfiles=/tmp/icpcelisIXEkhe -mIPOPT_embedded_object_base_name=/tmp/icpceobjP4DZmr -mIPOPT_cmdline_link_new_name=/tmp/icpcllisulfFsE
-ld    /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -export-dynamic --eh-frame-hdr --build-id -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec2075320238 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/ -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/ -L/lib/../lib64 -L/lib/../lib64/ -L/usr/lib/../lib64 -L/usr/lib/../lib64/ -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/ -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../ -L/lib64 -L/lib/ -L/usr/lib64 -L/usr/lib CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o -Bstatic -limf -lsvml -lirng -Bdynamic -lm -Bstatic -lipgo -ldecimal --as-needed -Bdynamic -lcilkrts --no-as-needed -lstdc++ -lgcc -lgcc_s -Bstatic -lirc -lsvml -Bdynamic -lc -lgcc -lgcc_s -Bstatic -lirc_s -Bdynamic -ldl -lc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o
+/opt/intel/composer_xe_2013.1.117/bin/intel64/mcpcom    -mP1OPT_version=13.0-intel64 -mGLOB_diag_file=CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.diag -mP1OPT_print_version=FALSE -mCG_use_gas_got_workaround=F -mP2OPT_align_option_used=TRUE -mGLOB_gcc_version=470 "-mGLOB_options_string=-v -o cmTryCompileExec3667775958 -rdynamic" -mGLOB_cxx_limited_range=FALSE -mCG_extend_parms=FALSE -mGLOB_compiler_bin_directory=/opt/intel/composer_xe_2013.1.117/bin/intel64 -mGLOB_as_output_backup_file_name=/tmp/icpcbwT16has_.s -mIPOPT_activate -mGLOB_machine_model=GLOB_MACHINE_MODEL_EFI2 -mGLOB_product_id_code=0x22006d90 -mCG_bnl_movbe=T -mP3OPT_use_mspp_call_convention -mPGOPTI_value_profile_use=T -mP2OPT_il0_array_sections=TRUE -mP2OPT_offload_unique_var_string=icpc18390619590Wja5A -mP2OPT_hlo -mP2OPT_hpo_rtt_control=0 -mIPOPT_args_in_regs=0 -mP2OPT_disam_assume_nonstd_intent_in=FALSE -mGLOB_imf_mapping_library=/opt/intel/composer_xe_2013.1.117/bin/intel64/libiml_attr.so -mIPOPT_link -mIPOPT_ipo_activate -mIPOPT_mo_activate -mIPOPT_source_files_list=/tmp/icpcslissvheiy -mIPOPT_mo_global_data -mIPOPT_link_script_file=/tmp/icpcscriptTP62yN "-mIPOPT_link_version=2.22.52.0.1-10.fc17 20120131" "-mIPOPT_cmdline_link="/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o" "-export-dynamic" "--eh-frame-hdr" "--build-id" "-dynamic-linker" "/lib64/ld-linux-x86-64.so.2" "-o" "cmTryCompileExec3667775958" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/" "-L/lib/../lib64" "-L/lib/../lib64/" "-L/usr/lib/../lib64" "-L/usr/lib/../lib64/" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../" "-L/lib64" "-L/lib/" "-L/usr/lib64" "-L/usr/lib" "CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o" "-Bstatic" "-limf" "-lsvml" "-lirng" "-Bdynamic" "-lm" "-Bstatic" "-lipgo" "-ldecimal" "--as-needed" "-Bdynamic" "-lcilkrts" "--no-as-needed" "-lstdc++" "-lgcc" "-lgcc_s" "-Bstatic" "-lirc" "-lsvml" "-Bdynamic" "-lc" "-lgcc" "-lgcc_s" "-Bstatic" "-lirc_s" "-Bdynamic" "-ldl" "-lc" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o"" -mIPOPT_il_in_obj -mIPOPT_ipo_activate_warn=FALSE -mIPOPT_obj_output_file_name=/tmp/ipo_icpceAkvF4.o -mIPOPT_whole_archive_fixup_file_name=/tmp/icpcwarchDu8oDL "-mGLOB_linker_version=2.22.52.0.1-10.fc17 20120131" -mGLOB_long_size_64 -mGLOB_routine_pointer_size_64 -mGLOB_driver_tempfile_name=/tmp/icpctempfileEC2I80 -mP3OPT_asm_target=P3OPT_ASM_TARGET_GAS -mGLOB_async_unwind_tables=TRUE -mGLOB_obj_output_file=/tmp/ipo_icpceAkvF4.o -mGLOB_source_dialect=GLOB_SOURCE_DIALECT_NONE -mP1OPT_source_file_name=ipo_out.c CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o -mIPOPT_object_files=T -mIPOPT_assembly_files=/tmp/icpcalisIGx2cz -mIPOPT_generated_tempfiles=/tmp/icpcelisxF5OtO -mIPOPT_embedded_object_base_name=/tmp/icpceobja7fCK3 -mIPOPT_cmdline_link_new_name=/tmp/icpcllisrkWp1i
+ld    /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -export-dynamic --eh-frame-hdr --build-id -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec3667775958 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/ -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/ -L/lib/../lib64 -L/lib/../lib64/ -L/usr/lib/../lib64 -L/usr/lib/../lib64/ -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/ -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../ -L/lib64 -L/lib/ -L/usr/lib64 -L/usr/lib CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o -Bstatic -limf -lsvml -lirng -Bdynamic -lm -Bstatic -lipgo -ldecimal --as-needed -Bdynamic -lcilkrts --no-as-needed -lstdc++ -lgcc -lgcc_s -Bstatic -lirc -lsvml -Bdynamic -lc -lgcc -lgcc_s -Bstatic -lirc_s -Bdynamic -ldl -lc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
@@ -193,18 +193,18 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec2075320238/fast"]
-  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2075320238.dir/build.make CMakeFiles/cmTryCompileExec2075320238.dir/build]
+  ignore line: [Run Build Command:/usr/bin/gmake "cmTryCompileExec3667775958/fast"]
+  ignore line: [/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3667775958.dir/build.make CMakeFiles/cmTryCompileExec3667775958.dir/build]
   ignore line: [gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp']
   ignore line: [/usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1]
-  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc     -o CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTryCompileExec2075320238]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2075320238.dir/link.txt --verbose=1]
-  ignore line: [/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc        -v CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec2075320238 -rdynamic  ]
+  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc     -o CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTryCompileExec3667775958]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3667775958.dir/link.txt --verbose=1]
+  ignore line: [/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc        -v CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec3667775958 -rdynamic  ]
   ignore line: [icpc version 13.0.1 (gcc version 4.7.0 compatibility)]
-  ignore line: [/opt/intel/composer_xe_2013.1.117/bin/intel64/mcpcom    -mP1OPT_version=13.0-intel64 -mGLOB_diag_file=CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.diag -mP1OPT_print_version=FALSE -mCG_use_gas_got_workaround=F -mP2OPT_align_option_used=TRUE -mGLOB_gcc_version=470 "-mGLOB_options_string=-v -o cmTryCompileExec2075320238 -rdynamic" -mGLOB_cxx_limited_range=FALSE -mCG_extend_parms=FALSE -mGLOB_compiler_bin_directory=/opt/intel/composer_xe_2013.1.117/bin/intel64 -mGLOB_as_output_backup_file_name=/tmp/icpc2lUKPuas_.s -mIPOPT_activate -mGLOB_machine_model=GLOB_MACHINE_MODEL_EFI2 -mGLOB_product_id_code=0x22006d90 -mCG_bnl_movbe=T -mP3OPT_use_mspp_call_convention -mPGOPTI_value_profile_use=T -mP2OPT_il0_array_sections=TRUE -mP2OPT_offload_unique_var_string=icpc725966071pyCVuk -mP2OPT_hlo -mP2OPT_hpo_rtt_control=0 -mIPOPT_args_in_regs=0 -mP2OPT_disam_assume_nonstd_intent_in=FALSE -mGLOB_imf_mapping_library=/opt/intel/composer_xe_2013.1.117/bin/intel64/libiml_attr.so -mIPOPT_link -mIPOPT_ipo_activate -mIPOPT_mo_activate -mIPOPT_source_files_list=/tmp/icpcslis1fwlyR -mIPOPT_mo_global_data -mIPOPT_link_script_file=/tmp/icpcscriptioi2D4 "-mIPOPT_link_version=2.22.52.0.1-10.fc17 20120131" "-mIPOPT_cmdline_link="/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o" "-export-dynamic" "--eh-frame-hdr" "--build-id" "-dynamic-linker" "/lib64/ld-linux-x86-64.so.2" "-o" "cmTryCompileExec2075320238" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/" "-L/lib/../lib64" "-L/lib/../lib64/" "-L/usr/lib/../lib64" "-L/usr/lib/../lib64/" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../" "-L/lib64" "-L/lib/" "-L/usr/lib64" "-L/usr/lib" "CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o" "-Bstatic" "-limf" "-lsvml" "-lirng" "-Bdynamic" "-lm" "-Bstatic" "-lipgo" "-ldecimal" "--as-needed" "-Bdynamic" "-lcilkrts" "--no-as-needed" "-lstdc++" "-lgcc" "-lgcc_s" "-Bstatic" "-lirc" "-lsvml" "-Bdynamic" "-lc" "-lgcc" "-lgcc_s" "-Bstatic" "-lirc_s" "-Bdynamic" "-ldl" "-lc" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o"" -mIPOPT_il_in_obj -mIPOPT_ipo_activate_warn=FALSE -mIPOPT_obj_output_file_name=/tmp/ipo_icpc1ffp0A.o -mIPOPT_whole_archive_fixup_file_name=/tmp/icpcwarchedVzeC "-mGLOB_linker_version=2.22.52.0.1-10.fc17 20120131" -mGLOB_long_size_64 -mGLOB_routine_pointer_size_64 -mGLOB_driver_tempfile_name=/tmp/icpctempfile5LsYpP -mP3OPT_asm_target=P3OPT_ASM_TARGET_GAS -mGLOB_async_unwind_tables=TRUE -mGLOB_obj_output_file=/tmp/ipo_icpc1ffp0A.o -mGLOB_source_dialect=GLOB_SOURCE_DIALECT_NONE -mP1OPT_source_file_name=ipo_out.c CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o -mIPOPT_object_files=T -mIPOPT_assembly_files=/tmp/icpcalisrnbGb1 -mIPOPT_generated_tempfiles=/tmp/icpcelisIXEkhe -mIPOPT_embedded_object_base_name=/tmp/icpceobjP4DZmr -mIPOPT_cmdline_link_new_name=/tmp/icpcllisulfFsE]
-  link line: [ld    /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -export-dynamic --eh-frame-hdr --build-id -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec2075320238 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/ -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/ -L/lib/../lib64 -L/lib/../lib64/ -L/usr/lib/../lib64 -L/usr/lib/../lib64/ -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/ -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../ -L/lib64 -L/lib/ -L/usr/lib64 -L/usr/lib CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o -Bstatic -limf -lsvml -lirng -Bdynamic -lm -Bstatic -lipgo -ldecimal --as-needed -Bdynamic -lcilkrts --no-as-needed -lstdc++ -lgcc -lgcc_s -Bstatic -lirc -lsvml -Bdynamic -lc -lgcc -lgcc_s -Bstatic -lirc_s -Bdynamic -ldl -lc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o]
+  ignore line: [/opt/intel/composer_xe_2013.1.117/bin/intel64/mcpcom    -mP1OPT_version=13.0-intel64 -mGLOB_diag_file=CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.diag -mP1OPT_print_version=FALSE -mCG_use_gas_got_workaround=F -mP2OPT_align_option_used=TRUE -mGLOB_gcc_version=470 "-mGLOB_options_string=-v -o cmTryCompileExec3667775958 -rdynamic" -mGLOB_cxx_limited_range=FALSE -mCG_extend_parms=FALSE -mGLOB_compiler_bin_directory=/opt/intel/composer_xe_2013.1.117/bin/intel64 -mGLOB_as_output_backup_file_name=/tmp/icpcbwT16has_.s -mIPOPT_activate -mGLOB_machine_model=GLOB_MACHINE_MODEL_EFI2 -mGLOB_product_id_code=0x22006d90 -mCG_bnl_movbe=T -mP3OPT_use_mspp_call_convention -mPGOPTI_value_profile_use=T -mP2OPT_il0_array_sections=TRUE -mP2OPT_offload_unique_var_string=icpc18390619590Wja5A -mP2OPT_hlo -mP2OPT_hpo_rtt_control=0 -mIPOPT_args_in_regs=0 -mP2OPT_disam_assume_nonstd_intent_in=FALSE -mGLOB_imf_mapping_library=/opt/intel/composer_xe_2013.1.117/bin/intel64/libiml_attr.so -mIPOPT_link -mIPOPT_ipo_activate -mIPOPT_mo_activate -mIPOPT_source_files_list=/tmp/icpcslissvheiy -mIPOPT_mo_global_data -mIPOPT_link_script_file=/tmp/icpcscriptTP62yN "-mIPOPT_link_version=2.22.52.0.1-10.fc17 20120131" "-mIPOPT_cmdline_link="/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o" "-export-dynamic" "--eh-frame-hdr" "--build-id" "-dynamic-linker" "/lib64/ld-linux-x86-64.so.2" "-o" "cmTryCompileExec3667775958" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/" "-L/lib/../lib64" "-L/lib/../lib64/" "-L/usr/lib/../lib64" "-L/usr/lib/../lib64/" "-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/" "-L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/" "-L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../" "-L/lib64" "-L/lib/" "-L/usr/lib64" "-L/usr/lib" "CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o" "-Bstatic" "-limf" "-lsvml" "-lirng" "-Bdynamic" "-lm" "-Bstatic" "-lipgo" "-ldecimal" "--as-needed" "-Bdynamic" "-lcilkrts" "--no-as-needed" "-lstdc++" "-lgcc" "-lgcc_s" "-Bstatic" "-lirc" "-lsvml" "-Bdynamic" "-lc" "-lgcc" "-lgcc_s" "-Bstatic" "-lirc_s" "-Bdynamic" "-ldl" "-lc" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o" "/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o"" -mIPOPT_il_in_obj -mIPOPT_ipo_activate_warn=FALSE -mIPOPT_obj_output_file_name=/tmp/ipo_icpceAkvF4.o -mIPOPT_whole_archive_fixup_file_name=/tmp/icpcwarchDu8oDL "-mGLOB_linker_version=2.22.52.0.1-10.fc17 20120131" -mGLOB_long_size_64 -mGLOB_routine_pointer_size_64 -mGLOB_driver_tempfile_name=/tmp/icpctempfileEC2I80 -mP3OPT_asm_target=P3OPT_ASM_TARGET_GAS -mGLOB_async_unwind_tables=TRUE -mGLOB_obj_output_file=/tmp/ipo_icpceAkvF4.o -mGLOB_source_dialect=GLOB_SOURCE_DIALECT_NONE -mP1OPT_source_file_name=ipo_out.c CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o -mIPOPT_object_files=T -mIPOPT_assembly_files=/tmp/icpcalisIGx2cz -mIPOPT_generated_tempfiles=/tmp/icpcelisxF5OtO -mIPOPT_embedded_object_base_name=/tmp/icpceobja7fCK3 -mIPOPT_cmdline_link_new_name=/tmp/icpcllisrkWp1i]
+  link line: [ld    /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtbegin.o -export-dynamic --eh-frame-hdr --build-id -dynamic-linker /lib64/ld-linux-x86-64.so.2 -o cmTryCompileExec3667775958 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64 -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/ -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64 -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/ -L/lib/../lib64 -L/lib/../lib64/ -L/usr/lib/../lib64 -L/usr/lib/../lib64/ -L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/mkl/lib/intel64/ -L/opt/intel/composer_xe_2013.1.117/tbb/lib/intel64/ -L/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../ -L/lib64 -L/lib/ -L/usr/lib64 -L/usr/lib CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o -Bstatic -limf -lsvml -lirng -Bdynamic -lm -Bstatic -lipgo -ldecimal --as-needed -Bdynamic -lcilkrts --no-as-needed -lstdc++ -lgcc -lgcc_s -Bstatic -lirc -lsvml -Bdynamic -lc -lgcc -lgcc_s -Bstatic -lirc_s -Bdynamic -ldl -lc /usr/lib/gcc/x86_64-redhat-linux/4.7.2/crtend.o /usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crtn.o]
     arg [ld] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-redhat-linux/4.7.2/../../../../lib64/crti.o] ==> ignore
@@ -215,7 +215,7 @@ Parsed CXX implicit link information from above output:
     arg [-dynamic-linker] ==> ignore
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec2075320238] ==> ignore
+    arg [cmTryCompileExec3667775958] ==> ignore
     arg [-L/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/compiler/lib/intel64]
     arg [-L/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/ipp/../compiler/lib/intel64]
     arg [-L/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64] ==> dir [/opt/intel/composer_xe_2013.1.117/ipp/lib/intel64]
@@ -246,7 +246,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/lib/] ==> dir [/lib/]
     arg [-L/usr/lib64] ==> dir [/usr/lib64]
     arg [-L/usr/lib] ==> dir [/usr/lib]
-    arg [CMakeFiles/cmTryCompileExec2075320238.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTryCompileExec3667775958.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-Bstatic] ==> ignore
     arg [-limf] ==> lib [imf]
     arg [-lsvml] ==> lib [svml]
@@ -318,75 +318,75 @@ Parsed CXX implicit link information from above output:
 Determining if the include file sys/types.h exists passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec1509590461/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1509590461.dir/build.make CMakeFiles/cmTryCompileExec1509590461.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec28815704/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec28815704.dir/build.make CMakeFiles/cmTryCompileExec28815704.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec1509590461.dir/CheckIncludeFile.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec1509590461.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
-Linking C executable cmTryCompileExec1509590461
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1509590461.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec1509590461.dir/CheckIncludeFile.c.o  -o cmTryCompileExec1509590461 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec28815704.dir/CheckIncludeFile.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec28815704.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
+Linking C executable cmTryCompileExec28815704
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec28815704.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec28815704.dir/CheckIncludeFile.c.o  -o cmTryCompileExec28815704 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Determining if the include file stdint.h exists passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec500640579/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec500640579.dir/build.make CMakeFiles/cmTryCompileExec500640579.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec519089355/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec519089355.dir/build.make CMakeFiles/cmTryCompileExec519089355.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec500640579.dir/CheckIncludeFile.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec500640579.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
-Linking C executable cmTryCompileExec500640579
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec500640579.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec500640579.dir/CheckIncludeFile.c.o  -o cmTryCompileExec500640579 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec519089355.dir/CheckIncludeFile.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec519089355.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
+Linking C executable cmTryCompileExec519089355
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec519089355.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec519089355.dir/CheckIncludeFile.c.o  -o cmTryCompileExec519089355 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Determining if the include file stddef.h exists passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec2811423049/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec2811423049.dir/build.make CMakeFiles/cmTryCompileExec2811423049.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec3700446936/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3700446936.dir/build.make CMakeFiles/cmTryCompileExec3700446936.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec2811423049.dir/CheckIncludeFile.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec2811423049.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
-Linking C executable cmTryCompileExec2811423049
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2811423049.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec2811423049.dir/CheckIncludeFile.c.o  -o cmTryCompileExec2811423049 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec3700446936.dir/CheckIncludeFile.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec3700446936.dir/CheckIncludeFile.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c"
+Linking C executable cmTryCompileExec3700446936
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3700446936.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec3700446936.dir/CheckIncludeFile.c.o  -o cmTryCompileExec3700446936 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Determining size of unsigned short passed with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec1271742903/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1271742903.dir/build.make CMakeFiles/cmTryCompileExec1271742903.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1417360827/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1417360827.dir/build.make CMakeFiles/cmTryCompileExec1417360827.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec1271742903.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o
-/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec1271742903.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CheckTypeSize/CMAKE_SIZEOF_UNSIGNED_SHORT.c"
-Linking C executable cmTryCompileExec1271742903
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1271742903.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec1271742903.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o  -o cmTryCompileExec1271742903 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec1417360827.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o
+/usr/lib64/ccache/gcc    -o CMakeFiles/cmTryCompileExec1417360827.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CheckTypeSize/CMAKE_SIZEOF_UNSIGNED_SHORT.c"
+Linking C executable cmTryCompileExec1417360827
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1417360827.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc         CMakeFiles/cmTryCompileExec1417360827.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o  -o cmTryCompileExec1417360827 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 
 Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED succeded with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec3153825469/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3153825469.dir/build.make CMakeFiles/cmTryCompileExec3153825469.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec3417294138/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3417294138.dir/build.make CMakeFiles/cmTryCompileExec3417294138.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building C object CMakeFiles/cmTryCompileExec3153825469.dir/src.c.o
-/usr/lib64/ccache/gcc   -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTryCompileExec3153825469.dir/src.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/src.c"
-Linking C executable cmTryCompileExec3153825469
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3153825469.dir/link.txt --verbose=1
-/usr/lib64/ccache/gcc     -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTryCompileExec3153825469.dir/src.c.o  -o cmTryCompileExec3153825469 -rdynamic 
+Building C object CMakeFiles/cmTryCompileExec3417294138.dir/src.c.o
+/usr/lib64/ccache/gcc   -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTryCompileExec3417294138.dir/src.c.o   -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/src.c"
+Linking C executable cmTryCompileExec3417294138
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3417294138.dir/link.txt --verbose=1
+/usr/lib64/ccache/gcc     -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTryCompileExec3417294138.dir/src.c.o  -o cmTryCompileExec3417294138 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -403,15 +403,15 @@ int main() {
 Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED succeded with the following output:
 Change Dir: /home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/gmake "cmTryCompileExec3516988284/fast"
-/usr/bin/gmake -f CMakeFiles/cmTryCompileExec3516988284.dir/build.make CMakeFiles/cmTryCompileExec3516988284.dir/build
+Run Build Command:/usr/bin/gmake "cmTryCompileExec1950794273/fast"
+/usr/bin/gmake -f CMakeFiles/cmTryCompileExec1950794273.dir/build.make CMakeFiles/cmTryCompileExec1950794273.dir/build
 gmake[1]: Entering directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/CMakeFiles" 1
-Building CXX object CMakeFiles/cmTryCompileExec3516988284.dir/src.cxx.o
-/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc    -DOpenMP_FLAG_DETECTED -openmp   -o CMakeFiles/cmTryCompileExec3516988284.dir/src.cxx.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/src.cxx"
-Linking CXX executable cmTryCompileExec3516988284
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3516988284.dir/link.txt --verbose=1
-/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc      -DOpenMP_FLAG_DETECTED -openmp    CMakeFiles/cmTryCompileExec3516988284.dir/src.cxx.o  -o cmTryCompileExec3516988284 -rdynamic 
+Building CXX object CMakeFiles/cmTryCompileExec1950794273.dir/src.cxx.o
+/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc    -DOpenMP_FLAG_DETECTED -openmp   -o CMakeFiles/cmTryCompileExec1950794273.dir/src.cxx.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp/src.cxx"
+Linking CXX executable cmTryCompileExec1950794273
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1950794273.dir/link.txt --verbose=1
+/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc      -DOpenMP_FLAG_DETECTED -openmp    CMakeFiles/cmTryCompileExec1950794273.dir/src.cxx.o  -o cmTryCompileExec1950794273 -rdynamic 
 gmake[1]: Leaving directory `/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/CMakeTmp'
 
 Source file was:
