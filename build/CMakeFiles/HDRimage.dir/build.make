@@ -56,15 +56,15 @@ CMakeFiles/HDRimage.dir/part1/question1.cpp.o: CMakeFiles/HDRimage.dir/flags.mak
 CMakeFiles/HDRimage.dir/part1/question1.cpp.o: ../part1/question1.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/HDRimage.dir/part1/question1.cpp.o"
-	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/part1/question1.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp"
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/part1/question1.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp"
 
 CMakeFiles/HDRimage.dir/part1/question1.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HDRimage.dir/part1/question1.cpp.i"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp" > CMakeFiles/HDRimage.dir/part1/question1.cpp.i
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp" > CMakeFiles/HDRimage.dir/part1/question1.cpp.i
 
 CMakeFiles/HDRimage.dir/part1/question1.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HDRimage.dir/part1/question1.cpp.s"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp" -o CMakeFiles/HDRimage.dir/part1/question1.cpp.s
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp" -o CMakeFiles/HDRimage.dir/part1/question1.cpp.s
 
 CMakeFiles/HDRimage.dir/part1/question1.cpp.o.requires:
 .PHONY : CMakeFiles/HDRimage.dir/part1/question1.cpp.o.requires
@@ -79,15 +79,15 @@ CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o: CMakeFiles/HDRimage.dir/flags.mak
 CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o: ../src/HDRimage_io.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o"
-	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp"
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp"
 
 CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.i"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" > CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.i
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" > CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.i
 
 CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.s"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" -o CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.s
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" -o CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.s
 
 CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o.requires:
 .PHONY : CMakeFiles/HDRimage.dir/src/HDRimage_io.cpp.o.requires
@@ -102,15 +102,15 @@ CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o: CMakeFiles/HDRimage.dir/f
 CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o: ../src/HDRimage_processing.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o"
-	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp"
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp"
 
 CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.i"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" > CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.i
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" > CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.i
 
 CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.s"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" -o CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.s
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" -o CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.s
 
 CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o.requires:
 .PHONY : CMakeFiles/HDRimage.dir/src/HDRimage_processing.cpp.o.requires

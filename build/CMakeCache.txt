@@ -51,11 +51,11 @@ CMAKE_CC_FLAGS_RELWITHDEBINFO:STRING=-O2 -g
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //CXX compiler.
-CMAKE_CXX_COMPILER:FILEPATH=/usr/lib64/ccache/g++
+CMAKE_CXX_COMPILER:FILEPATH=/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel.
-CMAKE_CXX_FLAGS:STRING=-Werror -Wall -fno-common -Wshadow -Wextra -ansi -pedantic -std=c++0x -fopenmp
+CMAKE_CXX_FLAGS:STRING=-Wcheck -Werror -Wall -fno-common -std=c++0x -ansi -fno-gnu-keywords -openmp
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel.
@@ -67,7 +67,7 @@ CMAKE_CXX_FLAGS_MINSIZEREL:STRING=-Os -DNDEBUG
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel.
-CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -flto -fno-exceptions -DNDEBUG
+CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -ipo -fno-exceptions -DNDEBUG
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel.
@@ -221,7 +221,7 @@ CPACK_SOURCE_ZIP:BOOL=OFF
 CXX11_FEATURE_LIST:STRING=HAS_CXX11_AUTO;HAS_CXX11_NULLPTR;HAS_CXX11_LAMBDA;HAS_CXX11_STATIC_ASSERT;HAS_CXX11_RVALUE_REFERENCES;HAS_CXX11_DECLTYPE;HAS_CXX11_CSTDINT_H;HAS_CXX11_CHRONO_H;HAS_CXX11_LONG_LONG;HAS_CXX11_VARIADIC_TEMPLATES;HAS_CXX11_CONSTEXPR;HAS_CXX11_SIZEOF_MEMBER;HAS_CXX11_FUNC
 
 //C++ compiler flags for OpenMP parallization
-OpenMP_CXX_FLAGS:STRING=-fopenmp
+OpenMP_CXX_FLAGS:STRING=-openmp
 
 //C compiler flags for OpenMP parallization
 OpenMP_C_FLAGS:STRING=-fopenmp
@@ -389,7 +389,7 @@ CPACK_SOURCE_ZIP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CXX11_FEATURE_LIST
 CXX11_FEATURE_LIST-ADVANCED:INTERNAL=1
 //Details about finding OpenMP
-FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[-fopenmp][-fopenmp][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_OpenMP:INTERNAL=[-fopenmp][-openmp][v()]
 //C++11 support for "auto" (N2546)
 HAS_CXX11_AUTO:INTERNAL=TRUE
 //C++11 support for "chrono"

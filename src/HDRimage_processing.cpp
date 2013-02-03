@@ -1,4 +1,5 @@
 #include <HDRimage.hpp>
+#include <algorithm>
 
 #define hdr_in_range( x, y, z ) \
     std::min( std::max( x, y ), z )
@@ -15,7 +16,6 @@ image::normalise( float n ) noexcept
     m_max_pixel_chanel = n;
     m_min_pixel_chanel = 0;
 
-#pragma omp parallel for
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             /* Inner loop vectorized with gcc ! */
@@ -39,6 +39,89 @@ image::normalise( float n ) noexcept
                 ( m_data_2D[ i ][ wblock_index ].b[ k ] - m_min_pixel_chanel )
                 * mlt;
         }
+    }
+}
+
+void
+image::median( uint32_t radius ) noexcept
+{
+    median( *this, radius );
+}
+
+void
+image::median( image const & in, uint32_t radius ) noexcept
+{
+    uint32_t const M_SIZE( radius * radius );
+    uint32_t const M_POS( M_SIZE / 2 );
+    if ( ( radius % 2 ) != 1) {
+        return;
+    }
+    if ( ( m_height < M_SIZE ) || ( m_width < M_SIZE ) ) {
+        return;
+    }
+    image cpy;
+    if ( &in != this ) {
+        std::swap( cpy, *const_cast< image* >( &in ) );
+    }
+    else {
+        cpy = in;
+    }
+
+#pragma omp parallel
+{
+    float* med_buf = new (std::nothrow) float[ 3 * M_SIZE ];
+    if ( med_buf != nullptr ) {
+        float* med_buf_red   = med_buf;
+        float* med_buf_green = med_buf +     M_SIZE;
+        float* med_buf_blue  = med_buf + 2 * M_SIZE;
+
+        int32_t const hradius( ( radius - 1 ) / 2 );
+        uint32_t const end_width( m_width - hradius );
+        uint32_t const end_height( m_height - hradius );
+
+#pragma omp for collapse( 2 )
+        for ( uint32_t i = hradius; i < end_width; ++i ) {
+            for ( uint32_t j = hradius; j < end_height; ++j ) {
+                for ( int32_t k = -hradius; k <= hradius; ++k ) {
+                    for ( int32_t l = -hradius; l <= hradius; ++l ) {
+                        uint32_t const med_pos(
+                            ( k + hradius ) * radius + l + hradius
+                        );
+                        cpy.getPixel(
+                            i + k, j + l,
+                            med_buf_red  [ med_pos ],
+                            med_buf_green[ med_pos ],
+                            med_buf_blue [ med_pos ]
+                        );
+                    };
+                }
+                std::nth_element(
+                    med_buf_red,
+                    med_buf_red + M_POS,
+                    med_buf_red + M_SIZE
+                );
+                std::nth_element(
+                    med_buf_green,
+                    med_buf_green + M_POS,
+                    med_buf_green + M_SIZE
+                );
+                std::nth_element(
+                    med_buf_blue,
+                    med_buf_blue + M_POS,
+                    med_buf_blue + M_SIZE
+                );
+                setPixel(
+                    i, j,
+                    med_buf_red[ M_POS ],
+                    med_buf_green[ M_POS ],
+                    med_buf_blue[ M_POS ]
+                );
+            }
+        }
+    }
+}
+    if ( &in != this ) {
+        std::swap( cpy, *const_cast< image* >( &in ) );
     }
 }
 
@@ -387,7 +470,6 @@ image::troncate( float min, float max ) noexcept
     m_max_pixel_chanel = max;
     m_min_pixel_chanel = min;
 
-#pragma omp parallel for
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
@@ -413,7 +495,7 @@ image::troncate( float min, float max ) noexcept
 void
 image::linearToneMap( float stops ) noexcept
 {
-    normalise( std::pow( 2, stops ) );
+    normalise( static_cast< float >( std::pow( 2, stops ) ) );
     troncate( 0, 1 );
 }
 
@@ -427,7 +509,6 @@ image::gamma( float pow_val ) noexcept
     m_max_pixel_chanel = std::pow( m_max_pixel_chanel, gamma_val );
     m_min_pixel_chanel = std::pow( m_min_pixel_chanel, gamma_val );
 
-#pragma omp parallel for
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
@@ -455,15 +536,18 @@ image::histEqToneMap( uint32_t H_SIZE ) noexcept
 {
     float const exp_rate( ( H_SIZE - 1 ) / m_max_pixel_chanel );
 
-    double* hist = new double[ 6 * H_SIZE ];
-    std::memset( hist, 6 * H_SIZE * sizeof ( double ), 0 );
+    float* hist = new (std::nothrow) float[ 6 * H_SIZE ];
+    if ( hist == nullptr ) {
+        return;
+    }
+    std::memset( hist, 6 * H_SIZE * sizeof ( float ), 0 );
 
-    double* hist_red     = hist;
-    double* hist_green   = hist + 1 * H_SIZE;
-    double* hist_blue    = hist + 2 * H_SIZE;
-    double* hist_red_s   = hist + 3 * H_SIZE;
-    double* hist_green_s = hist + 4 * H_SIZE;
-    double* hist_blue_s  = hist + 5 * H_SIZE;
+    float* hist_red     = hist;
+    float* hist_green   = hist + 1 * H_SIZE;
+    float* hist_blue    = hist + 2 * H_SIZE;
+    float* hist_red_s   = hist + 3 * H_SIZE;
+    float* hist_green_s = hist + 4 * H_SIZE;
+    float* hist_blue_s  = hist + 5 * H_SIZE;
 
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
@@ -500,20 +584,14 @@ image::histEqToneMap( uint32_t H_SIZE ) noexcept
         }
     }
 
-    double const N( m_width * m_height );
-    for ( uint32_t i = 0; i < H_SIZE; ++i ) {
-        hist_red  [ i ] /= N;
-        hist_green[ i ] /= N;
-        hist_blue [ i ] /= N;
-    }
-
-    hist_red_s  [ 0 ] = hist_red  [ 0 ];
-    hist_green_s[ 0 ] = hist_green[ 0 ];
-    hist_blue_s [ 0 ] = hist_blue [ 0 ];
+    float const N( static_cast< float >( m_width * m_height ) );
+    hist_red_s  [ 0 ] = hist_red  [ 0 ] / N;
+    hist_green_s[ 0 ] = hist_green[ 0 ] / N;
+    hist_blue_s [ 0 ] = hist_blue [ 0 ] / N;
     for ( uint32_t i = 1; i < H_SIZE; ++i ) {
-        hist_red_s  [ i ] = hist_red_s  [ i - 1 ] + hist_red  [ i ];
-        hist_green_s[ i ] = hist_green_s[ i - 1 ] + hist_green[ i ];
-        hist_blue_s [ i ] = hist_blue_s [ i - 1 ] + hist_blue [ i ];
+        hist_red_s  [ i ] = hist_red_s  [ i - 1 ] + hist_red  [ i ] / N;
+        hist_green_s[ i ] = hist_green_s[ i - 1 ] + hist_green[ i ] / N;
+        hist_blue_s [ i ] = hist_blue_s [ i - 1 ] + hist_blue [ i ] / N;
     }
 
     for ( uint32_t i = 0; i < m_height; ++i ) {

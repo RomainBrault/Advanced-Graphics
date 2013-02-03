@@ -942,7 +942,7 @@ image::savePFM(
     if ( isEmpty( ) == true ) {
         return -1;
     }
-    if ( ( magic_number != '5' ) || ( magic_number != '6' ) ) {
+    if ( ( magic_number != '5' ) && ( magic_number != '6' ) ) {
         return -1;
     }
 
@@ -967,7 +967,6 @@ image::savePFM(
         goto FILE_ERROR;
         break;
     }
-
 
     pfm_file << "\n" << m_width << " "
              << m_height << "\n"

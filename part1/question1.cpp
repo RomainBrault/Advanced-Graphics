@@ -1,5 +1,7 @@
 #include <HDRimage.hpp>
 
+#define SFMT BinaryColormap
+
 using namespace hdr;
 
 int main( int argc, char* argv[] ) {
@@ -7,37 +9,45 @@ int main( int argc, char* argv[] ) {
     if ( argc < 10 )
         return -1;
 
+    uint32_t n_inputs = argc - 3;
+    image* inputs = new image[ n_inputs ];
+    if ( inputs == nullptr ) {
+        return -1;
+    }
 
-    image test1, test2, test3, test4, test5, test6, test7, res, temp;
+    for ( uint32_t i = 0; i < n_inputs; ++i ) {
+        inputs[ i ].loadPFM( argv[ i + 1 ] );
+    }
+    float stops = static_cast< float >( atof( argv[ 8 ] ) );
+    float gamma = static_cast< float >( atof( argv[ 9 ] ) );
 
-    test1.loadPFM( argv[ 1 ] );
-    test2.loadPFM( argv[ 2 ] );
-    test3.loadPFM( argv[ 3 ] );
-    test4.loadPFM( argv[ 4 ] );
-    test5.loadPFM( argv[ 5 ] );
-    test6.loadPFM( argv[ 6 ] );
-    test7.loadPFM( argv[ 7 ] );
-
-    res.createHDR< pol_cwf >(
-        test1, test2, test3, test4, test5, test6, test7
+    image res, temp;
+    res.createHDR< pol_cwf >( inputs, n_inputs );
+    std::string img_id_lin(
+        std::string( "_s" ) + argv[ 8 ] + "_g" + argv[ 9 ] + "_"
     );
-    std::cout << res.dynamicRange( )  << std::endl<< std::endl;
+    std::string img_id_hist(
+        std::string( "_s" ) + argv[ 8 ] + "_g" +
+        std::to_string( gamma * 0.45 ) + "_"
+    );
+
+    std::cout << "Dynamic range: " << res.dynamicRange( )  << std::endl;
     temp = res;
-    temp.savePFM( "result_raw.pfm", BinaryColormap );
+    temp.savePFM( "result_raw.pfm", SFMT );
     temp.normalise( 255 );
-    temp.savePNM( "result_raw.ppm", BinaryColormap );
+    temp.savePNM( "result_raw.ppm", SFMT );
 
     temp = res;
-    temp.linearToneMap( static_cast< float >( atof( argv[ 8 ] ) ) );
-    temp.gamma( static_cast< float >( atof( argv[ 9 ] ) ) );
-    temp.savePFM( "result_lin.pfm", BinaryColormap );
+    temp.linearToneMap( stops );
+    temp.gamma( gamma );
+    temp.savePFM( std::string( "result_lin" ) + img_id_lin + ".pfm", SFMT );
     temp.normalise( 255 );
-    temp.savePNM( "result_lin.ppm", BinaryColormap );
+    temp.savePNM( std::string( "result_lin" ) + img_id_lin + ".ppm", SFMT );
 
     res.histEqToneMap( res.dynamicRange( ) );
-    res.gamma( static_cast< float >( atof( argv[ 9 ] ) * 0.45 ) );
-    res.savePFM( "result_hist.pfm", BinaryColormap );
+    res.gamma( gamma * 0.45f );
+    res.savePFM( std::string( "result_hist" ) + img_id_hist + ".pfm", SFMT );
     res.normalise( 255 );
-    res.savePNM( "result_hist.ppm", BinaryColormap );
+    res.savePNM( std::string( "result_hist" ) + img_id_hist + ".ppm", SFMT );
     return 0;
 }

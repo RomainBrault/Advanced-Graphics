@@ -13,7 +13,7 @@
 
 /* Compiler */
 #define GNU_C_COMPILER
-#define GNU_CXX_COMPILER
+#define INTEL_CXX_COMPILER
 
 /* OS */
 #define UNIX

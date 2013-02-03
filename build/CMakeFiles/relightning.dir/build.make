@@ -56,15 +56,15 @@ CMakeFiles/relightning.dir/part2/question2.cpp.o: CMakeFiles/relightning.dir/fla
 CMakeFiles/relightning.dir/part2/question2.cpp.o: ../part2/question2.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/relightning.dir/part2/question2.cpp.o"
-	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/relightning.dir/part2/question2.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp"
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/relightning.dir/part2/question2.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp"
 
 CMakeFiles/relightning.dir/part2/question2.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/relightning.dir/part2/question2.cpp.i"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp" > CMakeFiles/relightning.dir/part2/question2.cpp.i
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp" > CMakeFiles/relightning.dir/part2/question2.cpp.i
 
 CMakeFiles/relightning.dir/part2/question2.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/relightning.dir/part2/question2.cpp.s"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp" -o CMakeFiles/relightning.dir/part2/question2.cpp.s
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp" -o CMakeFiles/relightning.dir/part2/question2.cpp.s
 
 CMakeFiles/relightning.dir/part2/question2.cpp.o.requires:
 .PHONY : CMakeFiles/relightning.dir/part2/question2.cpp.o.requires
@@ -79,15 +79,15 @@ CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o: CMakeFiles/relightning.dir/fla
 CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o: ../src/HDRimage_io.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o"
-	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp"
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp"
 
 CMakeFiles/relightning.dir/src/HDRimage_io.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/relightning.dir/src/HDRimage_io.cpp.i"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" > CMakeFiles/relightning.dir/src/HDRimage_io.cpp.i
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" > CMakeFiles/relightning.dir/src/HDRimage_io.cpp.i
 
 CMakeFiles/relightning.dir/src/HDRimage_io.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/relightning.dir/src/HDRimage_io.cpp.s"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" -o CMakeFiles/relightning.dir/src/HDRimage_io.cpp.s
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp" -o CMakeFiles/relightning.dir/src/HDRimage_io.cpp.s
 
 CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o.requires:
 .PHONY : CMakeFiles/relightning.dir/src/HDRimage_io.cpp.o.requires
@@ -102,15 +102,15 @@ CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o: CMakeFiles/relightning
 CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o: ../src/HDRimage_processing.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report "/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles" $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o"
-	/usr/lib64/ccache/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp"
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o -c "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp"
 
 CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.i"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" > CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.i
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -E "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" > CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.i
 
 CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.s"
-	/usr/lib64/ccache/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" -o CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.s
+	/opt/intel/composer_xe_2013.1.117/bin/intel64/icpc  $(CXX_DEFINES) $(CXX_FLAGS) -S "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp" -o CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.s
 
 CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o.requires:
 .PHONY : CMakeFiles/relightning.dir/src/HDRimage_processing.cpp.o.requires
