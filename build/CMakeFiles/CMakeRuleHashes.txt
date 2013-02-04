@@ -1,4 +1,0 @@
-# Hashes of file build rules.
-dd4749a02eb2c51116411a5b36342c2c CMakeFiles/HDRimage_automoc
-24271b539066025a3f0d861947d0e072 CMakeFiles/relightning_automoc
-e449dc14ef9ba9c50ecd2a2d1b071d86 ui_mainwindow.h
