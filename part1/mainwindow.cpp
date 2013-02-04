@@ -235,6 +235,9 @@ void MainWindow::on_action_Open_triggered()
 
 void MainWindow::on_pushButton_clicked()
 {
+    if ( image_buffer.size( ) == 0 ) {
+    	return;
+    }
     res.createHDR< hdr::pol_cwf >( exposure, image_buffer.data( ), image_buffer.size( ) );
     if ( res.isEmpty() == true ) {
         return;

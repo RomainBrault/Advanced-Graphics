@@ -428,11 +428,7 @@ image::createHDR(
 namespace std {
 
     static INLINE void
-    swap( hdr::image & im1, hdr::image & im2 )
-        noexcept(
-            ( is_nothrow_move_constructible< hdr::image >::value ) &&
-            ( is_nothrow_move_assignable< hdr::image >::value    )
-        )
+    swap( hdr::image & im1, hdr::image & im2 ) noexcept
     {
         im1.swap( im2 );
     }
