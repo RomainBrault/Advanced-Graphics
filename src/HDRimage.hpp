@@ -328,6 +328,9 @@ image::createHDR(
     float const * exposure, image const * image_set, uint32_t N
 ) noexcept {
 
+    if ( ( exposure == nullptr ) || ( image_set == nullptr ) ) {
+	return -1;
+    }
     uint32_t width  = image_set[ 0 ].m_width;
     uint32_t height = image_set[ 0 ].m_height;
     for ( uint32_t l = 1; l < N; ++l ) {
