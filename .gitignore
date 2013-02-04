@@ -1,3 +1,5 @@
 *.pfm
 *.ppm
 *~
+bin/
+build/
