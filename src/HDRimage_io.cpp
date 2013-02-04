@@ -791,7 +791,7 @@ image::loadPFM( std::string const & file_path ) noexcept
     case BinaryGreymap:
 
         if ( pfm_endianess == PFM_LITTLE_ENDIAN ) {
-            for ( uint32_t i = m_height - 1; i != 0; --i ) {
+            for ( uint32_t i = m_height - 1; i != 0xFFFFFFFF; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 8 ];
                     pfm_file.read(
@@ -817,7 +817,7 @@ image::loadPFM( std::string const & file_path ) noexcept
             }
         }
         else {
-            for ( uint32_t i = m_height - 1; i != 0; --i ) {
+            for ( uint32_t i = m_height - 1; i != 0xFFFFFFFF; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 8 ];
                     pfm_file.read(
@@ -875,7 +875,7 @@ image::loadPFM( std::string const & file_path ) noexcept
             }
         }
         else {
-            for ( uint32_t i = m_height - 1; i != 0; --i ) {
+            for ( uint32_t i = m_height - 1; i != 0xFFFFFFFF; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 24 ];
                     pfm_file.read(
@@ -968,6 +968,7 @@ image::savePFM(
         break;
     }
 
+    pfm_file.setf( std::ios::fixed, std::ios::floatfield );
     pfm_file << "\n" << m_width << " "
              << m_height << "\n"
              << -m_max_pixel_chanel << "\n";
@@ -978,7 +979,7 @@ image::savePFM(
     switch ( magic_number ) {
     case BinaryGreymap:
 
-        for ( uint32_t i = m_height - 1; i != 0; --i ) {
+        for ( uint32_t i = m_height - 1; i != 0xFFFFFFFF; --i ) {
             for ( uint32_t j = 0; j < width_block_number; ++j ) {
                 float buffer[ 8 ];
                 for ( uint32_t k = 0; k < 8; ++k ) {
@@ -1006,7 +1007,7 @@ image::savePFM(
 
     case BinaryColormap:
 
-        for ( uint32_t i = m_height - 1; i != 0; --i ) {
+        for ( uint32_t i = m_height - 1; i != 0xFFFFFFFF; --i ) {
             for ( uint32_t j = 0; j < width_block_number; ++j ) {
                 float buffer[ 24 ];
                 for ( uint32_t k = 0; k < 8; ++k ) {

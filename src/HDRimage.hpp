@@ -53,7 +53,7 @@ merge_block(
 ) noexcept {
 
 /* Motherfucking haXxXx: since we increase the exposure time, the value of
- * a pixel is supposed to be >= frome a photo to the next. Hence if this is not
+ * a pixel is supposed to be >= from a photo to the next. Hence if this is not
  * true, we ignore the pixel. ==> remove fucking blue artefact due to the bad
  * quality of the camera.
  */
@@ -181,9 +181,13 @@ public:
     ) const noexcept;
 
     template < class CWF, class... Args >
-    int32_t createHDR( image const & im1, Args const &... args ) noexcept;
+    int32_t createHDR(
+        float const *, image const & im1, Args const &... args
+    ) noexcept;
     template < class CWF >
-    int32_t createHDR( image const *, uint32_t     ) noexcept;
+    int32_t createHDR(
+        float const *, image const *, uint32_t
+    ) noexcept;
 
     void linearToneMap( float stops ) noexcept;
     void histEqToneMap( uint32_t = 256 ) noexcept;
@@ -304,13 +308,15 @@ image::getPixel(
 
 template < class CWF, class... Args >
 int32_t
-image::createHDR( image const & im1, Args const &... args ) noexcept {
+image::createHDR(
+    float const * exposure, image const & im1, Args const &... args
+) noexcept {
 
     uint32_t constexpr N( sizeof... ( Args ) + 1 );
     std::array< hdr::image, N > image_set;
 
     details::swap_range( 0, N, image_set.begin( ), im1, args... );
-    int32_t err = createHDR< CWF >( image_set.begin( ), N );
+    int32_t err = createHDR< CWF >( exposure, image_set.begin( ), N );
     details::swap_range( 0, N, image_set.begin( ), im1, args... );
 
     return err;
@@ -318,7 +324,9 @@ image::createHDR( image const & im1, Args const &... args ) noexcept {
 
 template < class CWF >
 int32_t
-image::createHDR( image const * image_set, uint32_t N ) noexcept {
+image::createHDR(
+    float const * exposure, image const * image_set, uint32_t N
+) noexcept {
 
     uint32_t width  = image_set[ 0 ].m_width;
     uint32_t height = image_set[ 0 ].m_height;
@@ -344,7 +352,6 @@ image::createHDR( image const * image_set, uint32_t N ) noexcept {
             float acc_wred  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
             float acc_wgreen[ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
             float acc_wblue [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            uint32_t exposure_time( 1 );
             for ( uint32_t l = 0; l < N; ++l ) {
                 uint32_t ln = MIN( l + 1, N - 1 );
                 for ( uint32_t k = 0; k < 8; ++k ) {
@@ -357,10 +364,9 @@ image::createHDR( image const * image_set, uint32_t N ) noexcept {
                         image_set[ ln ].m_data_2D[ i ][ j ].b[ k ],
                         acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ],
                         acc_red [ k ], acc_green [ k ], acc_blue [ k ],
-                        exposure_time
+                        exposure[ l ]
                     );
                 }
-                exposure_time <<= 2;
             }
             for ( uint32_t k = 0; k < 8; ++k ) {
                 m_data_2D[ i ][ j ].r[ k ] =
@@ -383,7 +389,6 @@ image::createHDR( image const * image_set, uint32_t N ) noexcept {
         float acc_wred  [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
         float acc_wgreen[ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
         float acc_wblue [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        uint32_t exposure_time( 1 );
         for ( uint32_t l = 0; l < N; ++l ) {
             uint32_t ln = MIN( l + 1, N - 1 );
             for ( uint32_t k = 0; width_block_end + k < width; ++k ) {
@@ -396,10 +401,9 @@ image::createHDR( image const * image_set, uint32_t N ) noexcept {
                     image_set[ ln ].m_data_2D[ i ][ width_block_number ].b[ k ],
                     acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ],
                     acc_red [ k ], acc_green [ k ], acc_blue [ k ],
-                    exposure_time
+                    exposure[ l ]
                 );
             }
-            exposure_time <<= 2;
         }
         for ( uint32_t k = 0; width_block_end + k < width; ++k ) {
                 m_data_2D[ i ][ width_block_number ].r[ k ] =

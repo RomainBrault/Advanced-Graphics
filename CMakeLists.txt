@@ -4,6 +4,10 @@ project(AdvancedGraphics)
 set(AdvancedGraphics_VERSION_MAJOR 1)
 set(AdvancedGraphics_VERSION_MINOR 0)
 
+find_package(Qt4 COMPONENTS QtCore QtGui QtNetwork REQUIRED)
+include(${QT_USE_FILE})
+set(CMAKE_AUTOMOC ON)
+
 # Initialize CXXFLAGS.
 SET(CMAKE_BUILD_TYPE Release)
 SET(CMAKE_FLAGS_HELP
@@ -16,14 +20,53 @@ SET(COMPILER_INFORMATION
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/src")
+include_directories("${PROJECT_BINARY_DIR}/part1")
+include_directories("${PROJECT_BINARY_DIR}/part2")
 
 # add the executable
-file(GLOB_RECURSE source_files src/*.*pp)
-file(GLOB_RECURSE public_header_files include/*.hpp)
-file(GLOB_RECURSE source_part1 part1/*.*pp)
-file(GLOB_RECURSE source_part2 part2/*.*pp)
-add_executable(HDRimage    ${source_part1} ${source_files} ${public_header_files})
-add_executable(relightning ${source_part2} ${source_files} ${public_header_files})
+file(GLOB_RECURSE source_header_files src/*.h* part1/*.h* part2/*.h*)
+file(GLOB_RECURSE public_header_files include/*.h*)
+file(GLOB_RECURSE source_source_files src/*.cpp)
+file(GLOB_RECURSE source_part1 part1/*.cpp)
+file(GLOB_RECURSE source_part2 part2/*.cpp)
+
+file(
+  GLOB_RECURSE
+  source_UIS
+  src/*.ui
+  part1/*.ui
+  part2/*.ui
+)
+file(
+  GLOB_RECURSE
+  source_RESOURCES
+  src/*.qrc
+  part1/*.qrc
+  part2/*.qrc
+)
+
+qt4_wrap_ui(source_UIS_H ${source_UIS})
+qt4_add_resources(source_RESOURCES_CPP ${source_RESOURCES})
+
+add_executable(
+    HDRimage
+    ${source_part1}
+    ${source_source_files}
+    ${source_MOC}
+    ${source_UIS_H}
+    ${source_RESOURCES_CPP}
+)
+add_executable(
+relightning
+    ${source_part2}
+    ${source_source_files}
+    ${source_MOC}
+    ${source_UIS_H}
+    ${source_RESOURCES_CPP}
+)
+
+target_link_libraries(HDRimage ${QT_LIBRARIES})
+target_link_libraries(relightning ${QT_LIBRARIES})
 
 # Check endianess
 include(TestBigEndian)

@@ -119,6 +119,7 @@ image::median( image const & in, uint32_t radius ) noexcept
             }
         }
     }
+    delete [] med_buf;
 }
     if ( &in != this ) {
         std::swap( cpy, *const_cast< image* >( &in ) );
@@ -328,7 +329,6 @@ image::negatif( void ) noexcept
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
 
-#pragma omp parallel for
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             /* Inner loop vectorized with gcc ! */
@@ -364,7 +364,6 @@ image::fill( float val ) noexcept
         m_min_pixel_chanel = val;
     }
 
-#pragma omp parallel for
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             /* Inner loop vectorized with gcc ! */
@@ -535,12 +534,13 @@ void
 image::histEqToneMap( uint32_t H_SIZE ) noexcept
 {
     float const exp_rate( ( H_SIZE - 1 ) / m_max_pixel_chanel );
+    std::cout << exp_rate << std::endl;
 
     float* hist = new (std::nothrow) float[ 6 * H_SIZE ];
     if ( hist == nullptr ) {
         return;
     }
-    std::memset( hist, 6 * H_SIZE * sizeof ( float ), 0 );
+    std::memset( hist, 0, 6 * H_SIZE * sizeof ( float ) );
 
     float* hist_red     = hist;
     float* hist_green   = hist + 1 * H_SIZE;
@@ -644,7 +644,7 @@ image::histEqToneMap( uint32_t H_SIZE ) noexcept
             );
         }
     }
-
+    delete [] hist;
 }
 
 }

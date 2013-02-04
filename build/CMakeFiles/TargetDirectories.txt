@@ -1,0 +1,4 @@
+/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/HDRimage.dir
+/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/HDRimage_automoc.dir
+/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/relightning.dir
+/home/romain/Dropbox/Imperial College/Advanced-Graphics/build/CMakeFiles/relightning_automoc.dir

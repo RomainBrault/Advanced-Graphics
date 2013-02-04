@@ -4,8 +4,140 @@
 		"selected_items":
 		[
 			[
+				"e",
+				"exposure"
+			],
+			[
+				"n",
+				"n_inputs"
+			],
+			[
+				"pi",
+				"pix_p_blue"
+			],
+			[
+				"pix",
+				"pix_blue"
+			],
+			[
+				"pix_p",
+				"pix_p_red"
+			],
+			[
+				"pix_",
+				"pix_red"
+			],
+			[
+				"saveP",
+				"savePNM"
+			],
+			[
+				"M_",
+				"M_POS"
+			],
+			[
+				"g",
+				"grey_j"
+			],
+			[
+				"m_",
+				"m_width"
+			],
+			[
+				"me",
+				"median"
+			],
+			[
+				"image",
+				"image"
+			],
+			[
+				"in",
+				"inputs"
+			],
+			[
+				"med",
+				"med_buf"
+			],
+			[
+				"h",
+				"hradius"
+			],
+			[
+				"hdr",
+				"hdr_in_range"
+			],
+			[
+				"his",
+				"hist_red"
+			],
+			[
+				"H",
+				"H_SIZE"
+			],
+			[
+				"hi",
+				"hist"
+			],
+			[
+				"no",
+				"noexcept"
+			],
+			[
+				"save",
+				"savePNM"
+			],
+			[
+				"m_da",
+				"m_data_1D"
+			],
+			[
+				"m_m",
+				"m_max_pixel_chanel"
+			],
+			[
+				"sour",
+				"source_part1"
+			],
+			[
+				"acc",
+				"acc_wblue"
+			],
+			[
+				"acc_",
+				"acc_blue"
+			],
+			[
+				"ac_wgr",
+				"acc_wgreen"
+			],
+			[
+				"ra",
+				"radiance_green"
+			],
+			[
+				"max",
+				"max_color"
+			],
+			[
+				"HDR",
+				"HDR_MERGE_BLOCK"
+			],
+			[
 				"ma",
-				"magic_number"
+				"max_blue"
+			],
+			[
+				"exp",
+				"exposure_time"
+			],
+			[
+				"ex",
+				"exposure_time"
+			],
+			[
+				"Sa",
+				"saveFormat"
 			],
 			[
 				"magi",
@@ -24,16 +156,8 @@
 				"test1"
 			],
 			[
-				"m_",
-				"m_width"
-			],
-			[
 				"c",
 				"cwfunc"
-			],
-			[
-				"image",
-				"image_set"
 			],
 			[
 				"al",
@@ -46,10 +170,6 @@
 			[
 				"wi",
 				"width"
-			],
-			[
-				"max",
-				"m_max_pixel_chanel"
 			],
 			[
 				"pfm",
@@ -92,10 +212,6 @@
 				"magic_number"
 			],
 			[
-				"m_da",
-				"m_data_2D"
-			],
-			[
 				"pixe",
 				"pixelBlock"
 			],
@@ -124,10 +240,6 @@
 				"m_minor_page_faults"
 			],
 			[
-				"m_m",
-				"m_minor_page_faults"
-			],
-			[
 				"be",
 				"bench"
 			],
@@ -142,10 +254,6 @@
 			[
 				"m_ep",
 				"m_eplased_time"
-			],
-			[
-				"in",
-				"info"
 			],
 			[
 				"print",
@@ -256,16 +364,8 @@
 				"int32_t"
 			],
 			[
-				"ex",
-				"m_exit_on_warn"
-			],
-			[
 				"bit",
 				"bitmask"
-			],
-			[
-				"no",
-				"noexcept"
 			],
 			[
 				"numa",
@@ -300,10 +400,6 @@
 				"STATIC_LIB"
 			],
 			[
-				"Sa",
-				"Saphir"
-			],
-			[
 				"OPE",
 				"OPENMP_FOUND"
 			],
@@ -316,21 +412,26 @@
 	"buffers":
 	[
 		{
-			"contents": "#ifndef HDRIMAGE_HPP_INCLUDED\n#define HDRIMAGE_HPP_INCLUDED\n\n#include <HDRimageConfig.hpp>\n#include <cassert>\n#include <array>\n\nnamespace details {\n\n// Copy n values from the parameter pack to an output iterator\ntemplate < typename OutputIterator >\nvoid copy_n( size_t, OutputIterator )\n{\n}\n\ntemplate < typename OutputIterator, typename T, typename... Args >\nvoid copy_n( size_t n, OutputIterator out, T const & value, Args... args )\n{\n  if ( n > 0 ) {\n    *out = value;\n    copy_n( n - 1, ++out, args... );\n  }\n}\n\n// Copy n values from the parameter pack to an output iterator, starting at\n// the \"beginth\" element\ntemplate < typename OutputIterator >\nvoid copy_range( size_t, size_t, OutputIterator )\n{\n}\n\ntemplate < typename OutputIterator, typename T, typename... Args >\nvoid copy_range( size_t begin, size_t size, OutputIterator out, T value, Args... args )\n{\n	if ( begin == 0 ) {\n		copy_n( size, out, value, args... );\n	}\n	else {\n		copy_range( begin - 1, size, out, args... );\n	}\n}\n\n} // namespace details\n\nnamespace hdr {\n\ntypedef struct {\n	/* Define a block of pixel to vectorize code. \n	 * AVX format\n	 */\n	float r[ 8 ];\n	float g[ 8 ];\n	float b[ 8 ];\n} pixelBlock;\n\nenum pfmEndianess : int32_t {\n	PFM_LITTLE_ENDIAN = -1,\n	PFM_BIG_ENDIAN    =  1\n};\n\nenum class uint32_t {\n	ASCIIBitmap    = '1',\n	ASCIIGreymap   = '2',\n	ASCIIColormap  = '3',\n	BinaryBitmap   = '4',\n	BinaryGreymap  = '5',\n	BinaryColormap = '6'\n};\nclass image {\n\n/* Row major matrix of pixelBlock */\npublic:\n	image( void ) noexcept;\n	image( uint32_t, uint32_t, uint32_t = 1 ) noexcept;\n	image( image const & ) noexcept;\n\n	// move constructor\n	// overload operator= (move)\n\n	image & operator= ( image const & ) noexcept;\n\n	image & create( uint32_t, uint32_t, uint32_t = 1 ) noexcept;\n	image & copy  ( image const & ) noexcept;\n\n	INLINE uint32_t getWidth     ( void ) const noexcept;\n	INLINE uint32_t getHeight    ( void ) const noexcept;\n	INLINE size_t   getPadd      ( void ) const noexcept;\n\n	INLINE bool isEmpty( void ) const noexcept;\n\n	void free ( void ) noexcept;\n\n	void normalise( float = 1 ) noexcept;\n\n	int32_t loadPNM( \n		std::string const &\n	) noexcept;\n	int32_t savePNM( \n		std::string const &, pnm_t = pnm_t::BinaryColormap \n	) const noexcept;\n\n	int32_t loadPFM( \n		std::string const &\n	) noexcept;\n	int32_t savePFM( \n		std::string const &, pfm_t = pfm_t::BinaryColormap \n	) const noexcept;\n\n	template < class CWF, class... Args >\n	int32_t createHDR( const Args&... args );\n\n	~image( void ) noexcept;\n\nprotected:\n	void alloc( uint32_t, uint32_t ) noexcept;\n\nprivate:\n	uint32_t      m_width;\n	uint32_t      m_height;\n	size_t        m_padd;\n	uint32_t      m_max_pixel_chanel;\n	pixelBlock**  m_data_2D;\n	pixelBlock*   m_data_1D;\n};\n\nclass hinge_cwf {\npublic:\n\n	hinge_cwf( void ) noexcept  = default;\n	hinge_cwf( hinge_cwf const & ) = default;\n	~hinge_cwf( void ) noexcept = default;\n\n	INLINE float operator( ) ( float x ) {\n		if      ( x < 0   ) return 0;\n		else if ( x < 0.5 ) return 2 * x;\n		else if ( x < 1   ) return 1 - 2 * x;\n		else                return 0;\n	}\n\nprivate:\n};\n\nuint32_t \nimage::getWidth( void ) const noexcept\n{\n	return m_width;\n}\n\nuint32_t \nimage::getHeight( void ) const noexcept\n{\n	return m_height;\n}\n\nsize_t \nimage::getPadd( void ) const noexcept\n{\n	return m_padd;\n}\n\nbool \nimage::isEmpty( void ) const noexcept \n{\n	return m_data_1D == nullptr;\n}\n\ntemplate < class CWF, class... Args >\nint32_t \nimage::createHDR( Args const &... args ) {\n\n	uint32_t constexpr N( sizeof... ( Args ) );\n	std::array< hdr::image, N > image_set;\n	std::array< float, 3 * N >      E;\n	// CWF func;\n\n	details::copy_range( 0, N, image_set.begin( ), args... );\n\n    uint32_t width  = image_set[ 0 ].m_width;\n    uint32_t height = image_set[ 0 ].m_height;\n    for ( uint32_t l = 0; l < N; ++l ) {\n    	if (\n    		( image_set[ l ].m_width != width ) ||\n    		( image_set[ l ].m_height != height )\n    	) {\n    		return -1;\n    	}\n    }\n    uint32_t width_block_number( ( width - 1 ) / 8 );\n    uint32_t width_block_end( width_block_number * 8 );\n\n    create( width, height, 1 );\n\n    E.fill( 0 );\n    for ( uint32_t i = 0; i < height; ++i ) {\n        for ( uint32_t j = 0; j < width_block_number; ++j ) {\n        	for ( uint32_t l = 0; l < N; ++l ) {\n	            for ( uint32_t k = 0; k < 8; ++k ) {\n	                E[ 3 * l     ] += image_set[ l ].m_data_2D[ i ][ j ].r[ k ];\n	                E[ 3 * l + 1 ] += image_set[ l ].m_data_2D[ i ][ j ].g[ k ];\n	                E[ 3 * l + 2 ] += image_set[ l ].m_data_2D[ i ][ j ].b[ k ];\n	            }\n	        }\n        }\n        for ( uint32_t l = 0; l < N; ++l ) {\n	        for ( uint32_t k = 0; width_block_end + k < width; ++k ) {\n	            E[ 3 * l     ] += image_set[ l ].m_data_2D[ i ][ width_block_number ].r[ k ];\n	            E[ 3 * l + 1 ] += image_set[ l ].m_data_2D[ i ][ width_block_number ].g[ k ];\n	            E[ 3 * l + 2 ] += image_set[ l ].m_data_2D[ i ][ width_block_number ].b[ k ];\n	        }\n	    }\n    }\n\n    for ( uint32_t i = 0; i < N; ++ i ) {\n    	std::cout << \"gray  ( \" << i << \" ): \" << ( E[ 3 * i ] + E[ 3 * i + 1 ] + E[ 3 * i + 2 ] ) / ( E[ 0 ] + E[ 1 ] +  E[ 2 ] ) << std::endl;\n    }\n\n	return 0;\n}\n\n} // namespace hdr\n\n#endif",
-			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/include/HDRimage.hpp",
-			"file_size": 5279,
-			"file_write_time": 1359508227000000,
+			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp",
 			"settings":
 			{
-				"buffer_size": 5189,
+				"buffer_size": 1755,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/main.cpp",
+			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp",
 			"settings":
 			{
-				"buffer_size": 566,
+				"buffer_size": 253,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage.hpp",
+			"settings":
+			{
+				"buffer_size": 13347,
 				"line_ending": "Unix"
 			}
 		},
@@ -338,7 +439,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
 			"settings":
 			{
-				"buffer_size": 33805,
+				"buffer_size": 35302,
 				"line_ending": "Unix"
 			}
 		},
@@ -346,7 +447,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp",
 			"settings":
 			{
-				"buffer_size": 1032,
+				"buffer_size": 21335,
 				"line_ending": "Unix"
 			}
 		},
@@ -354,15 +455,15 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/CMakeLists.txt",
 			"settings":
 			{
-				"buffer_size": 2279,
+				"buffer_size": 2734,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/HDRimageConfig.hpp.in",
+			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/AdvancedGraphicsConfig.hpp.in",
 			"settings":
 			{
-				"buffer_size": 1422,
+				"buffer_size": 1476,
 				"line_ending": "Unix"
 			}
 		},
@@ -378,7 +479,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/README.md",
 			"settings":
 			{
-				"buffer_size": 592,
+				"buffer_size": 749,
 				"line_ending": "Unix"
 			}
 		},
@@ -394,7 +495,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/CMake/Compiler/Compiler.cmake",
 			"settings":
 			{
-				"buffer_size": 3106,
+				"buffer_size": 3100,
 				"line_ending": "Unix"
 			}
 		}
@@ -402,9 +503,17 @@
 	"build_system": "Packages/User/install_script.sublime-build",
 	"command_palette":
 	{
-		"height": 52.0,
+		"height": 192.0,
 		"selected_items":
 		[
+			[
+				"Package Control: i",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
 			[
 				"Package Control: ins",
 				"Package Control: Install Package"
@@ -412,10 +521,6 @@
 			[
 				"Package Control: in",
 				"Package Control: Install Package"
-			],
-			[
-				"Package Control: ",
-				"Package Control: Enable Package"
 			],
 			[
 				"Package Control:  in",
@@ -439,11 +544,20 @@
 	},
 	"file_history":
 	[
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/Report/Results/Question 1/Dynamic range",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/include/HDRimage.hpp",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/Report/Specs/CO417-HW1/ExampleCode/Untitled Document",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/bin/usr/local/bin/result_hist.pfm",
+		"/home/romain/.config/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/Report/Specs/CO417-HW1/ExampleCode/main.cpp",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/Report/Specs/CO417-HW1/ExampleCode/loadPNM.cpp",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/question1.cpp",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/question2.cpp",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
 		"/home/romain/Dropbox/Traitement_Image/events.h",
 		"/home/romain/.cache/.fr-2eRDXu/graphics/fractal.c",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage.cpp",
-		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/Report/Specs/CO417-HW1/ExampleCode/loadPNM.cpp",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/CMakeLists.txt",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/README.md",
 		"/home/romain/Dropbox/Imperial College/Advanced Graphics/src/main.cpp",
@@ -557,16 +671,7 @@
 		"/home/romain/Dropbox/Yasl/libCPUTools/sample/perftool/CMakeLists.txt",
 		"/home/romain/Dropbox/Yasl/libCPUTools/CPUTools.cmake.in",
 		"/home/romain/Dropbox/Yasl/libCPUTools/install.sh",
-		"/home/romain/Dropbox/Yasl/CMake/cpp11/CheckCXX11Features.cmake",
-		"/home/romain/Dropbox/Yasl/libCPUTools/sample/CMakeLists.txt",
-		"/home/romain/Dropbox/Yasl/libCPUTools/CMakeLists.txt",
-		"/home/romain/Dropbox/Yasl/libCPUTools/CPUTools/CMakeLists.txt",
-		"/home/romain/Downloads/linux-3.8-rc3/tools/power/cpupower/utils/helpers/msr.c",
-		"/home/romain/Downloads/linux-3.8-rc3/arch/x86/lib/msr.c",
-		"/home/romain/Downloads/linux-3.8-rc3/arch/x86/kernel/msr.c",
-		"/var/tmp/sched.h",
-		"/home/romain/Downloads/linux-3.8-rc3/tools/power/cpupower/bench/cpufreq-bench_script.sh",
-		"/home/romain/Dropbox/Yasl/libCPUTools/CPUTools/src/msr.cpp"
+		"/home/romain/Dropbox/Yasl/CMake/cpp11/CheckCXX11Features.cmake"
 	],
 	"find":
 	{
@@ -584,6 +689,42 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"exposure",
+			"return",
+			"temp",
+			"norma",
+			"cout",
+			"cerr",
+			"cout",
+			"fai",
+			"failed",
+			"cerr",
+			"copy_n",
+			"copy_range",
+			"normal",
+			"setP",
+			"m_max_pixel_chanel",
+			"getMaxChanel",
+			"swap",
+			"p2y",
+			"p2x",
+			"p1y",
+			"p1x",
+			"HDRimage",
+			"mi",
+			"min",
+			"   /",
+			" \\\n    ",
+			"w_temp_blue",
+			"cout",
+			"m_max_pixel_chanel",
+			"multiplier",
+			"width_block_end",
+			"width_block_number",
+			"wblock_index",
+			"E",
+			"magic_nu",
+			"uint32_t",
 			"pnm_t",
 			"pnm_t::",
 			"pnm_t",
@@ -675,43 +816,7 @@
 			".c",
 			"config",
 			"confi",
-			"SA_",
-			"sa::",
-			"SA_",
-			"sa",
-			"sa::",
-			"SA_CPU",
-			"FEAT_",
-			"sa::cpu",
-			"SA_GNU_CXX_COMPILER",
-			"SA_INTEL_CXX_COMPILER",
-			"SA_INTEL_C_COMPILER",
-			"SA_GNU_C_COMPILER",
-			"SA_CXX_COMPILER",
-			"SA_C_COMPILER",
-			"CMAKE_C_COMPILER",
-			"CMAKE_SOURCE_DIR",
-			"test",
-			"SAPHIR",
-			"sas",
-			"get",
-			"m_end",
-			"m_begin",
-			"setExitOn",
-			"allocator_type",
-			"get",
-			"pid",
-			"this->get( )",
-			"this->free( );",
-			"this->bitmask::",
-			"bitmask",
-			"string",
-			"free",
-			"cpumask",
-			"numa_",
-			"__cplusplus",
-			"include",
-			"cuda_found"
+			"SA_"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -719,6 +824,16 @@
 		"regex": false,
 		"replace_history":
 		[
+			"move_n",
+			"move_range",
+			"std::swap",
+			"y2",
+			"x2",
+			"y1",
+			"x1",
+			"mlt",
+			"wblock_end",
+			"wblock_index",
 			"",
 			"grey_val",
 			"HDR",
@@ -847,51 +962,18 @@
 			[
 				{
 					"buffer": 0,
-					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/include/HDRimage.hpp",
+					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1/question1.cpp",
 					"settings":
 					{
-						"buffer_size": 5189,
+						"buffer_size": 1755,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1269,
-								1269
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 546.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 1,
-			"sheets":
-			[
-				{
-					"buffer": 1,
-					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/main.cpp",
-					"settings":
-					{
-						"buffer_size": 566,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								533,
-								533
+								723,
+								723
 							]
 						],
 						"settings":
@@ -901,7 +983,35 @@
 								80
 							],
 							"syntax": "Packages/C++/C++.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 84.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2/question2.cpp",
+					"settings":
+					{
+						"buffer_size": 253,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								253,
+								253
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -911,18 +1021,52 @@
 				},
 				{
 					"buffer": 2,
-					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
+					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage.hpp",
 					"settings":
 					{
-						"buffer_size": 33805,
+						"buffer_size": 13347,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								30475,
-								30475
+								5454,
+								5454
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5380.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
+					"settings":
+					{
+						"buffer_size": 35302,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								24368,
+								24368
 							]
 						],
 						"settings":
@@ -936,35 +1080,39 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 12146.0,
+						"translation.y": 9653.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 4,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp",
 					"settings":
 					{
-						"buffer_size": 1032,
+						"buffer_size": 21335,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								141,
-								141
+								21261,
+								21261
 							]
 						],
 						"settings":
 						{
+							"rulers":
+							[
+								80
+							],
 							"syntax": "Packages/C++/C++.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 7894.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -972,63 +1120,65 @@
 			]
 		},
 		{
-			"selected": 5,
+			"selected": 4,
 			"sheets":
 			[
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/CMakeLists.txt",
 					"settings":
 					{
-						"buffer_size": 2279,
+						"buffer_size": 2734,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								2142,
+								2142
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/CMake/CMake.tmLanguage"
+							"syntax": "Packages/CMake/CMake.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/HDRimageConfig.hpp.in",
-					"settings":
-					{
-						"buffer_size": 1422,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 210.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
+					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/AdvancedGraphicsConfig.hpp.in",
+					"settings":
+					{
+						"buffer_size": 1476,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1468,
+								1468
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 462.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/License.txt",
 					"settings":
 					{
@@ -1056,11 +1206,11 @@
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/README.md",
 					"settings":
 					{
-						"buffer_size": 592,
+						"buffer_size": 749,
 						"regions":
 						{
 						},
@@ -1082,7 +1232,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 9,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/install.sh",
 					"settings":
 					{
@@ -1093,8 +1243,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								1819,
+								1819
 							]
 						],
 						"settings":
@@ -1104,25 +1254,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 336.0,
+						"translation.y": 1217.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 10,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/CMake/Compiler/Compiler.cmake",
 					"settings":
 					{
-						"buffer_size": 3106,
+						"buffer_size": 3100,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1353,
-								1353
+								1550,
+								1550
 							]
 						],
 						"settings":
@@ -1132,7 +1282,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 210.0,
+						"translation.y": 450.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1185,13 +1335,13 @@
 		"cols":
 		[
 			0.0,
-			0.370604781997,
+			0.548117154812,
 			1.0
 		],
 		"rows":
 		[
 			0.0,
-			0.731682192837,
+			0.063051702396,
 			1.0
 		]
 	},
@@ -1225,6 +1375,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 178.0,
+	"side_bar_width": 166.0,
 	"status_bar_visible": true
 }

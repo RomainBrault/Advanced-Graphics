@@ -1,0 +1,2 @@
+/usr/local/bin/HDRimage
+/usr/local/bin/relightning
