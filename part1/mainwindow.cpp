@@ -162,8 +162,8 @@ QImage* MainWindow::hdrToQImage( hdr::image & im )
       return nullptr;
    }
    im.normalise( 255 );
-   for ( int i = 0; i < im.getHeight( ); ++i ) {
-       for ( int j = 0; j < im.getWidth( ); ++j ) {
+   for ( unsigned int i = 0; i < im.getHeight( ); ++i ) {
+       for ( unsigned int j = 0; j < im.getWidth( ); ++j ) {
           float r, g, b;
           im.getPixel( j, i, r, g, b );
           QRgb pix = qRgb(
@@ -227,6 +227,7 @@ void MainWindow::on_action_Open_triggered()
     }
     for ( uint32_t i = 0; i < image_buffer.size( ); ++i ) {
         exposure[ i ] = static_cast< float >( 1 << ( 2 * i ) );
+        model->removeColumn( i );
         model->setHorizontalHeaderItem( 0, new QStandardItem( QString::number( i ) ) );
         model->setItem( 0, i, new QStandardItem(  QString::number( exposure[ i ] ) ) );
     }
@@ -287,22 +288,7 @@ void MainWindow::on_radioButton_1_clicked()
 
 void MainWindow::on_actionReset_triggered()
 {
-    delete [] exposure;
-    exposure = nullptr;
-    delete model;
-    model = nullptr;
-    image_buffer.clear( );
-    res.free( );
-    delete central_image;
-    central_image = nullptr;
-    ui->imageLabel->setPixmap(nullptr);
-    delete filemodel;
-    filemodel = nullptr;
-    ui->lineEdit_1->setText( "0" );
-    ui->verticalSlider_1->setValue( 0 );
-    ui->lineEdit_2->setText( "1" );
-    ui->verticalSlider_2->setValue( 100000 );
-    ui->label_4->setText( "NA" );
+    reset( );
 }
 
 void MainWindow::on_actionSave_PPM_triggered()
@@ -323,4 +309,73 @@ void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
   hdr::image temp = image_buffer[ index.row() ];
   central_image = hdrToQImage( temp );
   ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    reset( );
+}
+
+void MainWindow::reset( )
+{
+    delete [] exposure;
+    exposure = nullptr;
+    delete model;
+    model = nullptr;
+    image_buffer.clear( );
+    res.free( );
+    delete central_image;
+    central_image = nullptr;
+    ui->imageLabel->setPixmap(nullptr);
+    delete filemodel;
+    filemodel = nullptr;
+    ui->lineEdit_1->setText( "0" );
+    ui->verticalSlider_1->setValue( 0 );
+    ui->lineEdit_2->setText( "1" );
+    ui->verticalSlider_2->setValue( 100000 );
+    ui->label_4->setText( "NA" );
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+  if ( ( model == nullptr ) || ( exposure == nullptr ) ) {
+      return;
+  }
+  for ( int i = 0; i < model->columnCount(); ++i ) {
+        bool ok;
+        float new_exp = model->item( 0, i )->text().toFloat( &ok );
+        if ( ok ) {
+            exposure[ i ] = new_exp;
+        }
+        else {
+            model->item( 0, i )->setText( "0" );
+            exposure[ i ] = 0;
+        }
+    }
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    delete [] exposure;
+    exposure = new float[ image_buffer.size( ) ];
+    if ( exposure == nullptr ) {
+        return;
+    }
+    for ( uint32_t i = 0; i < image_buffer.size( ); ++i ) {
+        model->removeColumn( i );
+    }
+    delete model;
+    model = new QStandardItemModel( 1, image_buffer.size( ), this );
+    if ( model == nullptr ) {
+        delete [] exposure;
+        exposure = nullptr;
+        return;
+    }
+    for ( uint32_t i = 0; i < image_buffer.size( ); ++i ) {
+        exposure[ i ] = static_cast< float >( 1 << ( 2 * i ) );
+        model->removeColumn( i );
+        model->setHorizontalHeaderItem( 0, new QStandardItem( QString::number( i ) ) );
+        model->setItem( 0, i, new QStandardItem(  QString::number( exposure[ i ] ) ) );
+    }
+    ui->tableView->setModel(model);
 }

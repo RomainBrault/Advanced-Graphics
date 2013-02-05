@@ -4,6 +4,8 @@
 #define hdr_in_range( x, y, z ) \
     std::min( std::max( x, y ), z )
 
+#define MAX_BUF_SIZE static_cast< uint32_t >( 1 << 24 )
+
 namespace hdr {
 
 void
@@ -67,8 +69,10 @@ image::median( image const & in, uint32_t radius ) noexcept
         cpy = in;
     }
 
+#if defined( GNU_CXX_COMPILER )
 #pragma omp parallel
 {
+#endif
     float* med_buf = new (std::nothrow) float[ 3 * M_SIZE ];
     if ( med_buf != nullptr ) {
         float* med_buf_red   = med_buf;
@@ -79,7 +83,9 @@ image::median( image const & in, uint32_t radius ) noexcept
         uint32_t const end_width( m_width - hradius );
         uint32_t const end_height( m_height - hradius );
 
+#if defined( GNU_CXX_COMPILER )
 #pragma omp for collapse( 2 )
+#endif
         for ( uint32_t i = hradius; i < end_width; ++i ) {
             for ( uint32_t j = hradius; j < end_height; ++j ) {
                 for ( int32_t k = -hradius; k <= hradius; ++k ) {
@@ -120,44 +126,74 @@ image::median( image const & in, uint32_t radius ) noexcept
         }
     }
     delete [] med_buf;
+#if defined( GNU_CXX_COMPILER )
 }
+#endif
     if ( &in != this ) {
         std::swap( cpy, *const_cast< image* >( &in ) );
     }
 }
 
 void
-image::plot4Points( uint32_t cx, uint32_t cy, uint32_t x, uint32_t y ) noexcept
-{
-    setPixel( cx + x, cy + y, 0, 0, 0 );
-    if ( x != 0 ) setPixel( cx - x, cy + y, 0, 0, 0 );
-    if ( y != 0 ) setPixel( cx + x, cy - y, 0, 0, 0 );
-    setPixel( cx - x, cy - y, 0, 0, 0 );
+image::plot4Points(
+    uint32_t cx, uint32_t cy, uint32_t x, uint32_t y,
+    float r, float g, float b
+) noexcept {
+    setPixel( cx + x, cy + y, r, g, b );
+    if ( x != 0 ) setPixel( cx - x, cy + y, r, g, b );
+    if ( y != 0 ) setPixel( cx + x, cy - y, r, g, b );
+    setPixel( cx - x, cy - y, r, g, b );
 }
 
 void
-image::plot8Points( uint32_t cx, uint32_t cy, uint32_t x, uint32_t y ) noexcept
-{
-    plot4Points( cx, cy, x, y );
-    if ( x != y ) plot4Points( cx, cy, y, x );
+image::plot8Points(
+    uint32_t cx, uint32_t cy, uint32_t x, uint32_t y,
+    float r, float g, float b
+) noexcept {
+    plot4Points( cx, cy, x, y, r, g, b );
+    if ( x != y ) plot4Points( cx, cy, y, x, r, g, b );
 }
 
 void
-image::plot2Lines( uint32_t cx, uint32_t cy, uint32_t x, uint32_t y ) noexcept
-{
-    line( cx + x, cy + y, cx - x, cy + y );
-    line( cx + x, cy - y, cx - x, cy - y );
+image::plot2Lines(
+    uint32_t cx, uint32_t cy, uint32_t x, uint32_t y,
+    float r, float g, float b
+) noexcept {
+    line( cx + x, cy + y, cx - x, cy + y, r, g, b );
+    line( cx + x, cy - y, cx - x, cy - y, r, g, b );
 }
 
 void
-image::plot4Lines( uint32_t cx, uint32_t cy, uint32_t x, uint32_t y ) noexcept
-{
-    plot2Lines( cx, cy, x, y );
-    plot2Lines( cx, cy, y, x );
+image::plot2LinesXYZ(
+    uint32_t cx, uint32_t cy, uint32_t x, uint32_t y
+) noexcept {
+    lineXYZ( cx + x, cy + y, cx - x, cy + y );
+    lineXYZ( cx + x, cy - y, cx - x, cy - y );
 }
 
 void
-image::circle( uint32_t cx, uint32_t cy, uint32_t radius ) noexcept
+image::plot4Lines(
+    uint32_t cx, uint32_t cy, uint32_t x, uint32_t y,
+    float r, float g, float b
+) noexcept
+{
+    plot2Lines( cx, cy, x, y, r, g, b );
+    plot2Lines( cx, cy, y, x, r, g, b );
+}
+
+void
+image::plot4LinesXYZ(
+    uint32_t cx, uint32_t cy, uint32_t x, uint32_t y
+) noexcept {
+    plot2LinesXYZ( cx, cy, x, y );
+    plot2LinesXYZ( cx, cy, y, x );
+}
+
+void
+image::circle(
+    uint32_t cx, uint32_t cy, uint32_t radius,
+    float r, float g, float b
+) noexcept
 {
     if ( radius == 0 ) {
         return;
@@ -169,7 +205,7 @@ image::circle( uint32_t cx, uint32_t cy, uint32_t radius ) noexcept
 
     while ( x > y )
     {
-        plot8Points(cx, cy, x, y);
+        plot8Points( cx, cy, x, y, r, g, b );
 
         error += y;
         ++y;
@@ -181,11 +217,14 @@ image::circle( uint32_t cx, uint32_t cy, uint32_t radius ) noexcept
             error -= x;
         }
     }
-    plot4Points(cx, cy, x, y);
+    plot4Points( cx, cy, x, y, r, g, b );
 }
 
 void
-image::circleFilled( uint32_t cx, uint32_t cy, uint32_t radius ) noexcept
+image::circleFilled(
+    uint32_t cx, uint32_t cy, uint32_t radius,
+    float r, float g, float b
+) noexcept
 {
     if ( radius == 0 ) {
         return;
@@ -197,7 +236,7 @@ image::circleFilled( uint32_t cx, uint32_t cy, uint32_t radius ) noexcept
 
     while ( x > y )
     {
-        plot4Lines(cx, cy, x, y);
+        plot4Lines( cx, cy, x, y, r, g, b );
 
         error += y;
         ++y;
@@ -209,12 +248,41 @@ image::circleFilled( uint32_t cx, uint32_t cy, uint32_t radius ) noexcept
             error -= x;
         }
     }
-    plot2Lines(cx, cy, x, y);
+    plot2Lines( cx, cy, x, y, r, g, b );
 }
 
 void
-image::line( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept
-{
+image::circleFilledXYZ( uint32_t cx, uint32_t cy, uint32_t radius ) noexcept {
+    if ( radius == 0 ) {
+        return;
+    }
+
+    int32_t error = -radius;
+    uint32_t x = radius;
+    uint32_t y = 0;
+
+    while ( x > y )
+    {
+        plot4LinesXYZ( cx, cy, x, y );
+
+        error += y;
+        ++y;
+        error += y;
+        if ( error >= 0 )
+        {
+            error -= x;
+            --x;
+            error -= x;
+        }
+    }
+    plot2LinesXYZ( cx, cy, x, y );
+}
+
+void
+image::line(
+    uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2,
+    float r, float g, float b
+) noexcept {
     int32_t F;
     uint32_t x, y;
     if ( x1 > x2 ) { // Swap points if p1 is on the right of p2
@@ -230,7 +298,7 @@ image::line( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept
         x = x1;
         y = y1;
         while ( y <= y2 ) {
-            setPixel( x, y, 0, 0, 0 );
+            setPixel( x, y, r, g, b );
             y++;
         }
         return;
@@ -241,7 +309,7 @@ image::line( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept
         y = y1;
 
         while ( x <= x2 ) {
-            setPixel( x, y, 0, 0, 0 );
+            setPixel( x, y, r, g, b );
             x++;
         }
         return;
@@ -262,7 +330,7 @@ image::line( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept
             x = x1;
             y = y1;
             while ( x <= x2 ) {
-                setPixel( x, y, 0, 0, 0 );
+                setPixel( x, y, r, g, b );
                 if ( F <= 0 ) F += dy2;
                 else {
                     ++y;
@@ -278,7 +346,7 @@ image::line( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept
             y = y1;
             x = x1;
             while ( y <= y2 ) {
-                setPixel( x, y, 0, 0, 0 );
+                setPixel( x, y, r, g, b );
                 if ( F <= 0 ) F += dx2;
                 else {
                     ++x;
@@ -295,7 +363,7 @@ image::line( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept
             x = x1;
             y = y1;
             while ( x <= x2 ) {
-                setPixel( x, y, 0, 0, 0 );
+                setPixel( x, y, r, g, b );
                 if ( F <= 0 ) F -= dy2;
                 else {
                     y--;
@@ -311,7 +379,160 @@ image::line( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept
             y = y1;
             x = x1;
             while ( y >= y2 ) {
-                setPixel( x, y, 0, 0, 0 );
+                setPixel( x, y, r, g, b );
+                if ( F <= 0 ) F += dx2;
+                else {
+                    ++x;
+                    F += dy2_plus_dx2;
+                }
+                --y;
+            }
+        }
+    }
+}
+
+void
+image::lineXYZ( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept {
+    int32_t F;
+    uint32_t x, y;
+    if ( x1 > x2 ) { // Swap points if p1 is on the right of p2
+        std::swap( x1, x2 );
+        std::swap( y1, y2 );
+    }
+    float const r2 = std::sqr( 511.f / ( 2 * m_width ) );
+
+    /* Handle trivial cases separately for algorithm speed up.
+     * Trivial case 1: m = +/-INF (Vertical line) */
+    if ( x1 == x2 ) {
+        if ( y1 > y2 ) std::swap( y1, y2 );
+
+        x = x1;
+        y = y1;
+        while ( y <= y2 ) {
+            float xs = static_cast< float >( x ) / m_width ;
+            float ys = static_cast< float >( y ) / m_height;
+            float r = m_max_pixel_chanel * xs;
+            float g = m_max_pixel_chanel * ys;
+            float b = m_max_pixel_chanel * ( std::sqrt(
+                r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
+            ) );
+            setPixel( x, y, r, g, b );
+            y++;
+        }
+        return;
+    }
+    // Trivial case 2: m = 0 (Horizontal line)
+    else if ( y1 == y2 ) {
+        x = x1;
+        y = y1;
+
+        while ( x <= x2 ) {
+            float xs = static_cast< float >( x ) / m_width ;
+            float ys = static_cast< float >( y ) / m_height;
+            float r = m_max_pixel_chanel * xs;
+            float g = m_max_pixel_chanel * ys;
+            float b = m_max_pixel_chanel * ( std::sqrt(
+                r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
+            ) );
+            setPixel( x, y, r, g, b );
+            x++;
+        }
+        return;
+    }
+
+    int32_t dy            = y2 - y1;  // y-increment from p1 to p2
+    int32_t dx            = x2 - x1;  // x-increment from p1 to p2
+    int32_t dy2           = ( dy << 1 );  // dy << 1 == 2*dy
+    int32_t dx2           = ( dx << 1 );
+    int32_t dy2_minus_dx2 = dy2 - dx2;  // precompute constant for speed up
+    int32_t dy2_plus_dx2  = dy2 + dx2;
+
+
+    if ( dy >= 0 ) { // m >= 0
+        /* Case 1: 0 <= m <= 1 (Original case) */
+        if ( dy <= dx ) {
+            F = dy2 - dx; // initial F
+            x = x1;
+            y = y1;
+            while ( x <= x2 ) {
+                float xs = static_cast< float >( x ) / m_width ;
+                float ys = static_cast< float >( y ) / m_height;
+                float r = m_max_pixel_chanel * xs;
+                float g = m_max_pixel_chanel * ys;
+                float b = m_max_pixel_chanel * ( std::sqrt(
+                    r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
+                ) );
+                setPixel( x, y, r, g, b );
+                if ( F <= 0 ) F += dy2;
+                else {
+                    ++y;
+                    F += dy2_minus_dx2;
+                }
+                ++x;
+            }
+        }
+        /* Case 2: 1 < m < INF (Mirror about y=x line
+         * replace all dy by dx and dx by dy) */
+        else {
+            F = dx2 - dy; // initial F
+            y = y1;
+            x = x1;
+            while ( y <= y2 ) {
+                float xs = static_cast< float >( x ) / m_width ;
+                float ys = static_cast< float >( y ) / m_height;
+                float r = m_max_pixel_chanel * xs;
+                float g = m_max_pixel_chanel * ys;
+                float b = m_max_pixel_chanel * ( std::sqrt(
+                    r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
+                ) );
+                setPixel( x, y, r, g, b );
+                if ( F <= 0 ) F += dx2;
+                else {
+                    ++x;
+                    F -= dy2_minus_dx2;
+                }
+                ++y;
+            }
+        }
+    }
+    else { // m < 0
+        /* Case 3: -1 <= m < 0 (Mirror about x-axis, replace all dy by -dy) */
+        if ( dx >= -dy ) {
+            F = -dy2 - dx; // initial F
+            x = x1;
+            y = y1;
+            while ( x <= x2 ) {
+                float xs = static_cast< float >( x ) / m_width ;
+                float ys = static_cast< float >( y ) / m_height;
+                float r = m_max_pixel_chanel * xs;
+                float g = m_max_pixel_chanel * ys;
+                float b = m_max_pixel_chanel * ( std::sqrt(
+                    r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
+                ) );
+                setPixel( x, y, r, g, b );
+                if ( F <= 0 ) F -= dy2;
+                else {
+                    y--;
+                    F -= dy2_plus_dx2;
+                }
+                ++x;
+            }
+        }
+        /* Case 4: -INF < m < -1 (Mirror about x-axis and mirror
+         * about y=x line, replace all dx by -dy and dy by dx) */
+        else {
+            F = dx2 + dy;    // initial F
+            y = y1;
+            x = x1;
+            while ( y >= y2 ) {
+                float xs = static_cast< float >( x ) / m_width ;
+                float ys = static_cast< float >( y ) / m_height;
+                float r = m_max_pixel_chanel * xs;
+                float g = m_max_pixel_chanel * ys;
+                float b = m_max_pixel_chanel * ( std::sqrt(
+                    r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
+                ) );
+                setPixel( x, y, r, g, b );
                 if ( F <= 0 ) F += dx2;
                 else {
                     ++x;
@@ -504,10 +725,13 @@ image::gamma( float pow_val ) noexcept
     /* conditioning ?? */
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
-    float gamma_val( 1/ pow_val );
+    float gamma_val( 1 / pow_val );
     m_max_pixel_chanel = std::pow( m_max_pixel_chanel, gamma_val );
     m_min_pixel_chanel = std::pow( m_min_pixel_chanel, gamma_val );
 
+#if defined( GNU_CXX_COMPILER )
+#pragma omp parallel for
+#endif
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
@@ -533,8 +757,8 @@ image::gamma( float pow_val ) noexcept
 void
 image::histEqToneMap( uint32_t H_SIZE ) noexcept
 {
+    H_SIZE = std::min( H_SIZE, MAX_BUF_SIZE );
     float const exp_rate( ( H_SIZE - 1 ) / m_max_pixel_chanel );
-    std::cout << exp_rate << std::endl;
 
     float* hist = new (std::nothrow) float[ 6 * H_SIZE ];
     if ( hist == nullptr ) {
@@ -647,4 +871,4 @@ image::histEqToneMap( uint32_t H_SIZE ) noexcept
     delete [] hist;
 }
 
-}
+} // namespace hdr
