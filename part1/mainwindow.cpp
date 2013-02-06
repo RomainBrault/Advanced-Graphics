@@ -5,6 +5,8 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 
+#define SIZE_BUFF_HIST_TONE_MAP 500000
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -44,7 +46,9 @@ void MainWindow::on_verticalSlider_1_valueChanged(int position)
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     if ( ui->radioButton_1->isChecked( ) ) {
-        return;
+        temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+        temp.linearToneMap( stops );
+        temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     delete central_image;
     central_image = hdrToQImage( temp );
@@ -67,7 +71,9 @@ void MainWindow::on_lineEdit_1_editingFinished()
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     if ( ui->radioButton_1->isChecked( ) ) {
-        return;
+        temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+        temp.linearToneMap( stops );
+        temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     delete central_image;
     central_image = hdrToQImage( temp );
@@ -87,7 +93,8 @@ void MainWindow::on_verticalSlider_2_valueChanged(int position)
         temp.gamma( gamma );
     }
     if ( ui->radioButton_1->isChecked( ) ) {
-        temp.histEqToneMap( res.dynamicRange( ) );
+        temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 100000 );
         temp.gamma( gamma );
     }
     delete central_image;
@@ -111,7 +118,8 @@ void MainWindow::on_lineEdit_2_editingFinished()
         temp.gamma( gamma );
     }
     if ( ui->radioButton_1->isChecked( ) ) {
-        temp.histEqToneMap( temp.dynamicRange( ) );
+        temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( gamma );
     }
     delete central_image;
@@ -129,7 +137,9 @@ void MainWindow::on_pushButton_1_clicked()
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     if ( ui->radioButton_1->isChecked( ) ) {
-        return;
+        temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
+        temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     delete central_image;
     central_image = hdrToQImage( temp );
@@ -146,7 +156,8 @@ void MainWindow::on_pushButton_2_clicked()
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     if ( ui->radioButton_1->isChecked( ) ) {
-        temp.histEqToneMap( temp.dynamicRange( ) );
+        temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     delete central_image;
@@ -249,7 +260,7 @@ void MainWindow::on_pushButton_clicked()
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     if ( ui->radioButton_1->isChecked( ) ) {
-        temp.histEqToneMap( temp.dynamicRange( ) );
+        temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     delete central_image;
@@ -279,7 +290,8 @@ void MainWindow::on_radioButton_3_clicked()
 void MainWindow::on_radioButton_1_clicked()
 {
     hdr::image temp = res;
-    temp.histEqToneMap( temp.dynamicRange( ) );
+    temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+    temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
     temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     delete central_image;
     central_image = hdrToQImage( temp );
@@ -305,10 +317,14 @@ void MainWindow::on_actionSave_PFM_triggered()
 
 void MainWindow::on_listView_doubleClicked(const QModelIndex &index)
 {
-  delete central_image;
-  hdr::image temp = image_buffer[ index.row() ];
-  central_image = hdrToQImage( temp );
-  ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
+    delete central_image;
+    res = image_buffer[ index.row() ];
+    if ( res.isEmpty() == true ) {
+        return;
+    }
+    hdr::image temp = image_buffer[ index.row() ];
+    central_image = hdrToQImage( temp );
+    ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
 }
 
 void MainWindow::on_pushButton_3_clicked()

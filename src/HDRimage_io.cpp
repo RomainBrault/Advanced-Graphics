@@ -106,6 +106,9 @@ image::~image( void )
 image &
 image::create( uint32_t width, uint32_t height, float chanel ) noexcept
 {
+    if ( m_data_1D != nullptr ) {
+        free( );
+    }
     if (
         ( m_height != height ) ||
         ( m_width  != width  )
@@ -127,6 +130,7 @@ image::copy( image const & im ) noexcept
         return *this;
     }
     create( im.m_width, im.m_height, im.m_max_pixel_chanel );
+    m_min_pixel_chanel = im.m_min_pixel_chanel;
     if ( im.m_padd < m_padd ) {
         free( );
         return *this;
@@ -506,7 +510,7 @@ image::loadPNM( std::string const & file_path ) noexcept
     if ( !pnm_file ) {
         goto FILE_ERROR;
     }
-    m_min_pixel_chanel = 0;
+    m_min_pixel_chanel = minPixelValue( );;
     return 0;
 
 
@@ -790,7 +794,7 @@ image::loadPFM( std::string const & file_path ) noexcept
     switch ( magic_number[ 1 ] ) {
     case BinaryGreymap:
 
-        if ( pfm_endianess == PFM_LITTLE_ENDIAN ) {
+        if (  PFM_LITTLE_ENDIAN( pfm_endianess ) ) {
             for ( uint32_t i = m_height - 1; i != 0xFFFFFFFF; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 8 ];
@@ -848,7 +852,7 @@ image::loadPFM( std::string const & file_path ) noexcept
         break;
 
     case BinaryColormap:
-        if ( pfm_endianess == PFM_LITTLE_ENDIAN ) {
+        if ( PFM_LITTLE_ENDIAN( pfm_endianess ) ) {
             for ( uint32_t i = m_height - 1; i != 0xFFFFFFFF; --i ) {
                 for ( uint32_t j = 0; j < width_block_number; ++j ) {
                     float buffer[ 24 ];
@@ -917,8 +921,11 @@ image::loadPFM( std::string const & file_path ) noexcept
     if ( !pfm_file ) {
         goto FILE_ERROR;
     }
-    m_max_pixel_chanel = std::abs( pfm_endianess );
-    m_min_pixel_chanel = 0;
+    updateMaxChanel( ); // do not trust pfm scale value
+    updateMinChanel( );
+    if ( m_min_pixel_chanel < 0 ) {
+        normalise( m_max_pixel_chanel );
+    }
     return 0;
 
 FILE_ERROR:
@@ -968,7 +975,6 @@ image::savePFM(
         break;
     }
 
-    pfm_file.setf( std::ios::fixed, std::ios::floatfield );
     pfm_file << "\n" << m_width << " "
              << m_height << "\n"
              << -m_max_pixel_chanel << "\n";

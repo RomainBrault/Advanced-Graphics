@@ -4,8 +4,6 @@
 #define hdr_in_range( x, y, z ) \
     std::min( std::max( x, y ), z )
 
-#define MAX_BUF_SIZE static_cast< uint32_t >( 1 << 24 )
-
 namespace hdr {
 
 void
@@ -14,9 +12,7 @@ image::normalise( float n ) noexcept
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
     /* conditioning ?? */
-    float mlt = n / m_max_pixel_chanel;
-    m_max_pixel_chanel = n;
-    m_min_pixel_chanel = 0;
+    float mlt = n / ( m_max_pixel_chanel - m_min_pixel_chanel );
 
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
@@ -42,6 +38,8 @@ image::normalise( float n ) noexcept
                 * mlt;
         }
     }
+    m_min_pixel_chanel = 0;
+    m_max_pixel_chanel = n;
 }
 
 void
@@ -164,14 +162,6 @@ image::plot2Lines(
 }
 
 void
-image::plot2LinesXYZ(
-    uint32_t cx, uint32_t cy, uint32_t x, uint32_t y
-) noexcept {
-    lineXYZ( cx + x, cy + y, cx - x, cy + y );
-    lineXYZ( cx + x, cy - y, cx - x, cy - y );
-}
-
-void
 image::plot4Lines(
     uint32_t cx, uint32_t cy, uint32_t x, uint32_t y,
     float r, float g, float b
@@ -179,14 +169,6 @@ image::plot4Lines(
 {
     plot2Lines( cx, cy, x, y, r, g, b );
     plot2Lines( cx, cy, y, x, r, g, b );
-}
-
-void
-image::plot4LinesXYZ(
-    uint32_t cx, uint32_t cy, uint32_t x, uint32_t y
-) noexcept {
-    plot2LinesXYZ( cx, cy, x, y );
-    plot2LinesXYZ( cx, cy, y, x );
 }
 
 void
@@ -249,33 +231,6 @@ image::circleFilled(
         }
     }
     plot2Lines( cx, cy, x, y, r, g, b );
-}
-
-void
-image::circleFilledXYZ( uint32_t cx, uint32_t cy, uint32_t radius ) noexcept {
-    if ( radius == 0 ) {
-        return;
-    }
-
-    int32_t error = -radius;
-    uint32_t x = radius;
-    uint32_t y = 0;
-
-    while ( x > y )
-    {
-        plot4LinesXYZ( cx, cy, x, y );
-
-        error += y;
-        ++y;
-        error += y;
-        if ( error >= 0 )
-        {
-            error -= x;
-            --x;
-            error -= x;
-        }
-    }
-    plot2LinesXYZ( cx, cy, x, y );
 }
 
 void
@@ -392,159 +347,6 @@ image::line(
 }
 
 void
-image::lineXYZ( uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2 ) noexcept {
-    int32_t F;
-    uint32_t x, y;
-    if ( x1 > x2 ) { // Swap points if p1 is on the right of p2
-        std::swap( x1, x2 );
-        std::swap( y1, y2 );
-    }
-    float const r2 = std::sqr( 511.f / ( 2 * m_width ) );
-
-    /* Handle trivial cases separately for algorithm speed up.
-     * Trivial case 1: m = +/-INF (Vertical line) */
-    if ( x1 == x2 ) {
-        if ( y1 > y2 ) std::swap( y1, y2 );
-
-        x = x1;
-        y = y1;
-        while ( y <= y2 ) {
-            float xs = static_cast< float >( x ) / m_width ;
-            float ys = static_cast< float >( y ) / m_height;
-            float r = m_max_pixel_chanel * xs;
-            float g = m_max_pixel_chanel * ys;
-            float b = m_max_pixel_chanel * ( std::sqrt(
-                r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
-            ) );
-            setPixel( x, y, r, g, b );
-            y++;
-        }
-        return;
-    }
-    // Trivial case 2: m = 0 (Horizontal line)
-    else if ( y1 == y2 ) {
-        x = x1;
-        y = y1;
-
-        while ( x <= x2 ) {
-            float xs = static_cast< float >( x ) / m_width ;
-            float ys = static_cast< float >( y ) / m_height;
-            float r = m_max_pixel_chanel * xs;
-            float g = m_max_pixel_chanel * ys;
-            float b = m_max_pixel_chanel * ( std::sqrt(
-                r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
-            ) );
-            setPixel( x, y, r, g, b );
-            x++;
-        }
-        return;
-    }
-
-    int32_t dy            = y2 - y1;  // y-increment from p1 to p2
-    int32_t dx            = x2 - x1;  // x-increment from p1 to p2
-    int32_t dy2           = ( dy << 1 );  // dy << 1 == 2*dy
-    int32_t dx2           = ( dx << 1 );
-    int32_t dy2_minus_dx2 = dy2 - dx2;  // precompute constant for speed up
-    int32_t dy2_plus_dx2  = dy2 + dx2;
-
-
-    if ( dy >= 0 ) { // m >= 0
-        /* Case 1: 0 <= m <= 1 (Original case) */
-        if ( dy <= dx ) {
-            F = dy2 - dx; // initial F
-            x = x1;
-            y = y1;
-            while ( x <= x2 ) {
-                float xs = static_cast< float >( x ) / m_width ;
-                float ys = static_cast< float >( y ) / m_height;
-                float r = m_max_pixel_chanel * xs;
-                float g = m_max_pixel_chanel * ys;
-                float b = m_max_pixel_chanel * ( std::sqrt(
-                    r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
-                ) );
-                setPixel( x, y, r, g, b );
-                if ( F <= 0 ) F += dy2;
-                else {
-                    ++y;
-                    F += dy2_minus_dx2;
-                }
-                ++x;
-            }
-        }
-        /* Case 2: 1 < m < INF (Mirror about y=x line
-         * replace all dy by dx and dx by dy) */
-        else {
-            F = dx2 - dy; // initial F
-            y = y1;
-            x = x1;
-            while ( y <= y2 ) {
-                float xs = static_cast< float >( x ) / m_width ;
-                float ys = static_cast< float >( y ) / m_height;
-                float r = m_max_pixel_chanel * xs;
-                float g = m_max_pixel_chanel * ys;
-                float b = m_max_pixel_chanel * ( std::sqrt(
-                    r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
-                ) );
-                setPixel( x, y, r, g, b );
-                if ( F <= 0 ) F += dx2;
-                else {
-                    ++x;
-                    F -= dy2_minus_dx2;
-                }
-                ++y;
-            }
-        }
-    }
-    else { // m < 0
-        /* Case 3: -1 <= m < 0 (Mirror about x-axis, replace all dy by -dy) */
-        if ( dx >= -dy ) {
-            F = -dy2 - dx; // initial F
-            x = x1;
-            y = y1;
-            while ( x <= x2 ) {
-                float xs = static_cast< float >( x ) / m_width ;
-                float ys = static_cast< float >( y ) / m_height;
-                float r = m_max_pixel_chanel * xs;
-                float g = m_max_pixel_chanel * ys;
-                float b = m_max_pixel_chanel * ( std::sqrt(
-                    r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
-                ) );
-                setPixel( x, y, r, g, b );
-                if ( F <= 0 ) F -= dy2;
-                else {
-                    y--;
-                    F -= dy2_plus_dx2;
-                }
-                ++x;
-            }
-        }
-        /* Case 4: -INF < m < -1 (Mirror about x-axis and mirror
-         * about y=x line, replace all dx by -dy and dy by dx) */
-        else {
-            F = dx2 + dy;    // initial F
-            y = y1;
-            x = x1;
-            while ( y >= y2 ) {
-                float xs = static_cast< float >( x ) / m_width ;
-                float ys = static_cast< float >( y ) / m_height;
-                float r = m_max_pixel_chanel * xs;
-                float g = m_max_pixel_chanel * ys;
-                float b = m_max_pixel_chanel * ( std::sqrt(
-                    r2 - std::sqr( xs - 0.5 ) - std::sqr( ys - 0.5 )
-                ) );
-                setPixel( x, y, r, g, b );
-                if ( F <= 0 ) F += dx2;
-                else {
-                    ++x;
-                    F += dy2_plus_dx2;
-                }
-                --y;
-            }
-        }
-    }
-}
-
-void
 image::negatif( void ) noexcept
 {
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
@@ -606,9 +408,9 @@ float
 image::maxPixelValue( void ) const noexcept {
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
-    float max_red   = m_min_pixel_chanel - 1;
-    float max_green = m_min_pixel_chanel - 1;
-    float max_blue  = m_min_pixel_chanel - 1;
+    float max_red   = std::numeric_limits< float >::lowest( );
+    float max_green = std::numeric_limits< float >::lowest( );
+    float max_blue  = std::numeric_limits< float >::lowest( );
 
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
@@ -637,9 +439,9 @@ float
 image::minPixelValue( void ) const noexcept {
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
-    float min_red   = m_max_pixel_chanel + 1;
-    float min_green = m_max_pixel_chanel + 1;
-    float min_blue  = m_max_pixel_chanel + 1;
+    float min_red   = std::numeric_limits< float >::max( );
+    float min_green = std::numeric_limits< float >::max( );
+    float min_blue  = std::numeric_limits< float >::max( );
 
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
@@ -757,8 +559,9 @@ image::gamma( float pow_val ) noexcept
 void
 image::histEqToneMap( uint32_t H_SIZE ) noexcept
 {
-    H_SIZE = std::min( H_SIZE, MAX_BUF_SIZE );
-    float const exp_rate( ( H_SIZE - 1 ) / m_max_pixel_chanel );
+    float const exp_rate(
+        ( H_SIZE - 1 ) / ( m_max_pixel_chanel - m_min_pixel_chanel )
+    );
 
     float* hist = new (std::nothrow) float[ 6 * H_SIZE ];
     if ( hist == nullptr ) {
@@ -869,6 +672,145 @@ image::histEqToneMap( uint32_t H_SIZE ) noexcept
         }
     }
     delete [] hist;
+}
+
+void
+image::reflectanceSphere(
+    obj::sphere const & s, obj::vect< float, 3 > const & view
+) noexcept {
+
+    if (
+        ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
+        (
+            static_cast< int32_t >( s.getCenterX( ) ) -
+            static_cast< int32_t >( s.getRadius( )  ) < 0
+        ) ||
+        ( s.getCenterY( ) + s.getRadius( ) > m_height ) ||
+        (
+            static_cast< int32_t >( s.getCenterY( ) ) -
+            static_cast< int32_t >(s.getRadius( ) ) < 0
+        )
+    ) {
+        return;
+    }
+
+    uint32_t width_start  = s.getCenterX( ) - s.getRadius( );
+    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( );
+    uint32_t height_start = s.getCenterY( ) - s.getRadius( );
+    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( );
+    uint32_t wblock_index_stop ( ( width_stop  - 1 ) / 8 );
+    uint32_t wblock_index_start( ( width_start     ) / 8 );
+    uint32_t wblock_end( wblock_index_stop * 8 );
+    m_max_pixel_chanel = 1;
+    m_min_pixel_chanel = -1;
+
+    for ( uint32_t i = height_start; i < height_stop; ++i ) {
+        for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
+            uint32_t jb = j * 8;
+            for ( uint32_t k = 0; k < 8; ++k ) {
+                obj::vect< float, 3 > r = s.reflectanceXY( jb + k, i, view );
+                m_data_2D[ i ][ j ].r[ k ] = r[ 0 ];
+                m_data_2D[ i ][ j ].g[ k ] = r[ 1 ];
+                m_data_2D[ i ][ j ].b[ k ] = r[ 2 ];
+            }
+        }
+        uint32_t jb = wblock_index_stop * 8;
+        for ( uint32_t k = 0; wblock_end + k < width_stop; ++k ) {
+            obj::vect< float, 3 > r = s.reflectanceXY( jb + k, i, view );
+            m_data_2D[ i ][ wblock_index_stop ].r[ k ] = r[ 0 ];
+            m_data_2D[ i ][ wblock_index_stop ].g[ k ] = r[ 1 ];
+            m_data_2D[ i ][ wblock_index_stop ].b[ k ] = r[ 2 ];
+        }
+    }
+}
+
+void
+image::mapLatLong(
+    obj::sphere const & s, obj::vect< float, 3 > const & view, image const & im
+) noexcept {
+    if (
+        ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
+        (
+            static_cast< int32_t >( s.getCenterX( ) ) -
+            static_cast< int32_t >( s.getRadius( )  ) < 0
+        ) ||
+        ( s.getCenterY( ) + s.getRadius( ) > m_height ) ||
+        (
+            static_cast< int32_t >( s.getCenterY( ) ) -
+            static_cast< int32_t >(s.getRadius( ) ) < 0
+        )
+    ) {
+        return;
+    }
+
+    m_max_pixel_chanel = im.m_max_pixel_chanel;
+    m_min_pixel_chanel = im.m_min_pixel_chanel;
+
+    uint32_t width_start  = s.getCenterX( ) - s.getRadius( );
+    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( );
+    uint32_t height_start = s.getCenterY( ) - s.getRadius( );
+    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( );
+    uint32_t wblock_index_stop ( ( width_stop  - 1 ) / 8 );
+    uint32_t wblock_index_start( ( width_start     ) / 8 );
+    uint32_t wblock_end( wblock_index_stop * 8 );
+
+#pragma omp parallel for
+    for ( uint32_t i = height_start; i < height_stop; ++i ) {
+        for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
+            uint32_t jb = j * 8;
+            for ( uint32_t k = 0; k < 8; ++k ) {
+                uint32_t x_abs_pos = jb + k;
+                obj::vect< float, 3 > ref =
+                    s.reflectanceXY( x_abs_pos, i, view );
+                if ( ref[ 2 ] == -1 ) { // black
+                    continue;
+                }
+                float theta = hdr_in_range(
+                    static_cast< float >( std::asin( ref[ 1 ] ) / M_PI + 0.5 )
+                , 0.f, 1.f ) * ( im.m_height - 1 );
+                float phi   = hdr_in_range(
+                    static_cast< float >(
+                        std::atan2( ref[ 0 ], ref[ 2 ] ) / ( 2 * M_PI ) + 0.5
+                    )
+                , 0.f, 1.f ) * ( im.m_width - 1 );
+                float r, g, b;
+                im.getPixel(
+                    static_cast< uint32_t >( phi   ),
+                    static_cast< uint32_t >( theta ),
+                    r, g, b
+                );
+                m_data_2D[ i ][ j ].r[ k ] = r;
+                m_data_2D[ i ][ j ].g[ k ] = g;
+                m_data_2D[ i ][ j ].b[ k ] = b;
+            }
+        }
+        uint32_t jb = wblock_index_stop * 8;
+        for ( uint32_t k = 0; wblock_end + k < width_stop; ++k ) {
+                uint32_t x_abs_pos = jb + k;
+            obj::vect< float, 3 > ref =
+                s.reflectanceXY( x_abs_pos, i, view );
+            if ( ref[ 2 ] == -1 ) { // black
+                continue;
+            }
+            float theta = hdr_in_range(
+                static_cast< float >( std::asin( ref[ 1 ] ) / M_PI + 0.5 )
+            , 0.f, 1.f ) * ( im.m_height - 1 );
+            float phi   = hdr_in_range(
+                static_cast< float >(
+                    std::atan2( ref[ 0 ], ref[ 2 ] ) / ( 2 * M_PI ) + 0.5
+                )
+            , 0.f, 1.f ) * ( im.m_width - 1 );
+            float r, g, b;
+            im.getPixel(
+                static_cast< uint32_t >( phi   ),
+                static_cast< uint32_t >( theta ),
+                r, g, b
+            );
+            m_data_2D[ i ][ wblock_index_stop ].r[ k ] = r;
+            m_data_2D[ i ][ wblock_index_stop ].g[ k ] = g;
+            m_data_2D[ i ][ wblock_index_stop ].b[ k ] = b;
+        }
+    }
 }
 
 } // namespace hdr

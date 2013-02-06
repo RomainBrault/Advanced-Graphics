@@ -29,9 +29,12 @@ int main( int argc, char* argv[] ) {
 
       for ( uint32_t i = 0; i < n_inputs; ++i ) {
           inputs[ i ].loadPFM( argv[ i + 1 ] );
+          if ( inputs[ i ].isEmpty( ) == true ) {
+              return -1;
+          }
       }
-      float stops = static_cast< float >( atof( argv[ 8 ] ) );
-      float gamma = static_cast< float >( atof( argv[ 9 ] ) );
+      float stops = static_cast< float >( std::atof( argv[ 8 ] ) );
+      float gamma = static_cast< float >( std::atof( argv[ 9 ] ) );
 
       float* exposure = new float[ n_inputs ];
       if ( exposure == nullptr ) {

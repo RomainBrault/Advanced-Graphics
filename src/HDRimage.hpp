@@ -2,8 +2,11 @@
 #define HDRIMAGE_HPP_INCLUDED
 
 #include <AdvancedGraphicsConfig.hpp>
+#include <Sphere.hpp>
 
 #define MIN( x, y ) ( x ) < ( y ) ? ( x ) : ( y )
+
+#define PFM_LITTLE_ENDIAN( x ) ( ( x ) < 0 )
 
 #define HDR_LT 0.005
 #define HDR_HT 0.92
@@ -55,11 +58,6 @@ merge_block(
     uint32_t exposure_time, int32_t balance[ 3 ]
 ) noexcept {
 
-/* Motherfucking haXxXx: since we increase the exposure time, the value of
- * a pixel is supposed to be >= from a photo to the next. Hence if this is not
- * true, we ignore the pixel. ==> remove fucking blue artefact due to the bad
- * quality of the camera.
- */
     CWF w;
     if ( exposure_time > 0 ) {
         if (
@@ -110,11 +108,6 @@ typedef struct {
     float g[ 8 ];
     float b[ 8 ];
 } pixelBlock;
-
-enum pfmEndianess : int32_t {
-    PFM_LITTLE_ENDIAN = -1,
-    PFM_BIG_ENDIAN    =  1
-};
 
 enum saveFormat : uint32_t {
     ASCIIBitmap    = '1',
@@ -168,9 +161,13 @@ public:
     float dynamicRange ( void ) const noexcept;
 
     INLINE
-    void setPixel( uint32_t, uint32_t, float  , float  , float  )  noexcept;
+    void setPixel(
+        uint32_t, uint32_t, float  , float  , float
+    )  noexcept;
     INLINE
-    void getPixel( uint32_t, uint32_t, float &, float &, float & ) noexcept;
+    void getPixel(
+        uint32_t, uint32_t, float &, float &, float &
+    ) const noexcept;
 
     void negatif ( void                        ) noexcept;
     void median  ( image const &, uint32_t = 3 ) noexcept;
@@ -184,15 +181,9 @@ public:
         uint32_t, uint32_t, uint32_t, uint32_t,
         float, float, float
     ) noexcept;
-    void lineXYZ(
-        uint32_t, uint32_t, uint32_t, uint32_t
-    ) noexcept;
     void circleFilled(
         uint32_t, uint32_t, uint32_t,
         float, float, float
-    ) noexcept;
-    void circleFilledXYZ(
-        uint32_t, uint32_t, uint32_t
     ) noexcept;
 
     int32_t loadPNM(
@@ -221,6 +212,14 @@ public:
     void linearToneMap( float stops ) noexcept;
     void histEqToneMap( uint32_t = 256 ) noexcept;
 
+    void reflectanceSphere(
+        obj::sphere const &, obj::vect< float, 3 > const &
+    ) noexcept;
+
+    void mapLatLong(
+        obj::sphere const &, obj::vect< float, 3 > const &, image const &
+    ) noexcept;
+
     ~image( void ) noexcept;
 
 protected:
@@ -238,13 +237,6 @@ protected:
     ) noexcept;
     void plot2Lines(
         uint32_t, uint32_t, uint32_t, uint32_t, float, float, float
-    ) noexcept;
-
-    void plot4LinesXYZ(
-        uint32_t, uint32_t, uint32_t, uint32_t
-    ) noexcept;
-    void plot2LinesXYZ(
-        uint32_t, uint32_t, uint32_t, uint32_t
     ) noexcept;
 
 private:
@@ -342,7 +334,7 @@ image::setPixel(
 void
 image::getPixel(
     uint32_t x, uint32_t y, float & r, float & g, float & b
-) noexcept {
+) const noexcept {
     uint32_t x_block = x / 8;
     uint32_t x_index = x % 8;
     r = m_data_2D[ y ][ x_block ].r[ x_index ];
@@ -497,17 +489,11 @@ image::createHDR(
 
 namespace std {
 
-    static INLINE void
-    swap( hdr::image & im1, hdr::image & im2 ) noexcept
-    {
-        im1.swap( im2 );
-    }
-
-    template< typename T >
-    static INLINE T
-    sqr( T x ) {
-        return x * x;
-    }
+static INLINE void
+swap( hdr::image & im1, hdr::image & im2 ) noexcept
+{
+    im1.swap( im2 );
+}
 
 } // namespace std
 

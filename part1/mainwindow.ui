@@ -205,7 +205,7 @@
          <string>Raw</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -221,7 +221,7 @@
          <string>Linear Tone Map</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -290,7 +290,7 @@
       <item row="2" column="0">
        <widget class="QSlider" name="verticalSlider_1">
         <property name="minimum">
-         <number>0</number>
+         <number>-500000</number>
         </property>
         <property name="maximum">
          <number>1000000</number>
