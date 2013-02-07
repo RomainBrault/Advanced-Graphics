@@ -726,7 +726,8 @@ image::reflectanceSphere(
 
 void
 image::mapLatLong(
-    obj::sphere const & s, obj::vect< float, 3 > const & view, image const & im
+    obj::sphere const & s, obj::vect< float, 3 > const & view, image const & im,
+    uint32_t x_offset, uint32_t y_offset
 ) noexcept {
     if (
         ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
@@ -754,7 +755,9 @@ image::mapLatLong(
     uint32_t wblock_index_start( ( width_start     ) / 8 );
     uint32_t wblock_end( wblock_index_stop * 8 );
 
+#if defined( GNU_CXX_COMPILER )
 #pragma omp parallel for
+#endif
     for ( uint32_t i = height_start; i < height_stop; ++i ) {
         for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
             uint32_t jb = j * 8;
@@ -770,13 +773,15 @@ image::mapLatLong(
                 , 0.f, 1.f ) * ( im.m_height - 1 );
                 float phi   = hdr_in_range(
                     static_cast< float >(
-                        std::atan2( ref[ 0 ], ref[ 2 ] ) / ( 2 * M_PI ) + 0.5
+                        std::atan2( ref[ 2 ], ref[ 0 ] ) / ( 2 * M_PI ) + 0.5
                     )
                 , 0.f, 1.f ) * ( im.m_width - 1 );
                 float r, g, b;
                 im.getPixel(
-                    static_cast< uint32_t >( phi   ),
-                    static_cast< uint32_t >( theta ),
+                    ( static_cast< uint32_t >( phi ) + x_offset )
+                        % im.m_width,
+                    ( static_cast< uint32_t >( theta ) + y_offset )
+                        % im.m_height,
                     r, g, b
                 );
                 m_data_2D[ i ][ j ].r[ k ] = r;
@@ -786,7 +791,7 @@ image::mapLatLong(
         }
         uint32_t jb = wblock_index_stop * 8;
         for ( uint32_t k = 0; wblock_end + k < width_stop; ++k ) {
-                uint32_t x_abs_pos = jb + k;
+            uint32_t x_abs_pos = jb + k;
             obj::vect< float, 3 > ref =
                 s.reflectanceXY( x_abs_pos, i, view );
             if ( ref[ 2 ] == -1 ) { // black
@@ -797,13 +802,15 @@ image::mapLatLong(
             , 0.f, 1.f ) * ( im.m_height - 1 );
             float phi   = hdr_in_range(
                 static_cast< float >(
-                    std::atan2( ref[ 0 ], ref[ 2 ] ) / ( 2 * M_PI ) + 0.5
+                    std::atan2( ref[ 2 ], ref[ 0 ] ) / ( 2 * M_PI ) + 0.5
                 )
             , 0.f, 1.f ) * ( im.m_width - 1 );
             float r, g, b;
             im.getPixel(
-                static_cast< uint32_t >( phi   ),
-                static_cast< uint32_t >( theta ),
+                ( static_cast< uint32_t >( phi ) + x_offset )
+                    % im.m_width,
+                ( static_cast< uint32_t >( theta ) + y_offset )
+                    % im.m_height,
                 r, g, b
             );
             m_data_2D[ i ][ wblock_index_stop ].r[ k ] = r;

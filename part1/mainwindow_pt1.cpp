@@ -2,8 +2,8 @@
 #include <QString>
 #include <QStringList>
 #include <QLabel>
-#include "mainwindow.hpp"
-#include "ui_mainwindow.h"
+#include "mainwindow_pt1.hpp"
+#include "ui_mainwindow_pt1.h"
 
 #define SIZE_BUFF_HIST_TONE_MAP 500000
 

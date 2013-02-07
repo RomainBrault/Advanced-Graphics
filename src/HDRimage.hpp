@@ -217,7 +217,8 @@ public:
     ) noexcept;
 
     void mapLatLong(
-        obj::sphere const &, obj::vect< float, 3 > const &, image const &
+        obj::sphere const &, obj::vect< float, 3 > const &, image const &,
+        uint32_t = 0, uint32_t = 0
     ) noexcept;
 
     ~image( void ) noexcept;

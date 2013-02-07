@@ -1,10 +1,25 @@
+#include <QApplication>
 #include <HDRimage.hpp>
 #include <Sphere.hpp>
+#include "mainwindow_pt2.hpp"
 
 using namespace hdr;
 using namespace obj;
 
 int main( int argc, char * argv[] ) {
+
+    if ( argc < 2 ) {
+        QApplication app( argc, argv );
+
+        MainWindow w;
+        w.setWindowTitle(
+            "Imperial College Advanced-Graphics 2013 -- Relightning"
+        );
+
+        w.show( );
+
+        return app.exec();
+    }
 
     if ( argc < 5 ) {
         return -1;
@@ -14,9 +29,9 @@ int main( int argc, char * argv[] ) {
     vect< float, 3 > view( 0, 0, 1 );
 
     if ( argc > 7 ) {
-        view[ 0 ] = std::atof( argv[ 5 ] );
-        view[ 1 ] = std::atof( argv[ 6 ] );
-        view[ 2 ] = std::atof( argv[ 7 ] );
+        view[ 0 ] = static_cast< float >( std::atof( argv[ 5 ] ) );
+        view[ 1 ] = static_cast< float >( std::atof( argv[ 6 ] ) );
+        view[ 2 ] = static_cast< float >( std::atof( argv[ 7 ] ) );
         float norm = view.norm( );
         view[ 0 ] /= norm;
         view[ 1 ] /= norm;
@@ -44,8 +59,8 @@ int main( int argc, char * argv[] ) {
     r_sphere.fill( 0 );
     r_sphere.mapLatLong( s, view, latlong );
     r_sphere.savePFM( "question2.pfm" );
-    r_sphere.linearToneMap( std::atof( argv[ 3 ] ) );
-    r_sphere.gamma( std::atof( argv[ 4 ] ) );
+    r_sphere.linearToneMap( static_cast< float >( std::atof( argv[ 3 ] ) ) );
+    r_sphere.gamma( static_cast< float >( std::atof( argv[ 4 ] ) ) );
     r_sphere.normalise( 255 );
     r_sphere.savePNM( "question2.ppm" );
     return 0;

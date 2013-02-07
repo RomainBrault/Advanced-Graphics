@@ -318,10 +318,10 @@ sphere::normalXY( uint32_t x, uint32_t y ) const noexcept
         return res;
     }
     uint32_t zs_c = r2 - s_xs_ys_c;
-    float norm = sqrt( xs_c + ys_c + zs_c );
+    float norm = static_cast< float >(  sqrt( xs_c + ys_c + zs_c ) );
     res[ 0 ] = static_cast< float >( x_c ) / norm;
     res[ 1 ] = static_cast< float >( y_c ) / norm;
-    res[ 2 ] = std::sqrt( zs_c )           / norm;
+    res[ 2 ] = std::sqrt( static_cast< float >( zs_c ) ) / norm;
     return res;
 }
 
@@ -337,10 +337,10 @@ sphere::normalXY_fast( uint32_t x, uint32_t y ) const noexcept
     vect< float, 3 > res;
 
     uint32_t zs_c = r2 - s_xs_ys_c;
-    float norm = sqrt( xs_c + ys_c + zs_c );
+    float norm = static_cast< float >(  sqrt( xs_c + ys_c + zs_c ) );
     res[ 0 ] = static_cast< float >( x_c ) / norm;
     res[ 1 ] = static_cast< float >( y_c ) / norm;
-    res[ 2 ] = std::sqrt( zs_c )           / norm;
+    res[ 2 ] = std::sqrt( static_cast< float >( zs_c ) ) / norm;
     return res;
 }
 
