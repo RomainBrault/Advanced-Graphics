@@ -59,44 +59,44 @@ merge_block(
 ) noexcept {
 
     CWF w;
-    if ( exposure_time > 0 ) {
-        if (
-            ( pix_red > HDR_LT ) && ( pix_red < HDR_HT ) &&
-            ( pix_red <= pix_n_red )
-        ) {
-            float w_red = w( pix_red, 0, 1 );
-            acc_red  += std::log( pix_red / exposure_time ) * w_red;
-            acc_wred += w_red;
-        }
-        else {
-            balance[ 0 ] += ( pix_red > HDR_LT ) - ( pix_red < HDR_HT );
-        }
-        if (
-            ( pix_green > HDR_LT ) && ( pix_green < HDR_HT ) &&
-            ( pix_green <= pix_n_green )
-        ) {
-            float w_green = w( pix_green, 0, 1 );
-            acc_green  += std::log( pix_green / exposure_time ) * w_green;
-            acc_wgreen += w_green;
-        }
-        else {
-            balance[ 1 ] += ( pix_green > HDR_LT ) - ( pix_green < HDR_HT );
-        }
-        if (
-            ( pix_blue > HDR_LT ) && ( pix_blue < HDR_HT ) &&
-            ( pix_blue <= pix_n_blue )
-        ) {
-            float w_blue = w( pix_blue, 0, 1 );
-            acc_blue  += std::log( pix_blue / exposure_time ) * w_blue;
-            acc_wblue += w_blue;
-        }
-        else {
-            balance[ 2 ] += ( pix_blue > HDR_LT ) - ( pix_blue < HDR_HT );
-        }
+    if (
+        ( pix_red > HDR_LT ) && ( pix_red < HDR_HT ) &&
+        ( pix_red <= pix_n_red )
+    ) {
+        float w_red = w( pix_red );
+        acc_red  += std::log( pix_red / exposure_time ) * w_red;
+        acc_wred += w_red;
+    }
+    else {
+        balance[ 0 ] += ( pix_red > HDR_LT ) - ( pix_red < HDR_HT );
+    }
+    if (
+        ( pix_green > HDR_LT ) && ( pix_green < HDR_HT ) &&
+        ( pix_green <= pix_n_green )
+    ) {
+        float w_green = w( pix_green );
+        acc_green  += std::log( pix_green / exposure_time ) * w_green;
+        acc_wgreen += w_green;
+    }
+    else {
+        balance[ 1 ] += ( pix_green > HDR_LT ) - ( pix_green < HDR_HT );
+    }
+    if (
+        ( pix_blue > HDR_LT ) && ( pix_blue < HDR_HT ) &&
+        ( pix_blue <= pix_n_blue )
+    ) {
+        float w_blue = w( pix_blue );
+        acc_blue  += std::log( pix_blue / exposure_time ) * w_blue;
+        acc_wblue += w_blue;
+    }
+    else {
+        balance[ 2 ] += ( pix_blue > HDR_LT ) - ( pix_blue < HDR_HT );
     }
 }
 
 } // namespace details
+
+#define B_SIZE 8
 
 namespace hdr {
 
@@ -116,6 +116,13 @@ enum saveFormat : uint32_t {
     BinaryBitmap   = '4',
     BinaryGreymap  = '5',
     BinaryColormap = '6'
+};
+
+enum class chanel : uint32_t {
+    red   = 0,
+    blue  = 1,
+    green = 2,
+    all   = 3
 };
 
 class image {
@@ -156,9 +163,9 @@ public:
     void troncate ( float, float   ) noexcept;
     void gamma    ( float          ) noexcept;
 
-    float maxPixelValue( void ) const noexcept;
-    float minPixelValue( void ) const noexcept;
-    float dynamicRange ( void ) const noexcept;
+    float maxPixelValue( chanel c = chanel::all ) const noexcept;
+    float minPixelValue( chanel c = chanel::all ) const noexcept;
+    float dynamicRange ( chanel c = chanel::all ) const noexcept;
 
     INLINE
     void setPixel(
@@ -268,6 +275,21 @@ public:
         float c2_05 = ( c2 - c1 ) / 2;
         float norm = c1_05 * c1_05 * c2_05 * c2_05;
         return ( 1 / norm ) * c1_x * c1_x * c2_x * c2_x;
+    }
+
+private:
+};
+
+class trig_cwf {
+public:
+
+    trig_cwf ( void ) = default;
+    trig_cwf ( trig_cwf const & ) = default;
+    ~trig_cwf( void ) = default;
+
+    float operator( ) ( float x ) {
+
+        return std::sin( x * 2 * M_PI - M_PI / 2 ) + 1;
     }
 
 private:
@@ -397,19 +419,21 @@ image::createHDR(
             float acc_wblue [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
             int32_t balance[ 3 ] = { 0, 0, 0 };
             for ( uint32_t l = 0; l < N; ++l ) {
-                uint32_t ln = MIN( l + 1, N - 1 );
-                for ( uint32_t k = 0; k < 8; ++k ) {
-                    details::merge_block< CWF >(
-                        image_set[ l  ].m_data_2D[ i ][ j ].r[ k ],
-                        image_set[ l  ].m_data_2D[ i ][ j ].g[ k ],
-                        image_set[ l  ].m_data_2D[ i ][ j ].b[ k ],
-                        image_set[ ln ].m_data_2D[ i ][ j ].r[ k ],
-                        image_set[ ln ].m_data_2D[ i ][ j ].g[ k ],
-                        image_set[ ln ].m_data_2D[ i ][ j ].b[ k ],
-                        acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ],
-                        acc_red [ k ], acc_green [ k ], acc_blue [ k ],
-                        exposure[ l ], balance
-                    );
+                if ( exposure[ l ] > 0 ) {
+                    uint32_t ln = MIN( l + 1, N - 1 );
+                    for ( uint32_t k = 0; k < 8; ++k ) {
+                        details::merge_block< CWF >(
+                            image_set[ l  ].m_data_2D[ i ][ j ].r[ k ],
+                            image_set[ l  ].m_data_2D[ i ][ j ].g[ k ],
+                            image_set[ l  ].m_data_2D[ i ][ j ].b[ k ],
+                            image_set[ ln ].m_data_2D[ i ][ j ].r[ k ],
+                            image_set[ ln ].m_data_2D[ i ][ j ].g[ k ],
+                            image_set[ ln ].m_data_2D[ i ][ j ].b[ k ],
+                            acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ],
+                            acc_red [ k ], acc_green [ k ], acc_blue [ k ],
+                            exposure[ l ], balance
+                        );
+                    }
                 }
             }
             for ( uint32_t k = 0; k < 8; ++k ) {
@@ -444,19 +468,21 @@ image::createHDR(
         float acc_wblue [ 8 ] = { 0, 0, 0, 0, 0, 0, 0, 0 };
         int32_t balance[ 3 ] = { 0, 0, 0 };
         for ( uint32_t l = 0; l < N; ++l ) {
-            uint32_t ln = MIN( l + 1, N - 1 );
-            for ( uint32_t k = 0; width_block_end + k < width; ++k ) {
-                details::merge_block< CWF >(
-                    image_set[ l  ].m_data_2D[ i ][ width_block_number ].r[ k ],
-                    image_set[ l  ].m_data_2D[ i ][ width_block_number ].g[ k ],
-                    image_set[ l  ].m_data_2D[ i ][ width_block_number ].b[ k ],
-                    image_set[ ln ].m_data_2D[ i ][ width_block_number ].r[ k ],
-                    image_set[ ln ].m_data_2D[ i ][ width_block_number ].g[ k ],
-                    image_set[ ln ].m_data_2D[ i ][ width_block_number ].b[ k ],
-                    acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ],
-                    acc_red [ k ], acc_green [ k ], acc_blue [ k ],
-                    exposure[ l ], balance
-                );
+            if ( exposure[ l ] > 0 ) {
+                uint32_t ln = MIN( l + 1, N - 1 );
+                for ( uint32_t k = 0; width_block_end + k < width; ++k ) {
+                    details::merge_block< CWF >(
+                        image_set[ l  ].m_data_2D[ i ][ width_block_number ].r[ k ],
+                        image_set[ l  ].m_data_2D[ i ][ width_block_number ].g[ k ],
+                        image_set[ l  ].m_data_2D[ i ][ width_block_number ].b[ k ],
+                        image_set[ ln ].m_data_2D[ i ][ width_block_number ].r[ k ],
+                        image_set[ ln ].m_data_2D[ i ][ width_block_number ].g[ k ],
+                        image_set[ ln ].m_data_2D[ i ][ width_block_number ].b[ k ],
+                        acc_wred[ k ], acc_wgreen[ k ], acc_wblue[ k ],
+                        acc_red [ k ], acc_green [ k ], acc_blue [ k ],
+                        exposure[ l ], balance
+                    );
+                }
             }
         }
         for ( uint32_t k = 0; width_block_end + k < width; ++k ) {

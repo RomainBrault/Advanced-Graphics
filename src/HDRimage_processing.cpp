@@ -405,83 +405,194 @@ image::fill( float val ) noexcept
 }
 
 float
-image::maxPixelValue( void ) const noexcept {
+image::maxPixelValue( chanel c ) const noexcept {
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
-    float max_red   = std::numeric_limits< float >::lowest( );
-    float max_green = std::numeric_limits< float >::lowest( );
-    float max_blue  = std::numeric_limits< float >::lowest( );
 
-    for ( uint32_t i = 0; i < m_height; ++i ) {
-        for ( uint32_t j = 0; j < wblock_index; ++j ) {
-            for ( uint32_t k = 0; k < 8; ++k ) {
-                if ( m_data_2D[ i ][ j ].r[ k ] > max_red   )
-                    max_red   = m_data_2D[ i ][ j ].r[ k ];
-                if ( m_data_2D[ i ][ j ].g[ k ] > max_green )
-                    max_green = m_data_2D[ i ][ j ].g[ k ];
-                if ( m_data_2D[ i ][ j ].b[ k ] > max_blue  )
-                    max_blue  = m_data_2D[ i ][ j ].b[ k ];
+    switch ( c ) {
+    case chanel::all: {
+        float max_red   = std::numeric_limits< float >::lowest( );
+        float max_green = std::numeric_limits< float >::lowest( );
+        float max_blue  = std::numeric_limits< float >::lowest( );
+
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    if ( m_data_2D[ i ][ j ].r[ k ] > max_red   )
+                        max_red   = m_data_2D[ i ][ j ].r[ k ];
+                    if ( m_data_2D[ i ][ j ].g[ k ] > max_green )
+                        max_green = m_data_2D[ i ][ j ].g[ k ];
+                    if ( m_data_2D[ i ][ j ].b[ k ] > max_blue  )
+                        max_blue  = m_data_2D[ i ][ j ].b[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                if ( m_data_2D[ i ][ wblock_index ].r[ k ] > max_red   )
+                    max_red   = m_data_2D[ i ][ wblock_index ].r[ k ];
+                if ( m_data_2D[ i ][ wblock_index ].g[ k ] > max_green )
+                    max_green = m_data_2D[ i ][ wblock_index ].g[ k ];
+                if ( m_data_2D[ i ][ wblock_index ].b[ k ] > max_blue  )
+                    max_blue  = m_data_2D[ i ][ wblock_index ].b[ k ];
             }
         }
-        for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
-            if ( m_data_2D[ i ][ wblock_index ].r[ k ] > max_red   )
-                max_red   = m_data_2D[ i ][ wblock_index ].r[ k ];
-            if ( m_data_2D[ i ][ wblock_index ].g[ k ] > max_green )
-                max_green = m_data_2D[ i ][ wblock_index ].g[ k ];
-            if ( m_data_2D[ i ][ wblock_index ].b[ k ] > max_blue  )
-                max_blue  = m_data_2D[ i ][ wblock_index ].b[ k ];
+        return std::max( std::max( max_red, max_green ), max_blue ); }
+    case chanel::red: {
+        float max_red   = std::numeric_limits< float >::lowest( );
+
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    if ( m_data_2D[ i ][ j ].r[ k ] > max_red   )
+                        max_red   = m_data_2D[ i ][ j ].r[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                if ( m_data_2D[ i ][ wblock_index ].r[ k ] > max_red   )
+                    max_red   = m_data_2D[ i ][ wblock_index ].r[ k ];
+            }
         }
+        return max_red; }
+    case chanel::green: {
+        float max_green = std::numeric_limits< float >::lowest( );
+
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    if ( m_data_2D[ i ][ j ].g[ k ] > max_green )
+                        max_green = m_data_2D[ i ][ j ].g[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                if ( m_data_2D[ i ][ wblock_index ].g[ k ] > max_green )
+                    max_green = m_data_2D[ i ][ wblock_index ].g[ k ];
+            }
+        }
+        return max_green; }
+    case chanel::blue: {
+        float max_blue  = std::numeric_limits< float >::lowest( );
+
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    if ( m_data_2D[ i ][ j ].b[ k ] > max_blue  )
+                        max_blue  = m_data_2D[ i ][ j ].b[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                if ( m_data_2D[ i ][ wblock_index ].b[ k ] > max_blue  )
+                    max_blue  = m_data_2D[ i ][ wblock_index ].b[ k ];
+            }
+        }
+        return max_blue; }
+    default:
+        std::cerr << "How did you get there ??" << std::endl;
+        exit( - 1);
     }
-    return std::max( std::max( max_red, max_green ), max_blue );
 }
 
 float
-image::minPixelValue( void ) const noexcept {
+image::minPixelValue( chanel c ) const noexcept {
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
-    float min_red   = std::numeric_limits< float >::max( );
-    float min_green = std::numeric_limits< float >::max( );
-    float min_blue  = std::numeric_limits< float >::max( );
 
-    for ( uint32_t i = 0; i < m_height; ++i ) {
-        for ( uint32_t j = 0; j < wblock_index; ++j ) {
-            for ( uint32_t k = 0; k < 8; ++k ) {
-                if ( m_data_2D[ i ][ j ].r[ k ] < min_red   )
-                    min_red   = m_data_2D[ i ][ j ].r[ k ];
-                if ( m_data_2D[ i ][ j ].g[ k ] < min_green )
-                    min_green = m_data_2D[ i ][ j ].g[ k ];
-                if ( m_data_2D[ i ][ j ].b[ k ] < min_blue  )
-                    min_blue  = m_data_2D[ i ][ j ].b[ k ];
+
+    switch ( c ) {
+    case chanel::all: {
+        float min_red   = std::numeric_limits< float >::max( );
+        float min_green = std::numeric_limits< float >::max( );
+        float min_blue  = std::numeric_limits< float >::max( );
+
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    if ( m_data_2D[ i ][ j ].r[ k ] < min_red   )
+                        min_red   = m_data_2D[ i ][ j ].r[ k ];
+                    if ( m_data_2D[ i ][ j ].g[ k ] < min_green )
+                        min_green = m_data_2D[ i ][ j ].g[ k ];
+                    if ( m_data_2D[ i ][ j ].b[ k ] < min_blue  )
+                        min_blue  = m_data_2D[ i ][ j ].b[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                if ( m_data_2D[ i ][ wblock_index ].r[ k ] < min_red   )
+                    min_red   = m_data_2D[ i ][ wblock_index ].r[ k ];
+                if ( m_data_2D[ i ][ wblock_index ].g[ k ] < min_green )
+                    min_green = m_data_2D[ i ][ wblock_index ].g[ k ];
+                if ( m_data_2D[ i ][ wblock_index ].b[ k ] < min_blue  )
+                    min_blue  = m_data_2D[ i ][ wblock_index ].b[ k ];
             }
         }
-        for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
-            if ( m_data_2D[ i ][ wblock_index ].r[ k ] < min_red   )
-                min_red   = m_data_2D[ i ][ wblock_index ].r[ k ];
-            if ( m_data_2D[ i ][ wblock_index ].g[ k ] < min_green )
-                min_green = m_data_2D[ i ][ wblock_index ].g[ k ];
-            if ( m_data_2D[ i ][ wblock_index ].b[ k ] < min_blue  )
-                min_blue  = m_data_2D[ i ][ wblock_index ].b[ k ];
+        return std::min( std::min( min_red, min_green ), min_blue ); }
+    case chanel::red: {
+        float min_red   = std::numeric_limits< float >::max( );
+
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    if ( m_data_2D[ i ][ j ].r[ k ] < min_red   )
+                        min_red   = m_data_2D[ i ][ j ].r[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                if ( m_data_2D[ i ][ wblock_index ].r[ k ] < min_red   )
+                    min_red   = m_data_2D[ i ][ wblock_index ].r[ k ];
+            }
         }
+        return min_red; }
+    case chanel::green: {
+        float min_green = std::numeric_limits< float >::max( );
+
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    if ( m_data_2D[ i ][ j ].g[ k ] < min_green )
+                        min_green = m_data_2D[ i ][ j ].g[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                if ( m_data_2D[ i ][ wblock_index ].g[ k ] < min_green )
+                    min_green = m_data_2D[ i ][ wblock_index ].g[ k ];
+            }
+        }
+        return min_green; }
+    case chanel::blue: {
+        float min_blue  = std::numeric_limits< float >::max( );
+
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    if ( m_data_2D[ i ][ j ].b[ k ] < min_blue  )
+                        min_blue  = m_data_2D[ i ][ j ].b[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                if ( m_data_2D[ i ][ wblock_index ].b[ k ] < min_blue  )
+                    min_blue  = m_data_2D[ i ][ wblock_index ].b[ k ];
+            }
+        }
+        return min_blue; }
+    default:
+        std::cerr << "How did you get there ??" << std::endl;
+        exit( - 1);
     }
-    return std::min( std::min( min_red, min_green ), min_blue );
 }
 
 float
-image::dynamicRange( void ) const noexcept
+image::dynamicRange( chanel c ) const noexcept
 {
-    return maxPixelValue( ) / minPixelValue( );
+    return maxPixelValue( c ) / minPixelValue( c );
 }
 
 void
 image::updateMaxChanel( void ) noexcept
 {
-    m_max_pixel_chanel = maxPixelValue( );
+    m_max_pixel_chanel = maxPixelValue( chanel::all );
 }
 
 void
 image::updateMinChanel( void ) noexcept
 {
-    m_min_pixel_chanel = minPixelValue( );
+    m_min_pixel_chanel = minPixelValue( chanel::all );
 }
 
 void
@@ -559,118 +670,87 @@ image::gamma( float pow_val ) noexcept
 void
 image::histEqToneMap( uint32_t H_SIZE ) noexcept
 {
-    float const exp_rate(
-        ( H_SIZE - 1 ) / ( m_max_pixel_chanel - m_min_pixel_chanel )
-    );
-
-    float* hist = new (std::nothrow) float[ 6 * H_SIZE ];
+    float* hist = new (std::nothrow) float[ 2 * H_SIZE ];
     if ( hist == nullptr ) {
         return;
     }
-    std::memset( hist, 0, 6 * H_SIZE * sizeof ( float ) );
+    std::memset( hist, 0, 2 * H_SIZE * sizeof ( float ) );
 
-    float* hist_red     = hist;
-    float* hist_green   = hist + 1 * H_SIZE;
-    float* hist_blue    = hist + 2 * H_SIZE;
-    float* hist_red_s   = hist + 3 * H_SIZE;
-    float* hist_green_s = hist + 4 * H_SIZE;
-    float* hist_blue_s  = hist + 5 * H_SIZE;
+    float* hist_L   = hist;
+    float* hist_L_s = hist + H_SIZE;
 
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
+
+
+    float min_L = m_min_pixel_chanel;
+    float max_L = m_max_pixel_chanel;
+    float len   = max_L - min_L;
+
+    float const exp_rate_1( H_SIZE / ( 3 * static_cast< float >( len ) ) );
+
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
-                hist_red  [ static_cast< uint32_t >(
-                    ( m_data_2D[ i ][ j ].r[ k ] - m_min_pixel_chanel )
-                    * exp_rate
-                ) ]++;
-                hist_green[ static_cast< uint32_t >(
-                    ( m_data_2D[ i ][ j ].g[ k ] - m_min_pixel_chanel )
-                    * exp_rate
-                ) ]++;
-                hist_blue [ static_cast< uint32_t >(
-                    ( m_data_2D[ i ][ j ].b[ k ] - m_min_pixel_chanel )
-                    * exp_rate
+                hist_L[ static_cast< uint32_t >(
+                    ( m_data_2D[ i ][ j ].r[ k ] +
+                      m_data_2D[ i ][ j ].g[ k ] +
+                      m_data_2D[ i ][ j ].b[ k ] ) * exp_rate_1
                 ) ]++;
             }
         }
         for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
-            hist_red  [ static_cast< uint32_t >(
-                ( m_data_2D[ i ][ wblock_index ].r[ k ] - m_min_pixel_chanel )
-                 * exp_rate
-            ) ]++;
-            hist_green[ static_cast< uint32_t >(
-                ( m_data_2D[ i ][ wblock_index ].g[ k ] - m_min_pixel_chanel )
-                 * exp_rate
-            ) ]++;
-            hist_blue [ static_cast< uint32_t >(
-                ( m_data_2D[ i ][ wblock_index ].b[ k ] - m_min_pixel_chanel )
-                 * exp_rate
+            hist_L[ static_cast< uint32_t >(
+                ( m_data_2D[ i ][ wblock_index ].r[ k ] +
+                  m_data_2D[ i ][ wblock_index ].g[ k ] +
+                  m_data_2D[ i ][ wblock_index ].b[ k ] ) * exp_rate_1
             ) ]++;
         }
     }
 
     float const N( static_cast< float >( m_width * m_height ) );
-    hist_red_s  [ 0 ] = hist_red  [ 0 ] / N;
-    hist_green_s[ 0 ] = hist_green[ 0 ] / N;
-    hist_blue_s [ 0 ] = hist_blue [ 0 ] / N;
+    hist_L_s[ 0 ] = hist_L[ 0 ] / N;
     for ( uint32_t i = 1; i < H_SIZE; ++i ) {
-        hist_red_s  [ i ] = hist_red_s  [ i - 1 ] + hist_red  [ i ] / N;
-        hist_green_s[ i ] = hist_green_s[ i - 1 ] + hist_green[ i ] / N;
-        hist_blue_s [ i ] = hist_blue_s [ i - 1 ] + hist_blue [ i ] / N;
+        hist_L_s[ i ] = hist_L_s[ i - 1 ] + hist_L[ i ] / N;
     }
 
+    float const exp_rate_2( H_SIZE / static_cast< float >( len ) );
+#if defined( GNU_CXX_COMPILER )
+#pragma omp parallel for
+#endif
     for ( uint32_t i = 0; i < m_height; ++i ) {
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
-                m_data_2D[ i ][ j ].r[ k ] = m_max_pixel_chanel * (
-                    hist_red_s  [ static_cast< uint32_t >(
-                        ( m_data_2D[ i ][ j ].r[ k ] - m_min_pixel_chanel )
-                        * exp_rate
-                    ) ]
-                    + m_min_pixel_chanel
-                );
-                m_data_2D[ i ][ j ].g[ k ] = m_max_pixel_chanel * (
-                    hist_green_s[ static_cast< uint32_t >(
-                        ( m_data_2D[ i ][ j ].g[ k ] - m_min_pixel_chanel )
-                        * exp_rate
-                    ) ]
-                    + m_min_pixel_chanel
-                );
-                m_data_2D[ i ][ j ].b[ k ] = m_max_pixel_chanel * (
-                    hist_blue_s [ static_cast< uint32_t >(
-                        ( m_data_2D[ i ][ j ].b[ k ] - m_min_pixel_chanel )
-                        * exp_rate
-                    ) ]
-                    + m_min_pixel_chanel
-                );
+                float grey = (
+                    m_data_2D[ i ][ j ].r[ k ] +
+                    m_data_2D[ i ][ j ].g[ k ] +
+                    m_data_2D[ i ][ j ].b[ k ] ) / 3;
+
+                grey = hist_L_s[ static_cast< uint32_t >(
+                    grey * exp_rate_2
+                ) ] / grey;
+
+                m_data_2D[ i ][ j ].r[ k ] *=  grey;
+                m_data_2D[ i ][ j ].g[ k ] *=  grey;
+                m_data_2D[ i ][ j ].b[ k ] *=  grey;
             }
         }
         for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
-            m_data_2D[ i ][ wblock_index ].r[ k ] = m_max_pixel_chanel * (
-                hist_red_s  [ static_cast< uint32_t >( (
-                    m_data_2D[ i ][ wblock_index ].r[ k ] - m_min_pixel_chanel
-                    ) * exp_rate
-                ) ]
-                + m_min_pixel_chanel
-            );
-            m_data_2D[ i ][ wblock_index ].g[ k ] = m_max_pixel_chanel * (
-                hist_green_s[ static_cast< uint32_t >( (
-                    m_data_2D[ i ][ wblock_index ].g[ k ] - m_min_pixel_chanel
-                    ) * exp_rate
-                ) ]
-                + m_min_pixel_chanel
-            );
-            m_data_2D[ i ][ wblock_index ].b[ k ] = m_max_pixel_chanel * (
-                hist_blue_s [ static_cast< uint32_t >( (
-                    m_data_2D[ i ][ wblock_index ].b[ k ] - m_min_pixel_chanel
-                    ) * exp_rate
-            ) ]
-                + m_min_pixel_chanel
-            );
+                float grey = (
+                    m_data_2D[ i ][ wblock_index ].r[ k ] +
+                    m_data_2D[ i ][ wblock_index ].g[ k ] +
+                    m_data_2D[ i ][ wblock_index ].b[ k ] ) / 3;
+
+                grey = hist_L_s[ static_cast< uint32_t >(
+                    grey * exp_rate_2
+                ) ] / grey;
+
+                m_data_2D[ i ][ wblock_index ].r[ k ] *= grey;
+                m_data_2D[ i ][ wblock_index ].g[ k ] *= grey;
+                m_data_2D[ i ][ wblock_index ].b[ k ] *= grey;
         }
     }
+
     delete [] hist;
 }
 

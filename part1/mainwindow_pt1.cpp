@@ -261,11 +261,14 @@ void MainWindow::on_pushButton_clicked()
     }
     if ( ui->radioButton_1->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     delete central_image;
     central_image = hdrToQImage( temp );
-    ui->label_4->setText( QString::number( res.dynamicRange( ) ) );
+    ui->label_4->setText( QString::number( res.dynamicRange( hdr::chanel::red   ) ) );
+    ui->label_9->setText( QString::number( res.dynamicRange( hdr::chanel::green ) ) );
+    ui->label_8->setText( QString::number( res.dynamicRange( hdr::chanel::blue  ) ) );
     ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
 }
 

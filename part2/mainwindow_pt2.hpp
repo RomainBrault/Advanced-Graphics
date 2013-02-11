@@ -61,6 +61,8 @@ void on_pushButton_clicked();
 
 void on_radioButton_5_clicked();
 
+void on_pushButton_4_clicked();
+
 private:
   static QImage* hdrToQImage( hdr::image & );
          void    reset( );

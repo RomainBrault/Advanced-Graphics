@@ -510,7 +510,8 @@ image::loadPNM( std::string const & file_path ) noexcept
     if ( !pnm_file ) {
         goto FILE_ERROR;
     }
-    m_min_pixel_chanel = minPixelValue( );;
+    m_min_pixel_chanel = minPixelValue( );
+    m_max_pixel_chanel = maxPixelValue( );
     return 0;
 
 

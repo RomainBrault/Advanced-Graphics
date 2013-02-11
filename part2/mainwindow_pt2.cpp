@@ -370,7 +370,29 @@ void MainWindow::on_radioButton_6_clicked()
       img_size = 511;
       ui->lineEdit->setText("511");
     }
-    obj::vect< float, 3 > view( 0, 0, 1 );
+    float x = ui->lineEdit_3->text().toFloat( &ok );
+    if ( ok == false ) {
+        x = 0;
+        ui->lineEdit_3->setText( "0" );
+    }
+    float y = ui->lineEdit_4->text().toFloat( &ok );
+    if ( ok == false ) {
+        y = 0;
+        ui->lineEdit_4->setText( "0" );
+    }
+    float z = ui->lineEdit_5->text().toFloat( &ok );
+    if ( ok == false ) {
+        z = 1;
+        ui->lineEdit_5->setText( "1" );
+    }
+    obj::vect< float, 3 > view( x, y, z );
+    float norm = view.norm( );
+    view[ 0 ] /= norm; x /= norm;
+    view[ 1 ] /= norm; y /= norm;
+    view[ 2 ] /= norm; z /= norm;
+    ui->lineEdit_3->setText( QString::number( x ) );
+    ui->lineEdit_4->setText( QString::number( y ) );
+    ui->lineEdit_5->setText( QString::number( z ) );
     obj::sphere s( img_size / 2, img_size / 2, img_size / 2 );
 
     hdr::image temp( img_size, img_size, 1 );
@@ -407,7 +429,29 @@ void MainWindow::on_radioButton_5_clicked()
       img_size = 511;
       ui->lineEdit->setText("511");
     }
-    obj::vect< float, 3 > view( 0, 0, 1 );
+    float x = ui->lineEdit_3->text().toFloat( &ok );
+    if ( ok == false ) {
+        x = 0;
+        ui->lineEdit_3->setText( "0" );
+    }
+    float y = ui->lineEdit_4->text().toFloat( &ok );
+    if ( ok == false ) {
+        y = 0;
+        ui->lineEdit_4->setText( "0" );
+    }
+    float z = ui->lineEdit_5->text().toFloat( &ok );
+    if ( ok == false ) {
+        z = 1;
+        ui->lineEdit_5->setText( "1" );
+    }
+    obj::vect< float, 3 > view( x, y, z );
+    float norm = view.norm( );
+    view[ 0 ] /= norm; x /= norm;
+    view[ 1 ] /= norm; y /= norm;
+    view[ 2 ] /= norm; z /= norm;
+    ui->lineEdit_3->setText( QString::number( x ) );
+    ui->lineEdit_4->setText( QString::number( y ) );
+    ui->lineEdit_5->setText( QString::number( z ) );
     obj::sphere s( img_size / 2, img_size / 2, img_size / 2 );
 
     hdr::image temp( img_size, img_size, 1 );
@@ -463,7 +507,29 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
           img_size = 511;
           ui->lineEdit->setText("511");
         }
-        obj::vect< float, 3 > view( 0, 0, 1 );
+        float x = ui->lineEdit_3->text().toFloat( &ok );
+        if ( ok == false ) {
+            x = 0;
+            ui->lineEdit_3->setText( "0" );
+        }
+        float y = ui->lineEdit_4->text().toFloat( &ok );
+        if ( ok == false ) {
+            y = 0;
+            ui->lineEdit_4->setText( "0" );
+        }
+        float z = ui->lineEdit_5->text().toFloat( &ok );
+        if ( ok == false ) {
+            z = 1;
+            ui->lineEdit_5->setText( "1" );
+        }
+        obj::vect< float, 3 > view( x, y, z );
+        float norm = view.norm( );
+        view[ 0 ] /= norm; x /= norm;
+        view[ 1 ] /= norm; y /= norm;
+        view[ 2 ] /= norm; z /= norm;
+        ui->lineEdit_3->setText( QString::number( x ) );
+        ui->lineEdit_4->setText( QString::number( y ) );
+        ui->lineEdit_5->setText( QString::number( z ) );
         obj::sphere s( img_size / 2, img_size / 2, img_size / 2 );
 
         temp.create( img_size, img_size, 1 );
@@ -472,6 +538,7 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
             static_cast< float >( value ) / ( 100000 ) * LatLong.getWidth( ),
             static_cast< float >( ui->verticalSlider->value( ) ) / ( 100000 ) * LatLong.getHeight( )
         );
+        Sphere = temp;
     }
     if ( ui->radioButton_4->isChecked( ) ) {
         temp = LatLong;
@@ -507,7 +574,30 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
           img_size = 511;
           ui->lineEdit->setText("511");
         }
-        obj::vect< float, 3 > view( 0, 0, 1 );
+        float x = ui->lineEdit_3->text().toFloat( &ok );
+        if ( ok == false ) {
+            x = 0;
+            ui->lineEdit_3->setText( "0" );
+        }
+        float y = ui->lineEdit_4->text().toFloat( &ok );
+        if ( ok == false ) {
+            y = 0;
+            ui->lineEdit_4->setText( "0" );
+        }
+        float z = ui->lineEdit_5->text().toFloat( &ok );
+        if ( ok == false ) {
+            z = 1;
+            ui->lineEdit_5->setText( "1" );
+        }
+        obj::vect< float, 3 > view( x, y, z );
+        float norm = view.norm( );
+        view[ 0 ] /= norm; x /= norm;
+        view[ 1 ] /= norm; y /= norm;
+        view[ 2 ] /= norm; z /= norm;
+        ui->lineEdit_3->setText( QString::number( x ) );
+        ui->lineEdit_4->setText( QString::number( y ) );
+        ui->lineEdit_5->setText( QString::number( z ) );
+
         obj::sphere s( img_size / 2, img_size / 2, img_size / 2 );
 
         temp.create( img_size, img_size, 1 );
@@ -516,6 +606,7 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
             static_cast< float >( ui->horizontalSlider->value( ) ) / ( 100000 ) * LatLong.getWidth( ),
             static_cast< float >( value ) / ( 100000 ) * LatLong.getHeight( )
         );
+        Sphere = temp;
     }
     if ( ui->radioButton_4->isChecked( ) ) {
         temp = LatLong;
@@ -530,9 +621,10 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
     }
     if ( ui->radioButton_1->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
-        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000  );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
+    Sphere = temp;
     delete central_image;
     central_image = hdrToQImage( temp );
     ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
@@ -551,7 +643,29 @@ void MainWindow::on_pushButton_clicked()
           img_size = 511;
           ui->lineEdit->setText("511");
         }
-        obj::vect< float, 3 > view( 0, 0, 1 );
+        float x = ui->lineEdit_3->text().toFloat( &ok );
+        if ( ok == false ) {
+            x = 0;
+            ui->lineEdit_3->setText( "0" );
+        }
+        float y = ui->lineEdit_4->text().toFloat( &ok );
+        if ( ok == false ) {
+            y = 0;
+            ui->lineEdit_4->setText( "0" );
+        }
+        float z = ui->lineEdit_5->text().toFloat( &ok );
+        if ( ok == false ) {
+            z = 1;
+            ui->lineEdit_5->setText( "1" );
+        }
+        obj::vect< float, 3 > view( x, y, z );
+        float norm = view.norm( );
+        view[ 0 ] /= norm; x /= norm;
+        view[ 1 ] /= norm; y /= norm;
+        view[ 2 ] /= norm; z /= norm;
+        ui->lineEdit_3->setText( QString::number( x ) );
+        ui->lineEdit_4->setText( QString::number( y ) );
+        ui->lineEdit_5->setText( QString::number( z ) );
         obj::sphere s( img_size / 2, img_size / 2, img_size / 2 );
 
         temp.create( img_size, img_size, 1 );
@@ -569,7 +683,29 @@ void MainWindow::on_pushButton_clicked()
           img_size = 511;
           ui->lineEdit->setText("511");
         }
-        obj::vect< float, 3 > view( 0, 0, 1 );
+        float x = ui->lineEdit_3->text().toFloat( &ok );
+        if ( ok == false ) {
+            x = 0;
+            ui->lineEdit_3->setText( "0" );
+        }
+        float y = ui->lineEdit_4->text().toFloat( &ok );
+        if ( ok == false ) {
+            y = 0;
+            ui->lineEdit_4->setText( "0" );
+        }
+        float z = ui->lineEdit_5->text().toFloat( &ok );
+        if ( ok == false ) {
+            z = 1;
+            ui->lineEdit_5->setText( "1" );
+        }
+        obj::vect< float, 3 > view( x, y, z );
+        float norm = view.norm( );
+        view[ 0 ] /= norm; x /= norm;
+        view[ 1 ] /= norm; y /= norm;
+        view[ 2 ] /= norm; z /= norm;
+        ui->lineEdit_3->setText( QString::number( x ) );
+        ui->lineEdit_4->setText( QString::number( y ) );
+        ui->lineEdit_5->setText( QString::number( z ) );
         obj::sphere s( img_size / 2, img_size / 2, img_size / 2 );
 
         temp.create( img_size, img_size, 1 );
@@ -584,10 +720,108 @@ void MainWindow::on_pushButton_clicked()
     }
     if ( ui->radioButton_1->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
-        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000  );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
     delete central_image;
     central_image = hdrToQImage( temp );
     ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+  if ( LatLong.isEmpty( ) == true ) {
+      return;
+  }
+  hdr::image temp;
+  if ( ui->radioButton_6->isChecked( ) ) {
+      bool ok;
+      uint32_t img_size = ui->lineEdit->text( ).toUInt( &ok );
+      if ( ok == false ) {
+        img_size = 511;
+        ui->lineEdit->setText("511");
+      }
+      float x = ui->lineEdit_3->text().toFloat( &ok );
+      if ( ok == false ) {
+          x = 0;
+          ui->lineEdit_3->setText( "0" );
+      }
+      float y = ui->lineEdit_4->text().toFloat( &ok );
+      if ( ok == false ) {
+          y = 0;
+          ui->lineEdit_4->setText( "0" );
+      }
+      float z = ui->lineEdit_5->text().toFloat( &ok );
+      if ( ok == false ) {
+          z = 1;
+          ui->lineEdit_5->setText( "1" );
+      }
+      obj::vect< float, 3 > view( x, y, z );
+      float norm = view.norm( );
+      view[ 0 ] /= norm; x /= norm;
+      view[ 1 ] /= norm; y /= norm;
+      view[ 2 ] /= norm; z /= norm;
+      ui->lineEdit_3->setText( QString::number( x ) );
+      ui->lineEdit_4->setText( QString::number( y ) );
+      ui->lineEdit_5->setText( QString::number( z ) );
+      obj::sphere s( img_size / 2, img_size / 2, img_size / 2 );
+
+      temp.create( img_size, img_size, 1 );
+      temp.fill( 0 );
+      temp.mapLatLong( s, view, LatLong,
+        static_cast< float >( ui->horizontalSlider->value( ) ) / ( 100000 ) * LatLong.getWidth( ),
+        static_cast< float >( ui->verticalSlider->value( ) ) / ( 100000 ) * LatLong.getHeight( )
+      );
+      Sphere = temp;
+  }
+  if ( ui->radioButton_5->isChecked() ) {
+      bool ok;
+      uint32_t img_size = ui->lineEdit->text( ).toUInt( &ok );
+      if ( ok == false ) {
+        img_size = 511;
+        ui->lineEdit->setText("511");
+      }
+      float x = ui->lineEdit_3->text().toFloat( &ok );
+      if ( ok == false ) {
+          x = 0;
+          ui->lineEdit_3->setText( "0" );
+      }
+      float y = ui->lineEdit_4->text().toFloat( &ok );
+      if ( ok == false ) {
+          y = 0;
+          ui->lineEdit_4->setText( "0" );
+      }
+      float z = ui->lineEdit_5->text().toFloat( &ok );
+      if ( ok == false ) {
+          z = 1;
+          ui->lineEdit_5->setText( "1" );
+      }
+      obj::vect< float, 3 > view( x, y, z );
+      float norm = view.norm( );
+      view[ 0 ] /= norm; x /= norm;
+      view[ 1 ] /= norm; y /= norm;
+      view[ 2 ] /= norm; z /= norm;
+      ui->lineEdit_3->setText( QString::number( x ) );
+      ui->lineEdit_4->setText( QString::number( y ) );
+      ui->lineEdit_5->setText( QString::number( z ) );
+      obj::sphere s( img_size / 2, img_size / 2, img_size / 2 );
+
+      temp.create( img_size, img_size, 1 );
+      temp.fill( 0 );
+      temp.reflectanceSphere( s, view );
+
+      Reflection = temp;
+  }
+  if ( ui->radioButton_2->isChecked( ) ) {
+      temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
+      temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
+  }
+  if ( ui->radioButton_1->isChecked( ) ) {
+      temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+      temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000  );
+      temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
+  }
+  delete central_image;
+  central_image = hdrToQImage( temp );
+  ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
 }
