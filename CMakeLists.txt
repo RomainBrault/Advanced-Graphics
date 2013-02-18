@@ -20,29 +20,33 @@ SET(COMPILER_INFORMATION
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/src")
-include_directories("${PROJECT_BINARY_DIR}/part1")
-include_directories("${PROJECT_BINARY_DIR}/part2")
+include_directories("${PROJECT_BINARY_DIR}/part1.1")
+include_directories("${PROJECT_BINARY_DIR}/part1.2")
+include_directories("${PROJECT_BINARY_DIR}/part2.2")
 
 # add the executable
-file(GLOB_RECURSE source_header_files src/*.h* part1/*.h* part2/*.h*)
+file(GLOB_RECURSE source_header_files src/*.h* part*/*.h*)
 file(GLOB_RECURSE public_header_files include/*.h*)
 file(GLOB_RECURSE source_source_files src/*.cpp)
-file(GLOB_RECURSE source_part1 part1/*.cpp)
-file(GLOB_RECURSE source_part2 part2/*.cpp)
+file(GLOB_RECURSE source_part1.1 part1.1/*.cpp)
+file(GLOB_RECURSE source_part1.2 part1.2/*.cpp)
+file(GLOB_RECURSE source_part2.2 part2.2/*.cpp)
 
 file(
   GLOB_RECURSE
   source_UIS
   src/*.ui
-  part1/*.ui
-  part2/*.ui
+  part1.1/*.ui
+  part1.2/*.ui
+  part2.2/*.ui
 )
 file(
   GLOB_RECURSE
   source_RESOURCES
   src/*.qrc
-  part1/*.qrc
-  part2/*.qrc
+  part1.1/*.qrc
+  part1.2/*.qrc
+  part2.2/*.qrc
 )
 
 qt4_wrap_ui(source_UIS_H ${source_UIS})
@@ -50,15 +54,24 @@ qt4_add_resources(source_RESOURCES_CPP ${source_RESOURCES})
 
 add_executable(
     HDRimage
-    ${source_part1}
+    ${source_part1.1}
     ${source_source_files}
     ${source_MOC}
     ${source_UIS_H}
     ${source_RESOURCES_CPP}
 )
 add_executable(
-relightning
-    ${source_part2}
+    relightning
+    ${source_part1.2}
+    ${source_source_files}
+    ${source_MOC}
+    ${source_UIS_H}
+    ${source_RESOURCES_CPP}
+)
+
+add_executable(
+    envMap
+    ${source_part2.2}
     ${source_source_files}
     ${source_MOC}
     ${source_UIS_H}
@@ -67,6 +80,7 @@ relightning
 
 target_link_libraries(HDRimage ${QT_LIBRARIES})
 target_link_libraries(relightning ${QT_LIBRARIES})
+target_link_libraries(envMap ${QT_LIBRARIES})
 
 # Check endianess
 include(TestBigEndian)
@@ -85,6 +99,8 @@ foreach(flag ${CXX11_FEATURE_LIST})
     set_property(TARGET HDRimage
       APPEND PROPERTY COMPILE_DEFINITIONS ${flag})
     set_property(TARGET relightning
+      APPEND PROPERTY COMPILE_DEFINITIONS ${flag})
+    set_property(TARGET envMap
       APPEND PROPERTY COMPILE_DEFINITIONS ${flag})
 endforeach(flag ${CXX11_FEATURE_LIST})
 
@@ -109,10 +125,12 @@ configure_file (
 # add the install targets
 install(TARGETS HDRimage    DESTINATION bin)
 install(TARGETS relightning DESTINATION bin)
+install(TARGETS envMap DESTINATION bin)
 
 # does the application run
 add_test(HDRimageRuns    HDRimage)
 add_test(relightningRuns relightning)
+add_test(envMapRuns envMap)
 
 # build a CPack driven installer package
 include(InstallRequiredSystemLibraries)
