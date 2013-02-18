@@ -1,5 +1,16 @@
 *.pfm
 *.ppm
+*.png
+*.tex
+*.exe
+*.out
+*.data
+*.dat
+*.o
+Makefile
+*.log
+*.out
+*.aux
 *~
 bin/
 build/
