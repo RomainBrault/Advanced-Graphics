@@ -1,5 +1,6 @@
 #include <HDRimage.hpp>
 #include <algorithm>
+#include <Rand.hpp>
 
 #define hdr_in_range( x, y, z ) \
     std::min( std::max( x, y ), z )
@@ -373,6 +374,119 @@ image::negatif( void ) noexcept
                 m_max_pixel_chanel - m_data_2D[ i ][ wblock_index ].b[ k ];
         }
     }
+}
+
+obj::vect< uint32_t, 2 >*
+image::sampleEM( uint32_t n_sample, uint32_t H_SIZE, uint32_t seed ) noexcept
+{
+    obj::vect< uint32_t, 2 >* buf =
+        new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
+    if ( buf == nullptr ) {
+        return nullptr;
+    }
+    uint32_t* hist =
+        new (std::nothrow) uint32_t[ 4 * H_SIZE ];
+    if ( hist == nullptr ) {
+        delete [] buf;
+        return nullptr;
+    }
+    std::memset( hist, 0, 4 * H_SIZE * sizeof ( uint32_t ) );
+
+    uint32_t* hist_L   = hist;
+    uint32_t* hist_L_s = hist +     H_SIZE;
+    uint32_t* hist_X   = hist + 2 * H_SIZE;
+    uint32_t* hist_X_s = hist + 3 * H_SIZE;
+
+    uint32_t wblock_index( ( m_width - 1 ) / 8 );
+    uint32_t wblock_end( wblock_index * 8 );
+
+    float min_L = m_min_pixel_chanel;
+    float max_L = m_max_pixel_chanel;
+    float len   = max_L - min_L;
+
+    float const exp_rate_1(
+        H_SIZE / ( 3 * m_width * static_cast< float >( len ) )
+    );
+
+    float const exp_rate_2(
+        H_SIZE / ( 3 * static_cast< float >( len ) )
+    );
+
+    /* Y PDF. */
+    for ( uint32_t i = 0; i < m_height; ++i ) {
+        float grey_val = 0;
+        for ( uint32_t j = 0; j < wblock_index; ++j ) {
+            for ( uint32_t k = 0; k < 8; ++k ) {
+                grey_val +=
+                    m_data_2D[ i ][ j ].r[ k ] +
+                    m_data_2D[ i ][ j ].g[ k ] +
+                    m_data_2D[ i ][ j ].b[ k ];
+            }
+        }
+        for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+            grey_val +=
+                m_data_2D[ i ][ wblock_index ].r[ k ] +
+                m_data_2D[ i ][ wblock_index ].g[ k ] +
+                m_data_2D[ i ][ wblock_index ].b[ k ];
+        }
+        hist_L[ static_cast< uint32_t >(
+            grey_val * exp_rate_1 *
+            std::sin( M_PI * i / static_cast< float >( m_height ) )
+        ) ]++;
+    }
+
+    /* Y CDF. */
+    hist_L_s[ 0 ] = hist_L[ 0 ];
+    for ( uint32_t i = 1; i < H_SIZE; ++i ) {
+        hist_L_s[ i ] = hist_L_s[ i - 1 ] + hist_L[ i ];
+    }
+
+    rnd::xorShift rng( seed );
+    for ( uint32_t i = 0; i < n_sample; ++i ) {
+        uint32_t line_idx = static_cast< uint32_t >( hist_L_s[
+            rng.rand( H_SIZE )
+        ] - 1 );
+        std::memset( hist_X, 0, H_SIZE * sizeof ( uint32_t ) );
+
+        std::cout << line_idx << std::endl;
+
+        /* X PDF */
+        for ( uint32_t j = 0; j < wblock_index; ++j ) {
+            for ( uint32_t k = 0; k < 8; ++k ) {
+                hist_X[
+                    static_cast< uint32_t >(
+                        m_data_2D[ line_idx ][ j ].r[ k ] +
+                        m_data_2D[ line_idx ][ j ].g[ k ] +
+                        m_data_2D[ line_idx ][ j ].b[ k ]
+                    * exp_rate_2 )
+                ]++;
+            }
+        }
+        for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+            hist_X[
+                static_cast< uint32_t >(
+                    m_data_2D[ line_idx ][ wblock_index ].r[ k ] +
+                    m_data_2D[ line_idx ][ wblock_index ].g[ k ] +
+                    m_data_2D[ line_idx ][ wblock_index ].b[ k ]
+                * exp_rate_2 )
+            ]++;
+        }
+
+        /* X CDF. */
+        hist_X_s[ 0 ] = hist_X[ 0 ];
+        for ( uint32_t i = 1; i < H_SIZE; ++i ) {
+            hist_X_s[ i ] = hist_X_s[ i - 1 ] + hist_X[ i ];
+        }
+
+        uint32_t pix_idx = static_cast< uint32_t >( hist_X_s[
+            rng.rand( H_SIZE )
+        ] - 1 );
+
+        buf[ i ][ 0 ] = line_idx;
+        buf[ i ][ 1 ] = pix_idx;
+    }
+
+    return buf;
 }
 
 void

@@ -176,7 +176,12 @@ public:
         uint32_t, uint32_t, float &, float &, float &
     ) const noexcept;
 
-    void negatif ( void                        ) noexcept;
+    void
+    negatif ( void ) noexcept;
+
+    obj::vect< uint32_t, 2 >*
+    sampleEM( uint32_t, uint32_t, uint32_t = 0 ) noexcept;
+
     void median  ( image const &, uint32_t = 3 ) noexcept;
     void median  (                uint32_t = 3 ) noexcept;
 
