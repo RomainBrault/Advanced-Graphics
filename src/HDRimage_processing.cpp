@@ -210,7 +210,6 @@ image::circleFilled(
     obj::sphere const & s, float r, float g, float b
 ) noexcept
 {
-
     int32_t width_start  = s.getCenterX( ) - s.getRadius( );
     int32_t width_stop   = s.getCenterX( ) + s.getRadius( );
     int32_t height_start = s.getCenterY( ) - s.getRadius( );
