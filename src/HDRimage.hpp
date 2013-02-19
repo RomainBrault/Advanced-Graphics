@@ -180,13 +180,13 @@ public:
     negatif ( void ) noexcept;
 
     obj::vect< uint32_t, 2 >*
-    sampleEM( uint32_t, uint32_t, uint32_t = 0 ) noexcept;
+    sampleEM( uint32_t, uint32_t = 0 ) noexcept;
 
     void median  ( image const &, uint32_t = 3 ) noexcept;
     void median  (                uint32_t = 3 ) noexcept;
 
     void circle(
-        uint32_t, uint32_t, uint32_t,
+        obj::sphere const & s,
         float, float, float
     ) noexcept;
     void line(
@@ -194,7 +194,7 @@ public:
         float, float, float
     ) noexcept;
     void circleFilled(
-        uint32_t, uint32_t, uint32_t,
+        obj::sphere const & s,
         float, float, float
     ) noexcept;
 

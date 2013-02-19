@@ -174,16 +174,18 @@ image::plot4Lines(
 
 void
 image::circle(
-    uint32_t cx, uint32_t cy, uint32_t radius,
+    obj::sphere const & s,
     float r, float g, float b
 ) noexcept
 {
-    if ( radius == 0 ) {
+    if ( s.getRadius( ) == 0 ) {
         return;
     }
 
-    int32_t error = -radius;
-    uint32_t x = radius;
+    int32_t error = -s.getRadius( );
+    uint32_t x = s.getRadius( );
+    uint32_t cx = s.getCenterX( );
+    uint32_t cy = s.getCenterY( );
     uint32_t y = 0;
 
     while ( x > y )
@@ -205,33 +207,132 @@ image::circle(
 
 void
 image::circleFilled(
-    uint32_t cx, uint32_t cy, uint32_t radius,
-    float r, float g, float b
+    obj::sphere const & s, float r, float g, float b
 ) noexcept
 {
-    if ( radius == 0 ) {
+
+    int32_t width_start  = s.getCenterX( ) - s.getRadius( );
+    int32_t width_stop   = s.getCenterX( ) + s.getRadius( );
+    int32_t height_start = s.getCenterY( ) - s.getRadius( );
+    int32_t height_stop  = s.getCenterY( ) + s.getRadius( );
+    int32_t rs = std::sqr( s.getRadius( ) );
+    int32_t wblock_index_stop ( width_stop  / 8 );
+    int32_t wblock_index_start( width_start / 8 );
+    int32_t wblock_end( wblock_index_stop * 8 );
+
+    if (
+        (
+            static_cast< int32_t >( s.getCenterX( ) + s.getRadius( ) ) >=
+            static_cast< int32_t >( m_width ) ) ||
+        (
+            static_cast< int32_t >( s.getCenterX( ) ) -
+            static_cast< int32_t >( s.getRadius( )  ) <= 0
+        ) ||
+        (
+            static_cast< int32_t >( s.getCenterY( ) + s.getRadius( ) ) >=
+            static_cast< int32_t >( m_height ) ) ||
+        (
+            static_cast< int32_t >( s.getCenterY( ) ) -
+            static_cast< int32_t >(s.getRadius( ) ) <= 0
+        )
+    ) {
+        for ( int32_t i = height_start; i <= height_stop; ++i ) {
+            for (
+                int32_t j = wblock_index_start; j <= wblock_index_stop; ++j
+            ) {
+                int32_t jb = j * 8;
+                int32_t k_start =
+                    ( j > wblock_index_start ) ? 0 : ( width_start % 8 );
+                int32_t k_stop =
+                    ( j < wblock_index_stop ) ? 7 : ( width_stop % 8 );
+                for ( int32_t k = k_start; k <= k_stop; ++k ) {
+                    int32_t y_rel = i      - s.getCenterY( );
+                    int32_t x_rel = jb + k - s.getCenterX( );
+                    if (
+                        ( ( std::sqr( x_rel ) + std::sqr( y_rel ) ) <= rs ) &&
+                        (
+                            static_cast< int32_t >( i ) + y_rel <
+                            static_cast< int32_t >( m_height )
+                        ) &&
+                        (
+                            static_cast< int32_t >( i ) + y_rel >= 0
+                        ) &&
+                        (
+                          static_cast< int32_t >( jb + k ) + x_rel <
+                          static_cast< int32_t >( m_width )
+                        ) &&
+                        (
+                          static_cast< int32_t >( jb + k ) + x_rel >= 0
+                        )
+                    ) {
+                        m_data_2D[ i ][ j ].r[ k ] = r;
+                        m_data_2D[ i ][ j ].g[ k ] = g;
+                        m_data_2D[ i ][ j ].b[ k ] = b;
+                    }
+                }
+            }
+            int32_t jb = wblock_index_stop * 8;
+            for (
+                int32_t k = 0; wblock_end + k < width_stop; ++k
+            ) {
+                int32_t y_rel = i      - s.getCenterY( );
+                int32_t x_rel = jb + k - s.getCenterX( );
+                if (
+                    ( ( std::sqr( x_rel ) + std::sqr( y_rel ) ) <= rs ) &&
+                    (
+                        static_cast< int32_t >( i ) + y_rel <
+                        static_cast< int32_t >( m_height )
+                    ) &&
+                    (
+                        static_cast< int32_t >( i ) + y_rel >= 0
+                    ) &&
+                    (
+                      static_cast< int32_t >( jb + k ) + x_rel <
+                      static_cast< int32_t >( m_width )
+                    ) &&
+                    (
+                      static_cast< int32_t >( jb + k ) + x_rel >= 0
+                    )
+                ) {
+                    m_data_2D[ i ][ wblock_index_stop ].r[ k ] = r;
+                    m_data_2D[ i ][ wblock_index_stop ].g[ k ] = g;
+                    m_data_2D[ i ][ wblock_index_stop ].b[ k ] = b;
+                }
+            }
+        }
         return;
     }
 
-    int32_t error = -radius;
-    uint32_t x = radius;
-    uint32_t y = 0;
-
-    while ( x > y )
-    {
-        plot4Lines( cx, cy, x, y, r, g, b );
-
-        error += y;
-        ++y;
-        error += y;
-        if ( error >= 0 )
-        {
-            error -= x;
-            --x;
-            error -= x;
+    for ( int32_t i = height_start; i <= height_stop; ++i ) {
+        for (
+            int32_t j = wblock_index_start; j <= wblock_index_stop; ++j
+        ) {
+            int32_t jb = j * 8;
+            int32_t k_start =
+                ( j > wblock_index_start ) ? 0 : ( width_start % 8 );
+            int32_t k_stop =
+                ( j < wblock_index_stop ) ? 7 : ( width_stop % 8 );
+            for ( int32_t k = k_start; k <= k_stop; ++k ) {
+                int32_t y_rel = i      - s.getCenterY( );
+                int32_t x_rel = jb + k - s.getCenterX( );
+                if ( ( std::sqr( x_rel ) + std::sqr( y_rel ) ) <= rs ) {
+                    m_data_2D[ i ][ j ].r[ k ] = r;
+                    m_data_2D[ i ][ j ].g[ k ] = g;
+                    m_data_2D[ i ][ j ].b[ k ] = b;
+                }
+            }
+        }
+        int32_t jb = wblock_index_stop * 8;
+        for ( int32_t k = 0; wblock_end + k <= width_stop; ++k ) {
+            int32_t y_rel = i      - s.getCenterY( );
+            int32_t x_rel = jb + k - s.getCenterX( );
+            if ( ( std::sqr( x_rel ) + std::sqr( y_rel ) ) <= rs ) {
+                m_data_2D[ i ][ wblock_index_stop ].r[ k ] = r;
+                m_data_2D[ i ][ wblock_index_stop ].g[ k ] = g;
+                m_data_2D[ i ][ wblock_index_stop ].b[ k ] = b;
+            }
         }
     }
-    plot2Lines( cx, cy, x, y, r, g, b );
 }
 
 void
@@ -376,26 +477,46 @@ image::negatif( void ) noexcept
     }
 }
 
+static uint32_t
+findInverse( float const * buf, uint32_t length, float val ) {
+    /* Assume the function (buf) is non decreasing.
+     * ( ie: buf[ i + 1 ] >= buf[ i ] )
+     */
+    for ( uint32_t i = 1; i < length; ++i ) {
+        if ( buf[ i ] > val ) {
+            return std::abs( buf[ i - 1 ] - val ) <
+                   std::abs( buf[ i     ] - val ) ? i - 1 : i;
+        }
+    }
+    return std::abs( buf[ length - 2 ] - val ) <
+           std::abs( buf[ length - 1 ] - val ) ? length - 2 : length - 1;
+}
+
+static INLINE float
+getMaxHist( float const * buf, uint32_t length ) {
+    /* Since Buf in non decreasing, return last value. */
+    return buf[ length - 1 ];
+}
+
 obj::vect< uint32_t, 2 >*
-image::sampleEM( uint32_t n_sample, uint32_t H_SIZE, uint32_t seed ) noexcept
+image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
 {
     obj::vect< uint32_t, 2 >* buf =
         new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
     if ( buf == nullptr ) {
         return nullptr;
     }
-    uint32_t* hist =
-        new (std::nothrow) uint32_t[ 4 * H_SIZE ];
+    float* hist =
+        new (std::nothrow) float[ 2 * m_height + 2 * m_width ];
     if ( hist == nullptr ) {
         delete [] buf;
         return nullptr;
     }
-    std::memset( hist, 0, 4 * H_SIZE * sizeof ( uint32_t ) );
 
-    uint32_t* hist_L   = hist;
-    uint32_t* hist_L_s = hist +     H_SIZE;
-    uint32_t* hist_X   = hist + 2 * H_SIZE;
-    uint32_t* hist_X_s = hist + 3 * H_SIZE;
+    float* hist_L   = hist;
+    float* hist_L_s = hist +     m_height;
+    float* hist_X   = hist + 2 * m_height;
+    float* hist_X_s = hist + 2 * m_height + m_width;
 
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
@@ -405,11 +526,11 @@ image::sampleEM( uint32_t n_sample, uint32_t H_SIZE, uint32_t seed ) noexcept
     float len   = max_L - min_L;
 
     float const exp_rate_1(
-        H_SIZE / ( 3 * m_width * static_cast< float >( len ) )
+        1 / ( 3 * m_width * static_cast< float >( len ) )
     );
 
     float const exp_rate_2(
-        H_SIZE / ( 3 * static_cast< float >( len ) )
+        1 / ( 3 * static_cast< float >( len ) )
     );
 
     /* Y PDF. */
@@ -429,58 +550,54 @@ image::sampleEM( uint32_t n_sample, uint32_t H_SIZE, uint32_t seed ) noexcept
                 m_data_2D[ i ][ wblock_index ].g[ k ] +
                 m_data_2D[ i ][ wblock_index ].b[ k ];
         }
-        hist_L[ static_cast< uint32_t >(
+        hist_L[ i ] =
             grey_val * exp_rate_1 *
-            std::sin( M_PI * i / static_cast< float >( m_height ) )
-        ) ]++;
+            std::sin( M_PI * ( 1 - i / static_cast< float >( m_height ) ) );
     }
 
     /* Y CDF. */
     hist_L_s[ 0 ] = hist_L[ 0 ];
-    for ( uint32_t i = 1; i < H_SIZE; ++i ) {
+    for ( uint32_t i = 1; i < m_height; ++i ) {
         hist_L_s[ i ] = hist_L_s[ i - 1 ] + hist_L[ i ];
     }
 
     rnd::xorShift rng( seed );
     for ( uint32_t i = 0; i < n_sample; ++i ) {
-        uint32_t line_idx = static_cast< uint32_t >( hist_L_s[
-            rng.rand( H_SIZE )
-        ] - 1 );
-        std::memset( hist_X, 0, H_SIZE * sizeof ( uint32_t ) );
-
-        std::cout << line_idx << std::endl;
+        uint32_t line_idx =
+            findInverse( hist_L_s, m_height,
+                rng.rand( getMaxHist( hist_L_s, m_height ) )
+            );
 
         /* X PDF */
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
+            uint32_t jb = j * 8;
             for ( uint32_t k = 0; k < 8; ++k ) {
-                hist_X[
-                    static_cast< uint32_t >(
-                        m_data_2D[ line_idx ][ j ].r[ k ] +
-                        m_data_2D[ line_idx ][ j ].g[ k ] +
-                        m_data_2D[ line_idx ][ j ].b[ k ]
-                    * exp_rate_2 )
-                ]++;
+                hist_X[ jb + k ] =
+                    ( m_data_2D[ line_idx ][ j ].r[ k ] +
+                      m_data_2D[ line_idx ][ j ].g[ k ] +
+                      m_data_2D[ line_idx ][ j ].b[ k ] )
+                    * exp_rate_2;
             }
         }
+        uint32_t jb = wblock_index * 8;
         for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
-            hist_X[
-                static_cast< uint32_t >(
-                    m_data_2D[ line_idx ][ wblock_index ].r[ k ] +
-                    m_data_2D[ line_idx ][ wblock_index ].g[ k ] +
-                    m_data_2D[ line_idx ][ wblock_index ].b[ k ]
-                * exp_rate_2 )
-            ]++;
+            hist_X[ jb + k ] = (
+                  m_data_2D[ line_idx ][ wblock_index ].r[ k ] +
+                  m_data_2D[ line_idx ][ wblock_index ].g[ k ] +
+                  m_data_2D[ line_idx ][ wblock_index ].b[ k ] )
+                * exp_rate_2;
         }
 
         /* X CDF. */
         hist_X_s[ 0 ] = hist_X[ 0 ];
-        for ( uint32_t i = 1; i < H_SIZE; ++i ) {
-            hist_X_s[ i ] = hist_X_s[ i - 1 ] + hist_X[ i ];
+        for ( uint32_t l = 1; l < m_width; ++l ) {
+            hist_X_s[ l ] = hist_X_s[ l - 1 ] + hist_X[ l ];
         }
 
-        uint32_t pix_idx = static_cast< uint32_t >( hist_X_s[
-            rng.rand( H_SIZE )
-        ] - 1 );
+        uint32_t pix_idx =
+            findInverse( hist_X_s, m_width,
+                rng.rand( getMaxHist( hist_X_s, m_width ) )
+            );
 
         buf[ i ][ 0 ] = line_idx;
         buf[ i ][ 1 ] = pix_idx;
@@ -889,9 +1006,9 @@ image::reflectanceSphere(
     }
 
     uint32_t width_start  = s.getCenterX( ) - s.getRadius( );
-    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( );
+    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( ) + 1;
     uint32_t height_start = s.getCenterY( ) - s.getRadius( );
-    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( );
+    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( ) + 1;
     uint32_t wblock_index_stop ( ( width_stop  - 1 ) / 8 );
     uint32_t wblock_index_start( ( width_start     ) / 8 );
     uint32_t wblock_end( wblock_index_stop * 8 );
@@ -942,17 +1059,17 @@ image::mapLatLong(
     m_min_pixel_chanel = im.m_min_pixel_chanel;
 
     uint32_t width_start  = s.getCenterX( ) - s.getRadius( );
-    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( );
+    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( ) + 1;
     uint32_t height_start = s.getCenterY( ) - s.getRadius( );
-    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( );
-    uint32_t wblock_index_stop ( ( width_stop  - 1 ) / 8 );
-    uint32_t wblock_index_start( ( width_start     ) / 8 );
+    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( ) + 1;
+    uint32_t wblock_index_stop ( ( width_stop - 1 ) / 8 );
+    uint32_t wblock_index_start( width_start        / 8 );
     uint32_t wblock_end( wblock_index_stop * 8 );
 
 #if defined( GNU_CXX_COMPILER )
 #pragma omp parallel for
 #endif
-    for ( uint32_t i = height_start; i < height_stop; ++i ) {
+    for ( uint32_t i = height_start; i <= height_stop; ++i ) {
         for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
             uint32_t jb = j * 8;
             for ( uint32_t k = 0; k < 8; ++k ) {

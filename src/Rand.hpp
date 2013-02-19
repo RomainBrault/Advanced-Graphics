@@ -27,6 +27,7 @@ private:
     uint32_t m_x;
     uint32_t m_y;
     uint32_t m_z;
+    uint32_t m_w;
 };
 
 template < typename T >
