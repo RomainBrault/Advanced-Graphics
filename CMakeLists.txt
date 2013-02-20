@@ -31,6 +31,7 @@ file(GLOB_RECURSE source_source_files src/*.cpp)
 file(GLOB_RECURSE source_part1.1 part1.1/*.cpp)
 file(GLOB_RECURSE source_part1.2 part1.2/*.cpp)
 file(GLOB_RECURSE source_part2.2 part2.2/*.cpp)
+file(GLOB_RECURSE source_part2.3 part2.3/*.cpp)
 
 file(
   GLOB_RECURSE
@@ -72,6 +73,15 @@ add_executable(
 add_executable(
     envMap
     ${source_part2.2}
+    ${source_source_files}
+    ${source_MOC}
+    ${source_UIS_H}
+    ${source_RESOURCES_CPP}
+)
+
+add_executable(
+    phongSampling
+    ${source_part2.3}
     ${source_source_files}
     ${source_MOC}
     ${source_UIS_H}
