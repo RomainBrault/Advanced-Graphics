@@ -23,6 +23,8 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 include_directories("${PROJECT_BINARY_DIR}/part1.1")
 include_directories("${PROJECT_BINARY_DIR}/part1.2")
 include_directories("${PROJECT_BINARY_DIR}/part2.2")
+include_directories("${PROJECT_BINARY_DIR}/part2.3")
+
 
 # add the executable
 file(GLOB_RECURSE source_header_files src/*.h* part*/*.h*)
@@ -40,6 +42,7 @@ file(
   part1.1/*.ui
   part1.2/*.ui
   part2.2/*.ui
+  part2.3/*.ui
 )
 file(
   GLOB_RECURSE
@@ -48,6 +51,7 @@ file(
   part1.1/*.qrc
   part1.2/*.qrc
   part2.2/*.qrc
+  part2.3/*.qrc
 )
 
 qt4_wrap_ui(source_UIS_H ${source_UIS})
@@ -62,7 +66,7 @@ add_executable(
     ${source_RESOURCES_CPP}
 )
 add_executable(
-    relightning
+    relighting
     ${source_part1.2}
     ${source_source_files}
     ${source_MOC}
@@ -89,8 +93,9 @@ add_executable(
 )
 
 target_link_libraries(HDRimage ${QT_LIBRARIES})
-target_link_libraries(relightning ${QT_LIBRARIES})
+target_link_libraries(relighting ${QT_LIBRARIES})
 target_link_libraries(envMap ${QT_LIBRARIES})
+target_link_libraries(phongSampling ${QT_LIBRARIES})
 
 # Check endianess
 include(TestBigEndian)
@@ -108,7 +113,7 @@ include("${CMAKE_SOURCE_DIR}/CMake/cpp11/CheckCXX11Features.cmake")
 foreach(flag ${CXX11_FEATURE_LIST})
     set_property(TARGET HDRimage
       APPEND PROPERTY COMPILE_DEFINITIONS ${flag})
-    set_property(TARGET relightning
+    set_property(TARGET relighting
       APPEND PROPERTY COMPILE_DEFINITIONS ${flag})
     set_property(TARGET envMap
       APPEND PROPERTY COMPILE_DEFINITIONS ${flag})
@@ -134,13 +139,16 @@ configure_file (
 
 # add the install targets
 install(TARGETS HDRimage    DESTINATION bin)
-install(TARGETS relightning DESTINATION bin)
+install(TARGETS relighting DESTINATION bin)
 install(TARGETS envMap DESTINATION bin)
+install(TARGETS phongSampling DESTINATION bin)
+
 
 # does the application run
 add_test(HDRimageRuns    HDRimage)
-add_test(relightningRuns relightning)
+add_test(relightingRuns relighting)
 add_test(envMapRuns envMap)
+add_test(phongSamplingRuns phongSampling)
 
 # build a CPack driven installer package
 include(InstallRequiredSystemLibraries)

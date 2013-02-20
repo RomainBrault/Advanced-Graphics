@@ -1,31 +1,42 @@
 #ifndef __PHONG__HPP__
 #define __PHONG__HPP__
 
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <Rand.hpp>
+#include<HDRimage.hpp>
 
-typedef std::vector<float*> Samples;
+#include <vector>
+#include <ctime>
+#include <Sphere.hpp>
+#include <Rand.hpp>
 
 namespace phong {
 
     class Phong {
     public:
 	Phong(uint32_t s, float ks = 0.5, float kd = 0.5);
-	Samples generateSamples(uint32_t nb_samples);
+	~Phong();
+	void generateSamples(uint32_t nb_samples);
+	INLINE uint32_t getTheta(uint32_t i, uint32_t height);
+	INLINE uint32_t getPhi(uint32_t i, uint32_t width);
 
     private:
-	float* sample();
-	float* diffuseSample();
-	float* specularSample();
-	float randf(float inf, float sup);
+	void sample(float& theta, float& phi);
+	void diffuseSample(float& theta, float& phi);
+	void specularSample(float& theta, float& phi);
 
 	float ks;
 	float kd;
 	uint32_t s;
-	static rnd::xorShift rng;
+	obj::vect<float, 2>* samples;
+	rnd::xorShift rng;
 };
+
+    uint32_t Phong::getTheta(uint32_t i, uint32_t height) {
+	return static_cast<uint32_t>(samples[ i ][ 0 ] / M_PI * height);
+    }
+
+    uint32_t Phong::getPhi(uint32_t i, uint32_t width) {
+	return static_cast<uint32_t>(samples[ i ][ 1 ] / (2 * M_PI) * width);
+    }
 
 }
 
