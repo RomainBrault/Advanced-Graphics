@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"Com",
+				"COMM_WORLD"
+			],
+			[
 				"lo",
 				"loop_min"
 			],
@@ -510,10 +514,6 @@
 			[
 				"nod",
 				"node1"
-			],
-			[
-				"int",
-				"int32_t"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2.2/question1.cpp",
 			"settings":
 			{
-				"buffer_size": 973,
+				"buffer_size": 974,
 				"line_ending": "Unix"
 			}
 		},
@@ -539,7 +539,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/CMakeLists.txt",
 			"settings":
 			{
-				"buffer_size": 3989,
+				"buffer_size": 4189,
 				"line_ending": "Unix"
 			}
 		},
@@ -587,15 +587,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp",
 			"settings":
 			{
-				"buffer_size": 39414,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/romain/Dropbox/Imperial College/Parallel-Algorithm/pi.cpp",
-			"settings":
-			{
-				"buffer_size": 3059,
+				"buffer_size": 39413,
 				"line_ending": "Unix"
 			}
 		},
@@ -611,7 +603,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/Rand.hpp",
 			"settings":
 			{
-				"buffer_size": 905,
+				"buffer_size": 906,
 				"line_ending": "Unix"
 			}
 		},
@@ -668,11 +660,12 @@
 	},
 	"file_history":
 	[
-		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/install.sh",
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/doc/report.tex",
-		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
-		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/piwrap.cpp",
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/pi.cpp",
+		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/piwrap.cpp",
+		"/var/tmp/pi.cpp",
+		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/install.sh",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/rand.hpp",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/rand.cpp",
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/doc/data/res6_100.data",
@@ -794,8 +787,7 @@
 		"/home/romain/Dropbox/Imperial College/Advanced Graphics/Report/Specs/CO417-HW1/ExampleCode/loadPNM.cpp",
 		"/var/tmp/pnm.c",
 		"/home/romain/Dropbox/Imperial College/Advanced Graphics/build/HDRimageConfig.hpp",
-		"/home/romain/Dropbox/Imperial College/Advanced Graphics/include/matrix/Matrix.hpp",
-		"/home/romain/Dropbox/Imperial College/Advanced Graphics/include/matrix/host/class/MatrixClass.hpp"
+		"/home/romain/Dropbox/Imperial College/Advanced Graphics/include/matrix/Matrix.hpp"
 	],
 	"find":
 	{
@@ -813,6 +805,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"double",
+			"LAST_ERROR",
+			"Finalise",
+			"new",
+			"== 0",
+			"MPI",
+			"real",
 			"func",
 			"P_SIZE",
 			"wblock_index_stop",
@@ -933,14 +932,7 @@
 			"mult",
 			"dot",
 			"create",
-			"copy",
-			"opera",
-			"operator=",
-			"template< uint32_t DIM >",
-			"vect< 3 >",
-			"vect",
-			"point",
-			"Refl"
+			"copy"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -948,6 +940,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"ERR_LASTCODE",
+			"Finalize",
 			"part1.2",
 			"part1.1",
 			"Run time (seconds)",
@@ -1073,9 +1067,7 @@
 			"ADD_library",
 			"SET_TARGET_PROPERTIES",
 			"OPTION",
-			"FILE",
-			"CONFIGURE_FILE",
-			"CMAKE_MINIMUM_REQUIRED"
+			"FILE"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1086,7 +1078,7 @@
 	"groups":
 	[
 		{
-			"selected": 9,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -1094,15 +1086,15 @@
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2.2/question1.cpp",
 					"settings":
 					{
-						"buffer_size": 973,
+						"buffer_size": 974,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								831,
-								831
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1150,15 +1142,15 @@
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/CMakeLists.txt",
 					"settings":
 					{
-						"buffer_size": 3989,
+						"buffer_size": 4189,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3693,
-								3693
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1185,8 +1177,8 @@
 						"selection":
 						[
 							[
-								666,
-								666
+								143,
+								143
 							]
 						],
 						"settings":
@@ -1314,7 +1306,7 @@
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp",
 					"settings":
 					{
-						"buffer_size": 39414,
+						"buffer_size": 39413,
 						"regions":
 						{
 						},
@@ -1336,45 +1328,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 16170.0,
+						"translation.y": 16125.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 9,
-					"file": "/home/romain/Dropbox/Imperial College/Parallel-Algorithm/pi.cpp",
-					"settings":
-					{
-						"buffer_size": 3059,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2830,
-								2830
-							]
-						],
-						"settings":
-						{
-							"rulers":
-							[
-								80
-							],
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1290.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/AdvancedGraphicsConfig.hpp.in",
 					"settings":
 					{
@@ -1400,19 +1360,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 10,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/Rand.hpp",
 					"settings":
 					{
-						"buffer_size": 905,
+						"buffer_size": 906,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								536,
-								536
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1432,7 +1392,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 11,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/Rand.cpp",
 					"settings":
 					{

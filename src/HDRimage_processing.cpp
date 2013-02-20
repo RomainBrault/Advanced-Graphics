@@ -500,22 +500,137 @@ getMaxHist( float const * buf, uint32_t length ) {
 obj::vect< uint32_t, 2 >*
 image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
 {
+    if ( n_sample < m_height ) {
+        obj::vect< uint32_t, 2 >* buf =
+            new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
+        if ( buf == nullptr ) {
+            return nullptr;
+        }
+        float* hist =
+            new (std::nothrow) float[ 2 * m_height + 2 * m_width ];
+        if ( hist == nullptr ) {
+            delete [] buf;
+            return nullptr;
+        }
+
+        float* hist_L   = hist;
+        float* hist_L_s = hist +     m_height;
+        float* hist_X   = hist + 2 * m_height;
+        float* hist_X_s = hist + 2 * m_height + m_width;
+
+        uint32_t wblock_index( ( m_width - 1 ) / 8 );
+        uint32_t wblock_end( wblock_index * 8 );
+
+        float min_L = m_min_pixel_chanel;
+        float max_L = m_max_pixel_chanel;
+        float len   = max_L - min_L;
+
+        float const exp_rate_1(
+            1 / ( 3 * m_width * static_cast< float >( len ) )
+        );
+
+        float const exp_rate_2(
+            1 / ( 3 * static_cast< float >( len ) )
+        );
+
+        /* Y PDF. */
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            float grey_val = 0;
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    grey_val +=
+                        m_data_2D[ i ][ j ].r[ k ] +
+                        m_data_2D[ i ][ j ].g[ k ] +
+                        m_data_2D[ i ][ j ].b[ k ];
+                }
+            }
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                grey_val +=
+                    m_data_2D[ i ][ wblock_index ].r[ k ] +
+                    m_data_2D[ i ][ wblock_index ].g[ k ] +
+                    m_data_2D[ i ][ wblock_index ].b[ k ];
+            }
+            hist_L[ i ] =
+                grey_val * exp_rate_1 *
+                std::sin( M_PI * ( 1 - i / static_cast< float >( m_height ) ) );
+        }
+
+        /* Y CDF. */
+        hist_L_s[ 0 ] = hist_L[ 0 ];
+        for ( uint32_t i = 1; i < m_height; ++i ) {
+            hist_L_s[ i ] = hist_L_s[ i - 1 ] + hist_L[ i ];
+        }
+
+        rnd::xorShift rng( seed );
+        for ( uint32_t i = 0; i < n_sample; ++i ) {
+            uint32_t line_idx =
+                findInverse( hist_L_s, m_height,
+                    rng.rand( getMaxHist( hist_L_s, m_height ) )
+                );
+
+            /* X PDF */
+            for ( uint32_t j = 0; j < wblock_index; ++j ) {
+                uint32_t jb = j * 8;
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                    hist_X[ jb + k ] =
+                        ( m_data_2D[ line_idx ][ j ].r[ k ] +
+                          m_data_2D[ line_idx ][ j ].g[ k ] +
+                          m_data_2D[ line_idx ][ j ].b[ k ] )
+                        * exp_rate_2;
+                }
+            }
+            uint32_t jb = wblock_index * 8;
+            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+                hist_X[ jb + k ] = (
+                      m_data_2D[ line_idx ][ wblock_index ].r[ k ] +
+                      m_data_2D[ line_idx ][ wblock_index ].g[ k ] +
+                      m_data_2D[ line_idx ][ wblock_index ].b[ k ] )
+                    * exp_rate_2;
+            }
+
+            /* X CDF. */
+            hist_X_s[ 0 ] = hist_X[ 0 ];
+            for ( uint32_t l = 1; l < m_width; ++l ) {
+                hist_X_s[ l ] = hist_X_s[ l - 1 ] + hist_X[ l ];
+            }
+
+            uint32_t pix_idx =
+                findInverse( hist_X_s, m_width,
+                    rng.rand( getMaxHist( hist_X_s, m_width ) )
+                );
+
+            buf[ i ][ 0 ] = line_idx;
+            buf[ i ][ 1 ] = pix_idx;
+        }
+
+        return buf;
+    }
+
     obj::vect< uint32_t, 2 >* buf =
         new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
     if ( buf == nullptr ) {
         return nullptr;
     }
     float* hist =
-        new (std::nothrow) float[ 2 * m_height + 2 * m_width ];
+        new (std::nothrow) float[ 2 * m_height + 2 * m_height * m_width ];
     if ( hist == nullptr ) {
         delete [] buf;
         return nullptr;
     }
 
     float* hist_L   = hist;
-    float* hist_L_s = hist +     m_height;
-    float* hist_X   = hist + 2 * m_height;
-    float* hist_X_s = hist + 2 * m_height + m_width;
+    float* hist_L_s = hist + m_height;
+    float** hist_X  = new float*[ 2 * m_height ];
+    if ( hist_X == nullptr ) {
+        delete [] buf;
+        delete [] hist;
+        return nullptr;
+    }
+    float** hist_X_s = hist_X + m_height;
+    for ( uint32_t i = 0; i < m_height; ++i ) {
+        hist_X  [ i ] = hist + 2 * m_height + ( 2 * i     ) * m_width;
+        hist_X_s[ i ] = hist + 2 * m_height + ( 2 * i + 1 ) * m_width;
+    }
 
     uint32_t wblock_index( ( m_width - 1 ) / 8 );
     uint32_t wblock_end( wblock_index * 8 );
@@ -560,42 +675,44 @@ image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
         hist_L_s[ i ] = hist_L_s[ i - 1 ] + hist_L[ i ];
     }
 
+    for ( uint32_t i = 0; i < m_height; ++i ) {
+
+        /* X PDF */
+        for ( uint32_t j = 0; j < wblock_index; ++j ) {
+            uint32_t jb = j * 8;
+            for ( uint32_t k = 0; k < 8; ++k ) {
+                hist_X[ i ][ jb + k ] =
+                    ( m_data_2D[ i ][ j ].r[ k ] +
+                      m_data_2D[ i ][ j ].g[ k ] +
+                      m_data_2D[ i ][ j ].b[ k ] )
+                    * exp_rate_2;
+            }
+        }
+        uint32_t jb = wblock_index * 8;
+        for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+            hist_X[ i ][ jb + k ] = (
+                  m_data_2D[ i ][ wblock_index ].r[ k ] +
+                  m_data_2D[ i ][ wblock_index ].g[ k ] +
+                  m_data_2D[ i ][ wblock_index ].b[ k ] )
+                * exp_rate_2;
+        }
+
+        /* X CDF. */
+        hist_X_s[ i ][ 0 ] = hist_X[ i ][ 0 ];
+        for ( uint32_t l = 1; l < m_width; ++l ) {
+            hist_X_s[ i ][ l ] = hist_X_s[ i ][ l - 1 ] + hist_X[ i ][ l ];
+        }
+    }
+
     rnd::xorShift rng( seed );
     for ( uint32_t i = 0; i < n_sample; ++i ) {
         uint32_t line_idx =
             findInverse( hist_L_s, m_height,
                 rng.rand( getMaxHist( hist_L_s, m_height ) )
             );
-
-        /* X PDF */
-        for ( uint32_t j = 0; j < wblock_index; ++j ) {
-            uint32_t jb = j * 8;
-            for ( uint32_t k = 0; k < 8; ++k ) {
-                hist_X[ jb + k ] =
-                    ( m_data_2D[ line_idx ][ j ].r[ k ] +
-                      m_data_2D[ line_idx ][ j ].g[ k ] +
-                      m_data_2D[ line_idx ][ j ].b[ k ] )
-                    * exp_rate_2;
-            }
-        }
-        uint32_t jb = wblock_index * 8;
-        for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
-            hist_X[ jb + k ] = (
-                  m_data_2D[ line_idx ][ wblock_index ].r[ k ] +
-                  m_data_2D[ line_idx ][ wblock_index ].g[ k ] +
-                  m_data_2D[ line_idx ][ wblock_index ].b[ k ] )
-                * exp_rate_2;
-        }
-
-        /* X CDF. */
-        hist_X_s[ 0 ] = hist_X[ 0 ];
-        for ( uint32_t l = 1; l < m_width; ++l ) {
-            hist_X_s[ l ] = hist_X_s[ l - 1 ] + hist_X[ l ];
-        }
-
         uint32_t pix_idx =
-            findInverse( hist_X_s, m_width,
-                rng.rand( getMaxHist( hist_X_s, m_width ) )
+            findInverse( hist_X_s[ line_idx ], m_width,
+                rng.rand( getMaxHist( hist_X_s[ line_idx ], m_width ) )
             );
 
         buf[ i ][ 0 ] = line_idx;

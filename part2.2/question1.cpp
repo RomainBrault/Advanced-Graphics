@@ -26,6 +26,9 @@ int main( int argc, char* argv[] ) {
         return -1;
     }
     obj::vect< uint32_t, 2 >* points = latlong.sampleEM( n_points, time( nullptr ) );
+    if ( points == nullptr ) {
+        return -1;
+    }
 
     temp = latlong;
     temp.linearToneMap( stops );
