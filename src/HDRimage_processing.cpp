@@ -628,7 +628,7 @@ image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
 
     float* hist_L   = hist;
     float* hist_L_s = hist + m_height;
-    float** hist_X  = new float*[ 2 * m_height ];
+    float** hist_X  = new (std::nothrow) float*[ 2 * m_height ];
     if ( hist_X == nullptr ) {
         delete [] buf;
         delete [] hist;
