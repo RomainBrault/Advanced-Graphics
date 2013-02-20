@@ -1082,7 +1082,7 @@ image::mapLatLong(
                 float theta = hdr_in_range(
                     static_cast< float >( std::asin( ref[ 1 ] ) / M_PI + 0.5 )
                 , 0.f, 1.f ) * ( im.m_height - 1 );
-                float phi   = hdr_in_range(
+                float phi = hdr_in_range(
                     static_cast< float >(
                         std::atan2( ref[ 2 ], ref[ 0 ] ) / ( 2 * M_PI ) + 0.5
                     )

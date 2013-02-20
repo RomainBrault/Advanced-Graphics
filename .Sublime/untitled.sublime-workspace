@@ -4,8 +4,84 @@
 		"selected_items":
 		[
 			[
+				"lo",
+				"loop_min"
+			],
+			[
+				"loo",
+				"loop_max"
+			],
+			[
+				"nu",
+				"num_tasks"
+			],
+			[
+				"is",
+				"is_start"
+			],
+			[
+				"fi",
+				"fi1"
+			],
+			[
+				"omp",
+				"omp_get_num_threads"
+			],
+			[
+				"k_s",
+				"k_stop"
+			],
+			[
+				"k_",
+				"k_stop"
+			],
+			[
+				"wi",
+				"width_stop"
+			],
+			[
+				"ws",
+				"width_start"
+			],
+			[
+				"w",
+				"wblock_index_start"
+			],
+			[
+				"w_",
+				"wblock_index_stop"
+			],
+			[
+				"get",
+				"getCenterY"
+			],
+			[
 				"m_",
 				"m_height"
+			],
+			[
+				"h",
+				"hist"
+			],
+			[
+				"max",
+				"max_L"
+			],
+			[
+				"len",
+				"length"
+			],
+			[
+				"wid",
+				"width_start"
+			],
+			[
+				"hi",
+				"hist_X_s"
+			],
+			[
+				"sp",
+				"sphere"
 			],
 			[
 				"xo",
@@ -32,24 +108,12 @@
 				"fbuff"
 			],
 			[
-				"max",
-				"max_iter"
-			],
-			[
 				"a",
 				"atoi"
 			],
 			[
 				"Co",
 				"strCout"
-			],
-			[
-				"loo",
-				"loop_max"
-			],
-			[
-				"lo",
-				"loop_min"
 			],
 			[
 				"l",
@@ -98,10 +162,6 @@
 			[
 				"M_",
 				"M_PI"
-			],
-			[
-				"get",
-				"getRadius"
 			],
 			[
 				"getCe",
@@ -192,10 +252,6 @@
 				"med_buf"
 			],
 			[
-				"h",
-				"hradius"
-			],
-			[
 				"hdr",
 				"hdr_in_range"
 			],
@@ -206,10 +262,6 @@
 			[
 				"H",
 				"H_SIZE"
-			],
-			[
-				"hi",
-				"hist"
 			],
 			[
 				"no",
@@ -282,10 +334,6 @@
 			[
 				"uin",
 				"uint32_t"
-			],
-			[
-				"wi",
-				"width"
 			],
 			[
 				"pfm",
@@ -466,50 +514,6 @@
 			[
 				"int",
 				"int32_t"
-			],
-			[
-				"bit",
-				"bitmask"
-			],
-			[
-				"numa",
-				"numa_available"
-			],
-			[
-				"INCLUDE",
-				"INCLUDE_DIRECTORIES"
-			],
-			[
-				"ven",
-				"vendor4"
-			],
-			[
-				"tra",
-				"traceImpl"
-			],
-			[
-				"COM",
-				"COMPILER_INFORMATION"
-			],
-			[
-				"OPEN",
-				"OPENMP_FOUND"
-			],
-			[
-				"E",
-				"ELSE"
-			],
-			[
-				"STA",
-				"STATIC_LIB"
-			],
-			[
-				"OPE",
-				"OPENMP_FOUND"
-			],
-			[
-				"S",
-				"SAPHIRCONFIG_HPP_INCLUDED"
 			]
 		]
 	},
@@ -519,7 +523,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2.2/question1.cpp",
 			"settings":
 			{
-				"buffer_size": 857,
+				"buffer_size": 973,
 				"line_ending": "Unix"
 			}
 		},
@@ -536,6 +540,14 @@
 			"settings":
 			{
 				"buffer_size": 3989,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/romain/Dropbox/Imperial College/Parallel-Algorithm/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 1314,
 				"line_ending": "Unix"
 			}
 		},
@@ -567,7 +579,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage.hpp",
 			"settings":
 			{
-				"buffer_size": 15347,
+				"buffer_size": 15323,
 				"line_ending": "Unix"
 			}
 		},
@@ -575,15 +587,15 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp",
 			"settings":
 			{
-				"buffer_size": 34117,
+				"buffer_size": 39414,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
+			"file": "/home/romain/Dropbox/Imperial College/Parallel-Algorithm/pi.cpp",
 			"settings":
 			{
-				"buffer_size": 35594,
+				"buffer_size": 3059,
 				"line_ending": "Unix"
 			}
 		},
@@ -599,7 +611,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/Rand.hpp",
 			"settings":
 			{
-				"buffer_size": 887,
+				"buffer_size": 905,
 				"line_ending": "Unix"
 			}
 		},
@@ -607,7 +619,7 @@
 			"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/Rand.cpp",
 			"settings":
 			{
-				"buffer_size": 932,
+				"buffer_size": 923,
 				"line_ending": "Unix"
 			}
 		}
@@ -656,13 +668,15 @@
 	},
 	"file_history":
 	[
+		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/install.sh",
+		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/doc/report.tex",
+		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/piwrap.cpp",
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/pi.cpp",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/rand.hpp",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/rand.cpp",
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/doc/data/res6_100.data",
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/doc/data/res7_100.data",
-		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/doc/report.tex",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1.1/mainwindow_pt1.cpp",
 		"/home/romain/Dropbox/Imperial College/Architecture/Pseudoknot/varyarch",
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/doc/data/res7_100_omp.data",
@@ -687,7 +701,6 @@
 		"/home/romain/Dropbox/Imperial College/Parallel-Algorithm/.gitignore",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/.gitignore",
 		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage.hpp",
-		"/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
 		"/home/romain/Dropbox/Imperial College/Architecture/report/report.tex",
 		"/home/romain/Dropbox/Imperial College/Architecture/report/report.toc",
 		"/home/romain/Dropbox/Imperial College/Architecture/report/data/fetche256.data",
@@ -782,8 +795,7 @@
 		"/var/tmp/pnm.c",
 		"/home/romain/Dropbox/Imperial College/Advanced Graphics/build/HDRimageConfig.hpp",
 		"/home/romain/Dropbox/Imperial College/Advanced Graphics/include/matrix/Matrix.hpp",
-		"/home/romain/Dropbox/Imperial College/Advanced Graphics/include/matrix/host/class/MatrixClass.hpp",
-		"/home/romain/Dropbox/Imperial College/Advanced Graphics/include/host/class/MatrixClass.hpp"
+		"/home/romain/Dropbox/Imperial College/Advanced Graphics/include/matrix/host/class/MatrixClass.hpp"
 	],
 	"find":
 	{
@@ -801,6 +813,37 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"func",
+			"P_SIZE",
+			"wblock_index_stop",
+			"wblock_index_start",
+			"cou",
+			"fille",
+			"get",
+			"::num",
+			"::min",
+			"cout",
+			"sam",
+			"cou",
+			";\n",
+			"cou",
+			"cout",
+			"wblock_index_stop",
+			"width_start",
+			"cout",
+			"circleF",
+			"}\n",
+			"sampleEM",
+			"64",
+			"wblock_index_start",
+			"circleFi",
+			"width",
+			"width_start",
+			"reflec",
+			"circle",
+			"15",
+			"cout",
+			"cou",
 			"vect",
 			"/ 3",
 			"part2",
@@ -897,38 +940,7 @@
 			"vect< 3 >",
 			"vect",
 			"point",
-			"Refl",
-			"refle",
-			"line",
-			"Circle",
-			"Filled",
-			"line",
-			"Filled",
-			"0.92",
-			"0.005",
-			"0.92",
-			"pragma",
-			"INLINE",
-			"cout",
-			"openAct",
-			"createMenus",
-			"exposure",
-			"return",
-			"temp",
-			"norma",
-			"cout",
-			"cerr",
-			"cout",
-			"fai",
-			"failed",
-			"cerr",
-			"copy_n",
-			"copy_range",
-			"normal",
-			"setP",
-			"m_max_pixel_chanel",
-			"getMaxChanel",
-			"swap"
+			"Refl"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1074,7 +1086,7 @@
 	"groups":
 	[
 		{
-			"selected": 7,
+			"selected": 9,
 			"sheets":
 			[
 				{
@@ -1082,24 +1094,25 @@
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part2.2/question1.cpp",
 					"settings":
 					{
-						"buffer_size": 857,
+						"buffer_size": 973,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								597,
-								597
+								831,
+								831
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 162.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1155,13 +1168,39 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1350.0,
+						"translation.y": 630.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
+					"file": "/home/romain/Dropbox/Imperial College/Parallel-Algorithm/CMakeLists.txt",
+					"settings":
+					{
+						"buffer_size": 1314,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								666,
+								666
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CMake/CMake.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/part1.2/question2.cpp",
 					"settings":
 					{
@@ -1183,13 +1222,13 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 315.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/sphere.cpp",
 					"settings":
 					{
@@ -1215,7 +1254,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 6,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/Sphere.hpp",
 					"settings":
 					{
@@ -1226,8 +1265,8 @@
 						"selection":
 						[
 							[
-								0,
-								0
+								7293,
+								7293
 							]
 						],
 						"settings":
@@ -1243,19 +1282,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 7,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage.hpp",
 					"settings":
 					{
-						"buffer_size": 15347,
+						"buffer_size": 15323,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4767,
-								4767
+								4984,
+								4984
 							]
 						],
 						"settings":
@@ -1265,25 +1304,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3056.0,
+						"translation.y": 2580.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 7,
+					"buffer": 8,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_processing.cpp",
 					"settings":
 					{
-						"buffer_size": 34117,
+						"buffer_size": 39414,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13416,
-								13416
+								37502,
+								37502
 							]
 						],
 						"settings":
@@ -1297,41 +1336,45 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 7702.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/HDRimage_io.cpp",
-					"settings":
-					{
-						"buffer_size": 35594,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								16388,
-								16388
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 9158.0,
+						"translation.y": 16170.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 9,
+					"file": "/home/romain/Dropbox/Imperial College/Parallel-Algorithm/pi.cpp",
+					"settings":
+					{
+						"buffer_size": 3059,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2830,
+								2830
+							]
+						],
+						"settings":
+						{
+							"rulers":
+							[
+								80
+							],
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1290.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/AdvancedGraphicsConfig.hpp.in",
 					"settings":
 					{
@@ -1351,25 +1394,25 @@
 							"syntax": "Packages/C++/C++.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 108.0,
+						"translation.y": 315.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 11,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/Rand.hpp",
 					"settings":
 					{
-						"buffer_size": 887,
+						"buffer_size": 905,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								571,
-								571
+								536,
+								536
 							]
 						],
 						"settings":
@@ -1379,33 +1422,35 @@
 								80
 							],
 							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 72.0,
+						"translation.y": 60.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 11,
+					"buffer": 12,
 					"file": "/home/romain/Dropbox/Imperial College/Advanced-Graphics/src/Rand.cpp",
 					"settings":
 					{
-						"buffer_size": 932,
+						"buffer_size": 923,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								280,
-								280
+								190,
+								190
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -1512,6 +1557,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 300.0,
+	"side_bar_width": 158.0,
 	"status_bar_visible": true
 }
