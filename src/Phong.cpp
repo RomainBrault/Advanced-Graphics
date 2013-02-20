@@ -1,57 +1,53 @@
 #include <iostream>
-#include <cmath>
 #include <ctime>
 #include <Phong.hpp>
 
 using namespace rnd;
 using namespace std;
+using namespace obj;
 
 namespace phong {
 
-    xorShift Phong::rng = xorShift( time(nullptr) );
-
-    Phong::Phong(uint32_t s, float ks, float kd) : ks(ks), kd(kd), s(s) {
-	srand( time(nullptr) );
+    Phong::Phong(uint32_t s, float ks, float kd) : ks(ks), kd(kd), s(s), rng( time(nullptr) ) {
+	samples = nullptr;
+    }
+    
+    Phong::~Phong() {
+	delete[] samples;
     }
 
-    Samples Phong::generateSamples(uint32_t nb_samples) {
-	vector<float*> samples;
+    void Phong::generateSamples(uint32_t nb_samples) {
+	samples = new vect< float, 2 >[nb_samples];
+//	#pragma omp parallel for
 	for (uint32_t i = 0; i < nb_samples; ++i) {
-	    samples.push_back(sample());
+	    sample( samples[ i ][ 0 ], samples[ i ][ 1 ] );
 	}
-	return samples;
     }
 	
-    float* Phong::sample() {
-/*	float rand = randf(0.0f, 1.0f);
+    void Phong::sample(float& theta, float& phi) {
+	float rand = rng.rand(0.0f, 1.0f);
 	if (rand >= 0 && rand < kd) {
-	    return diffuseSample();
+	    diffuseSample(theta, phi);
+	    return;
 	}
 	
 	if (rand >= kd && rand < ks) {
-	    return specularSample();
+	    specularSample(theta, phi);
+	    return;
 	}
 	
 	if (rand >= ks + kd) // What to do? 
-	cout << "No contribution" << endl;*/
-	return specularSample();
+	cout << "No contribution" << endl;
+	specularSample(theta, phi);
     }
 
-    float* Phong::diffuseSample() {
-	float* dir = new float[2];
-	dir[0] = acos(1.0 - sqrt(randf(0.0f, 1.0f)));
-	dir[1] = 2 * M_PI * randf(0.0f, 1.0f);
-	return dir;
+    void Phong::diffuseSample(float& theta, float& phi) {
+	theta = acos(1.0 - sqrt(rng.rand(0.0f, 1.0f)));
+	phi = 2 * M_PI * rng.rand(0.0f, 1.0f);
     }
 
-    float* Phong::specularSample() {
-	float* dir = new float[2];
-	dir[0] = acos(pow(1.0 - randf(0.0f, 1.0f), (float)1/(s+1)));
-	dir[1] = 2 * M_PI * randf(0.0f, 1.0f);
-	return dir;
-    }
-
-    float Phong::randf(float inf, float sup) {
-	return ( rand()/(float)RAND_MAX ) * (sup-inf) + inf;
+    void Phong::specularSample(float& theta, float& phi) {
+	theta = acos(pow(1.0 - rng.rand(0.0f, 1.0f), (float)1/(s+1)));
+	phi = 2 * M_PI * rng.rand(0.0f, 1.0f);
     }
 }

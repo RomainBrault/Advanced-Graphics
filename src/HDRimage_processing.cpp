@@ -1,6 +1,7 @@
 #include <HDRimage.hpp>
 #include <algorithm>
 #include <Rand.hpp>
+#include <iostream>
 
 #define hdr_in_range( x, y, z ) \
     std::min( std::max( x, y ), z )
