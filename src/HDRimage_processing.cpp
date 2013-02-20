@@ -479,16 +479,24 @@ image::negatif( void ) noexcept
 static uint32_t
 findInverse( float const * buf, uint32_t length, float val ) {
     /* Assume the function (buf) is non decreasing.
-     * ( ie: buf[ i + 1 ] >= buf[ i ] )
+     * ( ie: buf[ i + 1 ] >= buf[ i ] ) -> dichotomic search
      */
-    for ( uint32_t i = 1; i < length; ++i ) {
-        if ( buf[ i ] > val ) {
-            return std::abs( buf[ i - 1 ] - val ) <
-                   std::abs( buf[ i     ] - val ) ? i - 1 : i;
+    uint32_t idx_s = 1;
+    uint32_t idx_e = length - 1;
+    uint32_t pos   = 0;
+    while ( idx_s <= idx_e ) {
+        pos = ( idx_s + idx_e ) / 2;
+        if ( val > buf[ pos ] ) {
+            idx_s = pos + 1;
+        }
+        else if ( val < buf[ pos + 1 ] ) {
+            idx_e = pos - 1;
+        }
+        else {
+            return pos;
         }
     }
-    return std::abs( buf[ length - 2 ] - val ) <
-           std::abs( buf[ length - 1 ] - val ) ? length - 2 : length - 1;
+    return pos;
 }
 
 static INLINE float
