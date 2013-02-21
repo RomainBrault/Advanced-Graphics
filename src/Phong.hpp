@@ -15,33 +15,42 @@ public:
     Phong( uint32_t, float = 0.5, float = 0.5 ) noexcept;
     ~Phong( ) noexcept;
 
-    void generateSamples( uint32_t ) noexcept;
+    void generateSamples( uint32_t, uint32_t ) noexcept;
 
     INLINE uint32_t getTheta( uint32_t, uint32_t ) const noexcept;
     INLINE uint32_t getPhi  ( uint32_t, uint32_t ) const noexcept;
 
+    INLINE bool isInitialised( void ) const noexcept;
+
 private:
 
-    void sample        ( float&, float& ) noexcept;
-    void diffuseSample ( float&, float& ) noexcept;
-    void specularSample( float&, float& ) noexcept;
+    void sample        ( float&, float&, rnd::Uniform< float >& ) noexcept;
+    void diffuseSample ( float&, float&, rnd::Uniform< float >& ) noexcept;
+    void specularSample( float&, float&, rnd::Uniform< float >& ) noexcept;
 
     float                  m_ks;
     float                  m_kd;
     uint32_t               m_s;
     obj::vect< float, 2 >* m_samples;
-    rnd::Uniform< float >  m_rng;
 };
 
+bool
+Phong::isInitialised( void ) const noexcept
+{
+    return ( m_samples != nullptr );
+}
+
 uint32_t
-Phong::getTheta( uint32_t i, uint32_t height ) const noexcept {
+Phong::getTheta( uint32_t i, uint32_t height ) const noexcept
+{
     return static_cast< uint32_t >(
         m_samples[ i ][ 0 ] / M_PI * height
     );
 }
 
 uint32_t
-Phong::getPhi( uint32_t i, uint32_t width ) const noexcept {
+Phong::getPhi( uint32_t i, uint32_t width ) const noexcept
+{
     return static_cast< uint32_t >(
         m_samples[ i ][ 1 ] / ( 2 * M_PI ) * width
     );

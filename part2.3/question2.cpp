@@ -27,7 +27,11 @@ int main(int argc, char** argv) {
     }
 
     Phong p( s, ks, kd );
-    p.generateSamples( nb_samples );
+    p.generateSamples( nb_samples, time( nullptr ) );
+    if ( p.isInitialised( ) == false ) {
+        return -1;
+    }
+
     image tmp = latlong;
 
     for ( uint32_t i = 0; i < nb_samples; ++i) {

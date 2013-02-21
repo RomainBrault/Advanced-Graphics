@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <Random.hpp>
 #include <iostream>
+#include <omp.h>
 
 #define hdr_in_range( x, y, z ) \
     std::min( std::max( x, y ), z )
@@ -693,7 +694,7 @@ image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
         }
     }
 
-    rnd::Uniform< float >  rng( seed );
+    rnd::Uniform< float > rng( seed );
     for ( uint32_t i = 0; i < n_sample; ++i ) {
         uint32_t line_idx =
             findInverse( hist_L_s, m_height,
@@ -706,7 +707,7 @@ image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
 
         buf[ i ][ 0 ] = line_idx;
         buf[ i ][ 1 ] = pix_idx;
-    }
+}
 
     delete [] hist_X_s;
     delete [] hist;
