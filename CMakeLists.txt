@@ -20,6 +20,7 @@ SET(COMPILER_INFORMATION
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include")
 include_directories("${PROJECT_SOURCE_DIR}/src")
+include_directories("${PROJECT_SOURCE_DIR}/src/Rand")
 include_directories("${PROJECT_BINARY_DIR}/part1.1")
 include_directories("${PROJECT_BINARY_DIR}/part1.2")
 include_directories("${PROJECT_BINARY_DIR}/part2.2")

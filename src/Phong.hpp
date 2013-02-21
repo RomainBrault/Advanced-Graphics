@@ -1,43 +1,52 @@
-#ifndef __PHONG__HPP__
-#define __PHONG__HPP__
+#ifndef PHONG_HPP_INCLUDED
+#define PHONG_HPP_INCLUDED
 
-#include<HDRimage.hpp>
-
-#include <vector>
-#include <ctime>
+#include <AdvancedGraphicsConfig.hpp>
+#include <HDRimage.hpp>
 #include <Sphere.hpp>
-#include <Rand.hpp>
+#include <Random.hpp>
 
 namespace phong {
 
-    class Phong {
-    public:
-	Phong(uint32_t s, float ks = 0.5, float kd = 0.5);
-	~Phong();
-	void generateSamples(uint32_t nb_samples);
-	INLINE uint32_t getTheta(uint32_t i, uint32_t height);
-	INLINE uint32_t getPhi(uint32_t i, uint32_t width);
+class Phong {
 
-    private:
-	void sample(float& theta, float& phi);
-	void diffuseSample(float& theta, float& phi);
-	void specularSample(float& theta, float& phi);
+public:
 
-	float ks;
-	float kd;
-	uint32_t s;
-	obj::vect<float, 2>* samples;
-	rnd::xorShift rng;
+    Phong( uint32_t, float = 0.5, float = 0.5 ) noexcept;
+    ~Phong( ) noexcept;
+
+    void generateSamples( uint32_t ) noexcept;
+
+    INLINE uint32_t getTheta( uint32_t, uint32_t ) const noexcept;
+    INLINE uint32_t getPhi  ( uint32_t, uint32_t ) const noexcept;
+
+private:
+
+    void sample        ( float&, float& ) noexcept;
+    void diffuseSample ( float&, float& ) noexcept;
+    void specularSample( float&, float& ) noexcept;
+
+    float                  m_ks;
+    float                  m_kd;
+    uint32_t               m_s;
+    obj::vect< float, 2 >* m_samples;
+    rnd::Uniform< float >  m_rng;
 };
 
-    uint32_t Phong::getTheta(uint32_t i, uint32_t height) {
-	return static_cast<uint32_t>(samples[ i ][ 0 ] / M_PI * height);
-    }
+uint32_t
+Phong::getTheta( uint32_t i, uint32_t height ) const noexcept {
+    return static_cast< uint32_t >(
+        m_samples[ i ][ 0 ] / M_PI * height
+    );
+}
 
-    uint32_t Phong::getPhi(uint32_t i, uint32_t width) {
-	return static_cast<uint32_t>(samples[ i ][ 1 ] / (2 * M_PI) * width);
-    }
+uint32_t
+Phong::getPhi( uint32_t i, uint32_t width ) const noexcept {
+    return static_cast< uint32_t >(
+        m_samples[ i ][ 1 ] / ( 2 * M_PI ) * width
+    );
+}
 
 }
 
-#endif
+#endif // PHONG_HPP_INCLUDED

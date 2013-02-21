@@ -1,7 +1,5 @@
 #include <HDRimage.hpp>
 #include <Sphere.hpp>
-#include <Rand.hpp>
-#include <ctime>
 
 #define SFMT BinaryColormap
 
