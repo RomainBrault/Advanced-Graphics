@@ -18,8 +18,16 @@ int main(int argc, char** argv) {
     float gamma = static_cast< float >( std::atof( argv[ 4 ] ) );
     uint32_t n_points = static_cast< float >( std::atoi( argv[ 2 ] ) );
 
+    image r_sphere( img_size, img_size, 1 );
+    if ( r_sphere. isEmpty( ) == true ) {
+        return -1;
+    }
+
     image latlong;
     image temp;
+
+    sphere s( img_size / 2, img_size / 2, img_size / 2 );
+    vect< float, 3 > view( 0, 0, 1 );
 
     latlong.loadPFM( argv[ 1 ] );
     if ( latlong.isEmpty( ) == true ) {
