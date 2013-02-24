@@ -1,8 +1,5 @@
 #include <HDRimage.hpp>
 #include <algorithm>
-#include <Random.hpp>
-#include <iostream>
-#include <omp.h>
 
 #define hdr_in_range( x, y, z ) \
     std::min( std::max( x, y ), z )
@@ -508,7 +505,7 @@ getMaxHist( float const * buf, uint32_t length ) {
 }
 
 obj::vect< uint32_t, 2 >*
-image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
+image::sampleEM( uint32_t n_sample, rnd::Uniform< float > & rng ) noexcept
 {
     if ( n_sample < m_height ) {
         obj::vect< uint32_t, 2 >* buf =
@@ -555,7 +552,6 @@ image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
                 std::sin( M_PI * ( 1 - i / static_cast< float >( m_height ) ) );
         }
 
-        rnd::Uniform< float > rng( seed );
         for ( uint32_t i = 0; i < n_sample; ++i ) {
             uint32_t line_idx =
                 findInverse( hist_L_s, m_height,
@@ -694,7 +690,6 @@ image::sampleEM( uint32_t n_sample, uint32_t seed ) noexcept
         }
     }
 
-    rnd::Uniform< float > rng( seed );
     for ( uint32_t i = 0; i < n_sample; ++i ) {
         uint32_t line_idx =
             findInverse( hist_L_s, m_height,

@@ -23,7 +23,8 @@ int main( int argc, char* argv[] ) {
     if ( latlong.isEmpty( ) == true ) {
         return -1;
     }
-    obj::vect< uint32_t, 2 >* points = latlong.sampleEM( n_points, time( nullptr ) );
+    rnd::Uniform< float > rng( time( nullptr ) );
+    obj::vect< uint32_t, 2 >* points = latlong.sampleEM( n_points, rng );
     if ( points == nullptr ) {
         return -1;
     }

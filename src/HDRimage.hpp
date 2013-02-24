@@ -2,6 +2,7 @@
 #define HDRIMAGE_HPP_INCLUDED
 
 #include <AdvancedGraphicsConfig.hpp>
+#include <Random.hpp>
 #include <Sphere.hpp>
 
 #define MIN( x, y ) ( x ) < ( y ) ? ( x ) : ( y )
@@ -180,7 +181,7 @@ public:
     negatif ( void ) noexcept;
 
     obj::vect< uint32_t, 2 >*
-    sampleEM( uint32_t, uint32_t = 0 ) noexcept;
+    sampleEM( uint32_t, rnd::Uniform< float > & rng ) noexcept;
 
     void median  ( image const &, uint32_t = 3 ) noexcept;
     void median  (                uint32_t = 3 ) noexcept;

@@ -17,6 +17,7 @@ int main(int argc, char** argv) {
     float stops = static_cast< float >( std::atof( argv[ 3 ] ) );
     float gamma = static_cast< float >( std::atof( argv[ 4 ] ) );
     uint32_t n_points = static_cast< float >( std::atoi( argv[ 2 ] ) );
+    uint32_t img_size = 511;
 
     image r_sphere( img_size, img_size, 1 );
     if ( r_sphere. isEmpty( ) == true ) {
@@ -33,7 +34,8 @@ int main(int argc, char** argv) {
     if ( latlong.isEmpty( ) == true ) {
         return -1;
     }
-    obj::vect< uint32_t, 2 >* points = latlong.sampleEM( n_points, time( nullptr ) );
+    rnd::Uniform< float > rng( time( nullptr ) );
+    obj::vect< uint32_t, 2 >* points = latlong.sampleEM( n_points, rng );
     if ( points == nullptr ) {
         return -1;
     }
