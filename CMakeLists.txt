@@ -25,7 +25,7 @@ include_directories("${PROJECT_BINARY_DIR}/part1.1")
 include_directories("${PROJECT_BINARY_DIR}/part1.2")
 include_directories("${PROJECT_BINARY_DIR}/part2.2")
 include_directories("${PROJECT_BINARY_DIR}/part2.3")
-
+include_directories("${PROJECT_BINARY_DIR}/part2.4")
 
 # add the executable
 file(GLOB_RECURSE source_header_files src/*.h* part*/*.h*)
@@ -35,24 +35,27 @@ file(GLOB_RECURSE source_part1.1 part1.1/*.cpp)
 file(GLOB_RECURSE source_part1.2 part1.2/*.cpp)
 file(GLOB_RECURSE source_part2.2 part2.2/*.cpp)
 file(GLOB_RECURSE source_part2.3 part2.3/*.cpp)
+file(GLOB_RECURSE source_part2.4 part2.4/*.cpp)
 
 file(
-  GLOB_RECURSE
-  source_UIS
-  src/*.ui
-  part1.1/*.ui
-  part1.2/*.ui
-  part2.2/*.ui
-  part2.3/*.ui
+    GLOB_RECURSE
+    source_UIS
+    src/*.ui
+    part1.1/*.ui
+    part1.2/*.ui
+    part2.2/*.ui
+    part2.3/*.ui
+    part2.4/*.ui
 )
 file(
-  GLOB_RECURSE
-  source_RESOURCES
-  src/*.qrc
-  part1.1/*.qrc
-  part1.2/*.qrc
-  part2.2/*.qrc
-  part2.3/*.qrc
+    GLOB_RECURSE
+    source_RESOURCES
+    src/*.qrc
+    part1.1/*.qrc
+    part1.2/*.qrc
+    part2.2/*.qrc
+    part2.3/*.qrc
+    part2.4/*.qrc
 )
 
 qt4_wrap_ui(source_UIS_H ${source_UIS})
@@ -93,10 +96,20 @@ add_executable(
     ${source_RESOURCES_CPP}
 )
 
+add_executable(
+    renderEMSampling
+    ${source_part2.4}
+    ${source_source_files}
+    ${source_MOC}
+    ${source_UIS_H}
+    ${source_RESOURCES_CPP}
+)
+
 target_link_libraries(HDRimage ${QT_LIBRARIES})
 target_link_libraries(relighting ${QT_LIBRARIES})
 target_link_libraries(envMap ${QT_LIBRARIES})
 target_link_libraries(phongSampling ${QT_LIBRARIES})
+target_link_libraries(renderEMSampling ${QT_LIBRARIES})
 
 # Check endianess
 include(TestBigEndian)
@@ -143,13 +156,14 @@ install(TARGETS HDRimage    DESTINATION bin)
 install(TARGETS relighting DESTINATION bin)
 install(TARGETS envMap DESTINATION bin)
 install(TARGETS phongSampling DESTINATION bin)
-
+install(TARGETS renderEMSampling DESTINATION bin)
 
 # does the application run
 add_test(HDRimageRuns    HDRimage)
 add_test(relightingRuns relighting)
 add_test(envMapRuns envMap)
 add_test(phongSamplingRuns phongSampling)
+add_test(renderEMSamplingRuns renderEMSampling)
 
 # build a CPack driven installer package
 include(InstallRequiredSystemLibraries)
