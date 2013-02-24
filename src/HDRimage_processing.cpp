@@ -1194,7 +1194,7 @@ image::mapLatLong(
                 im.getPixel(
                     ( static_cast< uint32_t >( phi ) + x_offset )
                         % im.m_width,
-                    ( static_cast< uint32_t >( theta ) + y_offset )
+                    ( static_cast< uint32_t >( theta ) - y_offset )
                         % im.m_height,
                     r, g, b
                 );
@@ -1221,9 +1221,9 @@ image::mapLatLong(
             , 0.f, 1.f ) * ( im.m_width - 1 );
             float r, g, b;
             im.getPixel(
-                ( static_cast< uint32_t >( phi ) + x_offset )
+                ( static_cast< uint32_t >( phi ) - x_offset )
                     % im.m_width,
-                ( static_cast< uint32_t >( theta ) + y_offset )
+                ( static_cast< uint32_t >( theta ) - y_offset )
                     % im.m_height,
                 r, g, b
             );
