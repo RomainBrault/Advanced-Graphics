@@ -1248,9 +1248,13 @@ namespace hdr {
 		    ( static_cast< uint32_t >( samples[i][0] ) ),
 		    rr, gg, bb
 		    );
+		    rr = (rr > 1 ? 1 : rr);
+		    gg = (gg > 1 ? 1 : gg);
+		    bb = (bb > 1 ? 1 : bb);
 		L += (rr + gg + bb) / 3;
 	}
 	L /= nb_samples;
+	cout << L << endl;
 	if (
 	    ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
 	    (
@@ -1285,13 +1289,15 @@ namespace hdr {
 	    for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
 		uint32_t jb = j * 8;
 		for ( uint32_t k = 0; k < 8; ++k ) {
-		    float R, G, B = 0.0;
+		    float R = 0.0;
+		    float G = 0.0;
+		    float B = 0.0;
 		    uint32_t x_abs_pos = jb + k;
 		    obj::vect< float, 3 > ref =
 			s.reflectanceXY( x_abs_pos, i, view );
 		    if ( ref[ 2 ] == -1 ) { // black
 			continue;
-		    }
+			}
 		    float theta = hdr_in_range(
 			static_cast< float >( std::asin( ref[ 1 ] ) / M_PI + 0.5 )
 			, 0.f, 1.f ) * ( im.m_height - 1 );
@@ -1300,31 +1306,30 @@ namespace hdr {
 			    std::atan2( ref[ 2 ], ref[ 0 ] ) / ( 2 * M_PI ) + 0.5
 			    )
 			, 0.f, 1.f ) * ( im.m_width - 1 );
+		    for (int i_sample = 0; i_sample < nb_samples; ++i_sample) {
+			float theta = (samples[i_sample][0]/(float)im.getHeight() * M_PI);
+			float phi = (samples[i_sample][1]/(float)im.getWidth() * 2 * M_PI);
 		    float r, g, b;
 		    im.getPixel(
-			( static_cast< uint32_t >( phi )),
-			( static_cast< uint32_t >( theta )),
+			( static_cast< uint32_t >( samples[i_sample][1] )),
+			( static_cast< uint32_t >( samples[i_sample][0] )),
 			r, g, b
 			);
-		    for (int i_sample = 0; i_sample < nb_samples; ++i_sample) {
-			float theta = (float)(samples[i_sample][0]/im.getHeight() * M_PI);
-			float phi = (float) (samples[i_sample][1]/im.getWidth() * 2 * M_PI);
-			float x = static_cast<float>(std::sin(theta)
-						     * std::cos(phi)
-						     * s.getRadius());
-			float y = static_cast<float>(std::sin(theta)
-						     * std::sin(phi)
-						     * s.getRadius());
-//			cout << x << " " << y << endl;
+			float x = s.getCenterX() + std::sin(theta)
+			    * std::cos(phi)
+			    * s.getRadius();
+			float y = s.getCenterY() + std::sin(theta)
+			    * std::sin(phi)
+			    * s.getRadius();
 			obj::vect< float, 3 > ref_samp = s.reflectanceXY( x, y, view );
 			float cos_theta = ref_samp.dot(s.normalXY(x_abs_pos, i));
-			R += brdf.phong(vvv, vvv, vvv) * cos_theta * r/sqrt(r * r + g * g + b * b);
-			G += brdf.phong(vvv, vvv, vvv) * cos_theta * g/sqrt(r * r + g * g + b * b);
-			B += brdf.phong(vvv, vvv, vvv) * cos_theta * b/sqrt(r * r + g * g + b * b);
+			R += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * r/sqrt(r * r + g * g + b * b);
+			G += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * g/sqrt(r * r + g * g + b * b);
+			B += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * b/sqrt(r * r + g * g + b * b);		    
 		    }
-		    m_data_2D[ i ][ j ].r[ k ] = R;
-		    m_data_2D[ i ][ j ].g[ k ] = G;
-		    m_data_2D[ i ][ j ].b[ k ] = B;
+		    m_data_2D[ i ][ j ].r[ k ] = L * R/nb_samples;
+		    m_data_2D[ i ][ j ].g[ k ] = L * G/nb_samples;
+		    m_data_2D[ i ][ j ].b[ k ] = L * B/nb_samples;
 		}
 	    }
 	}
