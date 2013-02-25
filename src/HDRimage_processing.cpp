@@ -1,6 +1,7 @@
 #include <HDRimage.hpp>
 #include <algorithm>
 #include <iostream>
+#include <cmath>
 
 #define hdr_in_range( x, y, z )			\
     std::min( std::max( x, y ), z )
@@ -1306,21 +1307,24 @@ namespace hdr {
 			r, g, b
 			);
 		    for (int i_sample = 0; i_sample < nb_samples; ++i_sample) {
-			int x = static_cast<uint32_t>(cos(samples[i_sample][1]) 
-						      * cos(samples[i_sample][0])
-						      * s.getRadius());
-			int y = static_cast<uint32_t>(sin(samples[i_sample][1]) 
-						      * cos(samples[i_sample][0])
-						      * s.getRadius());
+			float theta = (float)(samples[i_sample][0]/im.getHeight() * M_PI);
+			float phi = (float) (samples[i_sample][1]/im.getWidth() * 2 * M_PI);
+			float x = static_cast<float>(std::sin(theta)
+						     * std::cos(phi)
+						     * s.getRadius());
+			float y = static_cast<float>(std::sin(theta)
+						     * std::sin(phi)
+						     * s.getRadius());
+//			cout << x << " " << y << endl;
 			obj::vect< float, 3 > ref_samp = s.reflectanceXY( x, y, view );
 			float cos_theta = ref_samp.dot(s.normalXY(x_abs_pos, i));
 			R += brdf.phong(vvv, vvv, vvv) * cos_theta * r/sqrt(r * r + g * g + b * b);
 			G += brdf.phong(vvv, vvv, vvv) * cos_theta * g/sqrt(r * r + g * g + b * b);
 			B += brdf.phong(vvv, vvv, vvv) * cos_theta * b/sqrt(r * r + g * g + b * b);
 		    }
-		    m_data_2D[ i ][ j ].r[ k ] = L * R;
-		    m_data_2D[ i ][ j ].g[ k ] = L * R;
-		    m_data_2D[ i ][ j ].b[ k ] = L * R;
+		    m_data_2D[ i ][ j ].r[ k ] = R;
+		    m_data_2D[ i ][ j ].g[ k ] = G;
+		    m_data_2D[ i ][ j ].b[ k ] = B;
 		}
 	    }
 	}
