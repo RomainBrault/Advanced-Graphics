@@ -4,6 +4,7 @@
 #include <AdvancedGraphicsConfig.hpp>
 #include <Random.hpp>
 #include <Sphere.hpp>
+#include <BRDF.hpp>
 
 #define MIN( x, y ) ( x ) < ( y ) ? ( x ) : ( y )
 
@@ -233,6 +234,8 @@ public:
         obj::sphere const &, obj::vect< float, 3 > const &, image const &,
         uint32_t = 0, uint32_t = 0
     ) noexcept;
+
+    void renderIS(obj::sphere const& s, obj::vect< float, 3 > const & view, image const& em, brdf::model brdf, obj::vect<uint32_t, 2> const* samples, uint32_t nb_samples);
 
     ~image( void ) noexcept;
 
