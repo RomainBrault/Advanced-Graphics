@@ -61,21 +61,21 @@ public:
     vect( void ) noexcept;
     template < typename... U >
     vect( U... Args ) noexcept;
-    vect( vect< T, DIM > const &  ) noexcept;
-    vect( vect< T, DIM >       && ) noexcept;
+    vect( vect const &  ) noexcept;
+    vect( vect       && ) noexcept;
 
     void clear ( void ) noexcept;
     void setAll( T    ) noexcept;
 
-    void mult_minus( T, vect< T, DIM > const & )       noexcept;
-    T    dot       (    vect< T, DIM > const & ) const noexcept;
+    void mult_minus( T, vect const & )       noexcept;
+    T    dot       (    vect const & ) const noexcept;
     T    norm      ( void                      ) const noexcept;
 
     T      operator []( uint32_t ) const noexcept;
     T &    operator []( uint32_t )       noexcept;
 
-    vect< T, DIM > & operator = ( vect< T, DIM > const &  ) noexcept;
-    vect< T, DIM > & operator = ( vect< T, DIM >       && ) noexcept;
+    vect & operator = ( vect const &  ) noexcept;
+    vect & operator = ( vect       && ) noexcept;
 
 private:
     T m_coord[ DIM ];
@@ -87,6 +87,8 @@ public:
     sphere ( void ) noexcept;
     sphere ( uint32_t, vect< uint32_t, 3 > const & ) noexcept;
     sphere ( uint32_t, uint32_t, uint32_t, uint32_t = 0 ) noexcept;
+    sphere ( sphere const &  ) noexcept;
+    sphere ( sphere       && ) noexcept;
     ~sphere( void ) noexcept;
 
     INLINE uint32_t getRadius ( void ) const noexcept;
@@ -149,7 +151,7 @@ vect< T, DIM >::vect( vect< T, DIM > const & p )
 }
 
 template < typename T, uint32_t DIM >
-vect< T, DIM >::vect( vect< T, DIM > && p )
+vect< T, DIM >::vect( vect && p )
 {
     std::swap( m_coord, p.m_coord );
 }
@@ -183,7 +185,7 @@ vect< T, DIM >::mult_minus(
 
 template < typename T, uint32_t DIM >
 T
-vect< T, DIM >::dot( vect< T, DIM > const & p ) const noexcept
+vect< T, DIM >::dot( vect const & p ) const noexcept
 {
     T res( 0 );
     for ( uint32_t i = 0; i < DIM; ++i ) {
@@ -219,20 +221,22 @@ vect< T, DIM >::operator []( uint32_t idx ) noexcept
 
 template< typename T, uint32_t DIM >
 vect< T, DIM > &
-vect< T, DIM >::operator =( vect< T, DIM > const & p ) noexcept
+vect< T, DIM >::operator =( vect const & p ) noexcept
 {
-    std::cout << "cpy" << std::endl;
     std::memcpy( m_coord, p.m_coord, DIM * sizeof ( T ) );
     return *this;
 }
 
 template< typename T, uint32_t DIM >
 vect< T, DIM > &
-vect< T, DIM >::operator =( vect< T, DIM > && p ) noexcept
+vect< T, DIM >::operator =( vect && p ) noexcept
 {
     std::swap( m_coord, p.m_coord );
     return *this;
 }
+
+
+
 
 
 vect< uint32_t, 3 > const &
