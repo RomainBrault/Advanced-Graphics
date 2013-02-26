@@ -30,13 +30,14 @@ int main( int argc, char* argv[] ) {
     }
 
     temp = latlong;
+    temp.savePFM( std::string( "sampleEM_" ) + argv[ 2 ] + ".pfm", SFMT );
     temp.linearToneMap( stops );
     temp.gamma( gamma );
     for ( uint32_t i = 0; i < n_points; ++i ) {
         temp.circleFilled( sphere( 2, points[ i ][ 1 ], points[ i ][ 0 ] ), 0, 1, 0 ) ;
     }
     temp.normalise( 255 );
-    temp.savePNM( "latlong.ppm", SFMT );
+    temp.savePNM( std::string( "sampleEM_" ) + argv[ 2 ] + ".ppm", SFMT );
 
     return 0;
 }

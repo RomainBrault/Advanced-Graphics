@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 
     /* Add code here. */
 
-    temp.renderIS(s, view, latlong, brdf::model(view, 1.0, 0.0, 1.0), points, n_points);
+    // temp.renderIS(s, view, latlong, brdf::model(view, 1.0, 0.0, 1.0), points, n_points);
 
     temp.linearToneMap( 7 );
     temp.gamma( 2.2 );

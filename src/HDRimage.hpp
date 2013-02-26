@@ -235,7 +235,7 @@ public:
         uint32_t = 0, uint32_t = 0
     ) noexcept;
 
-    void renderIS(obj::sphere const& s, obj::vect< float, 3 > const & view, image const& em, brdf::model brdf, obj::vect<uint32_t, 2> const* samples, uint32_t nb_samples);
+    // void renderIS(obj::sphere const& s, obj::vect< float, 3 > const & view, image const& em, brdf::model brdf, obj::vect<uint32_t, 2> const* samples, uint32_t nb_samples);
 
     ~image( void ) noexcept;
 

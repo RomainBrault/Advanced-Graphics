@@ -52,11 +52,11 @@ void MainWindow::on_verticalSlider_1_valueChanged(int position)
     if ( ui->radioButton_5->isChecked( ) ) {
         temp = Reflection;
     }
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( stops );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( stops );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -86,11 +86,11 @@ void MainWindow::on_lineEdit_1_editingFinished()
     if ( ui->radioButton_5->isChecked( ) ) {
         temp = Reflection;
     }
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( stops );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( stops );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -117,11 +117,11 @@ void MainWindow::on_verticalSlider_2_valueChanged(int position)
     if ( ui->radioButton_5->isChecked( ) ) {
         temp = Reflection;
     }
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( gamma );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 100000 );
         temp.gamma( gamma );
@@ -151,11 +151,11 @@ void MainWindow::on_lineEdit_2_editingFinished()
     if ( ui->radioButton_5->isChecked( ) ) {
         temp = Reflection;
     }
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( gamma );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( gamma );
@@ -179,11 +179,11 @@ void MainWindow::on_pushButton_1_clicked()
     if ( ui->radioButton_5->isChecked( ) ) {
         temp = Reflection;
     }
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -207,11 +207,11 @@ void MainWindow::on_pushButton_2_clicked()
     if ( ui->radioButton_5->isChecked( ) ) {
         temp = Reflection;
     }
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -275,8 +275,10 @@ void MainWindow::on_radioButton_2_clicked()
     if ( ui->radioButton_5->isChecked( ) ) {
         temp = Reflection;
     }
-    temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
-    temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
+    if ( !ui->radioButton_5->isChecked( ) ) {
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
+        temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
+    }
     delete central_image;
     central_image = hdrToQImage( temp );
     ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
@@ -311,9 +313,11 @@ void MainWindow::on_radioButton_1_clicked()
     if ( ui->radioButton_5->isChecked( ) ) {
         temp = Reflection;
     }
-    temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
-    temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
-    temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
+    if ( !ui->radioButton_5->isChecked( ) ) {
+        temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
+        temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
+        temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
+    }
     delete central_image;
     central_image = hdrToQImage( temp );
     ui->imageLabel->setPixmap(QPixmap::fromImage(*central_image));
@@ -404,11 +408,11 @@ void MainWindow::on_radioButton_6_clicked()
 
     Sphere = temp;
 
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -460,11 +464,11 @@ void MainWindow::on_radioButton_5_clicked()
 
     Reflection = temp;
 
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -480,11 +484,11 @@ void MainWindow::on_radioButton_4_clicked()
         return;
     }
     hdr::image temp = LatLong;
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -547,11 +551,11 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
         return;
     }
 
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -615,11 +619,11 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
         return;
     }
 
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000  );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -714,11 +718,11 @@ void MainWindow::on_pushButton_clicked()
 
         Reflection = temp;
     }
-    if ( ui->radioButton_2->isChecked( ) ) {
+    if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
     }
-    if ( ui->radioButton_1->isChecked( ) ) {
+    if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
         temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
         temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000  );
         temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
@@ -812,11 +816,11 @@ void MainWindow::on_pushButton_4_clicked()
 
       Reflection = temp;
   }
-  if ( ui->radioButton_2->isChecked( ) ) {
+  if ( ui->radioButton_2->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
       temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000 );
       temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );
   }
-  if ( ui->radioButton_1->isChecked( ) ) {
+  if ( ui->radioButton_1->isChecked( ) && !ui->radioButton_5->isChecked( ) ) {
       temp.histEqToneMap( SIZE_BUFF_HIST_TONE_MAP );
       temp.linearToneMap( static_cast< float >( ui->verticalSlider_1->value( ) ) / 50000  );
       temp.gamma( static_cast< float >( ui->verticalSlider_2->value( ) ) / 100000 );

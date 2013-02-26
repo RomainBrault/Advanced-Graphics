@@ -40,10 +40,21 @@ int main(int argc, char** argv) {
 
         tmp.circleFilled( sphere( 2, phi, theta ) , 0.0, 1.0, 0.0);
     }
+    tmp.savePFM(
+        std::string( "samplingPhong_" ) +
+        argv[ 2 ] + "_" + argv[ 3 ] + "_" + argv[ 4 ] + "_" + argv[ 5 ]
+        + ".pfm",
+        SFMT
+    );
 
     tmp.linearToneMap( std::atof( argv[ 6 ] ) );
     tmp.gamma(std::atof( argv[ 7 ] ) );
     tmp.normalise( 255 );
-    tmp.savePNM( "test.ppm", SFMT );
+    tmp.savePNM(
+        std::string( "samplingPhong_" ) +
+        argv[ 2 ] + "_" + argv[ 3 ] + "_" + argv[ 4 ] + "_" + argv[ 5 ]
+        + ".ppm",
+        SFMT
+    );
 
 }
