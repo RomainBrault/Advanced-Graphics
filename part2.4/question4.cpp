@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     }
 
     image latlong;
-    image temp;
+    image temp(img_size, img_size, 3);
 
     sphere s( img_size / 2, img_size / 2, img_size / 2 );
     vect< float, 3 > view( 0, 0, 1 );
@@ -39,14 +39,12 @@ int main(int argc, char** argv) {
     if ( points == nullptr ) {
         return -1;
     }
-    temp = latlong;
 
     /* Add code here. */
-
     temp.renderIS(s, view, latlong, brdf::model(view, 1.0, 0.0, 1.0), points, n_points);
-
-    temp.linearToneMap( 7 );
+    temp.linearToneMap( 9 );
     temp.gamma( 2.2 );
+
     temp.normalise( 255 );
     temp.savePNM( "latlong.ppm", SFMT );
 

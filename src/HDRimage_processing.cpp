@@ -1238,23 +1238,35 @@ namespace hdr {
 	}
     }
 
-    void 
-    image::renderIS(obj::sphere const& s, obj::vect< float, 3 > const & view, image const& im, brdf::model brdf, obj::vect<uint32_t, 2> const* samples, uint32_t nb_samples) {
+    float image::integrate() {
+	uint32_t wblock_index( ( m_width - 1 ) / 8 );
+	uint32_t wblock_end( wblock_index * 8 );
 	float L = 0.0;
-	float rr, gg, bb;
-	for (int i = 0; i < nb_samples; ++i) {
-		im.getPixel(
-		    ( static_cast< uint32_t >( samples[i][1] ) ),
-		    ( static_cast< uint32_t >( samples[i][0] ) ),
-		    rr, gg, bb
-		    );
-		    rr = (rr > 1 ? 1 : rr);
-		    gg = (gg > 1 ? 1 : gg);
-		    bb = (bb > 1 ? 1 : bb);
-		L += (rr + gg + bb) / 3;
+
+	for ( uint32_t i = 0; i < m_height; ++i ) {
+	    float line = 0.0;
+	    for ( uint32_t j = 0; j < wblock_index; ++j ) {
+		/* Inner loop vectorized with gcc ! */
+		for ( uint32_t k = 0; k < 8; ++k ) {
+		    line += (m_data_2D[ i ][ j ].r[ k ]
+			  + m_data_2D[ i ][ j ].g[ k ]
+			  + m_data_2D[ i ][ j ].b[ k ])/3;
+		}
+	    }
+	    for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+		line += (m_data_2D[ i ][ wblock_index ].r[ k ]
+			 + m_data_2D[ i ][ wblock_index ].g[ k ]
+			 + m_data_2D[ i ][ wblock_index ].b[ k ])/3;
+	    }
+	    L += line * cos(i/(m_height - 1) * M_PI);
 	}
-	L /= nb_samples;
-	cout << L << endl;
+	L /= (m_height * m_width);
+	return L;
+    }
+
+    void 
+    image::renderIS(obj::sphere const& s, obj::vect< float, 3 > const & view, image im, brdf::model brdf, obj::vect<uint32_t, 2> const* samples, uint32_t nb_samples) {
+
 	if (
 	    ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
 	    (
@@ -1282,6 +1294,10 @@ namespace hdr {
 	uint32_t wblock_end( wblock_index_stop * 8 );
 	obj::vect<float, 3> vvv(1, 1, 1);
 
+	// Compute the integral
+	float L = im.integrate();
+	cout << "L: " << L << endl;
+
 #if defined( GNU_CXX_COMPILER )
 #pragma omp parallel for
 #endif
@@ -1298,23 +1314,15 @@ namespace hdr {
 		    if ( ref[ 2 ] == -1 ) { // black
 			continue;
 			}
-		    float theta = hdr_in_range(
-			static_cast< float >( std::asin( ref[ 1 ] ) / M_PI + 0.5 )
-			, 0.f, 1.f ) * ( im.m_height - 1 );
-		    float phi   = hdr_in_range(
-			static_cast< float >(
-			    std::atan2( ref[ 2 ], ref[ 0 ] ) / ( 2 * M_PI ) + 0.5
-			    )
-			, 0.f, 1.f ) * ( im.m_width - 1 );
 		    for (int i_sample = 0; i_sample < nb_samples; ++i_sample) {
 			float theta = (samples[i_sample][0]/(float)im.getHeight() * M_PI);
 			float phi = (samples[i_sample][1]/(float)im.getWidth() * 2 * M_PI);
-		    float r, g, b;
-		    im.getPixel(
-			( static_cast< uint32_t >( samples[i_sample][1] )),
-			( static_cast< uint32_t >( samples[i_sample][0] )),
-			r, g, b
-			);
+			float r, g, b;
+			im.getPixel(
+			    ( static_cast< uint32_t >( samples[i_sample][1] )),
+			    ( static_cast< uint32_t >( samples[i_sample][0] )),
+			    r, g, b
+			    );
 			float x = s.getCenterX() + std::sin(theta)
 			    * std::cos(phi)
 			    * s.getRadius();
@@ -1323,13 +1331,15 @@ namespace hdr {
 			    * s.getRadius();
 			obj::vect< float, 3 > ref_samp = s.reflectanceXY( x, y, view );
 			float cos_theta = ref_samp.dot(s.normalXY(x_abs_pos, i));
-			R += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * r/sqrt(r * r + g * g + b * b);
-			G += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * g/sqrt(r * r + g * g + b * b);
-			B += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * b/sqrt(r * r + g * g + b * b);		    
+			cos_theta = cos_theta < 0 ? -cos_theta : cos_theta;
+			R += cos_theta * r;
+			G += cos_theta * g;
+			B += cos_theta * b;
 		    }
-		    m_data_2D[ i ][ j ].r[ k ] = L * R/nb_samples;
-		    m_data_2D[ i ][ j ].g[ k ] = L * G/nb_samples;
-		    m_data_2D[ i ][ j ].b[ k ] = L * B/nb_samples;
+		    m_data_2D[ i ][ j ].r[ k ] = L/(nb_samples * M_PI) * R/sqrt(R*R + G*G + B*B);
+		    m_data_2D[ i ][ j ].g[ k ] = L/(nb_samples * M_PI) * G/sqrt(R*R + G*G + B*B);
+		    m_data_2D[ i ][ j ].b[ k ] = L/(nb_samples * M_PI) * B/sqrt(R*R + G*G + B*B);
+		    //	    cout << R/sqrt(R*R + G*G + B*B) << " " << G/sqrt(R*R + G*G + B*B) << " " << B/sqrt(R*R + G*G + B*B) << endl;
 		}
 	    }
 	}
