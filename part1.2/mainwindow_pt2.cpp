@@ -401,7 +401,7 @@ void MainWindow::on_radioButton_6_clicked()
 
     hdr::image temp( img_size, img_size, 1 );
     temp.fill( 0 );
-    temp.mapLatLong( s, view, LatLong,
+    temp.latlong2sphere( s, view, LatLong,
         static_cast< float >( ui->horizontalSlider->value( ) ) / ( 100000 ) * LatLong.getWidth( ),
         static_cast< float >( ui->verticalSlider->value( ) ) / ( 100000 ) * LatLong.getWidth( )
     );
@@ -538,7 +538,7 @@ void MainWindow::on_horizontalSlider_valueChanged(int value)
 
         temp.create( img_size, img_size, 1 );
         temp.fill( 0 );
-        temp.mapLatLong( s, view, LatLong,
+        temp.latlong2sphere( s, view, LatLong,
             static_cast< float >( value ) / ( 100000 ) * LatLong.getWidth( ),
             static_cast< float >( ui->verticalSlider->value( ) ) / ( 100000 ) * LatLong.getHeight( )
         );
@@ -606,7 +606,7 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
 
         temp.create( img_size, img_size, 1 );
         temp.fill( 0 );
-        temp.mapLatLong( s, view, LatLong,
+        temp.latlong2sphere( s, view, LatLong,
             static_cast< float >( ui->horizontalSlider->value( ) ) / ( 100000 ) * LatLong.getWidth( ),
             static_cast< float >( value ) / ( 100000 ) * LatLong.getHeight( )
         );
@@ -674,7 +674,7 @@ void MainWindow::on_pushButton_clicked()
 
         temp.create( img_size, img_size, 1 );
         temp.fill( 0 );
-        temp.mapLatLong( s, view, LatLong,
+        temp.latlong2sphere( s, view, LatLong,
           static_cast< float >( ui->horizontalSlider->value( ) ) / ( 100000 ) * LatLong.getWidth( ),
           static_cast< float >( ui->verticalSlider->value( ) ) / ( 100000 ) * LatLong.getHeight( )
         );
@@ -772,7 +772,7 @@ void MainWindow::on_pushButton_4_clicked()
 
       temp.create( img_size, img_size, 1 );
       temp.fill( 0 );
-      temp.mapLatLong( s, view, LatLong,
+      temp.latlong2sphere( s, view, LatLong,
         static_cast< float >( ui->horizontalSlider->value( ) ) / ( 100000 ) * LatLong.getWidth( ),
         static_cast< float >( ui->verticalSlider->value( ) ) / ( 100000 ) * LatLong.getHeight( )
       );

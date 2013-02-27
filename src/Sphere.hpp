@@ -320,7 +320,7 @@ sphere::normalXY( uint32_t x, uint32_t y ) const noexcept
     uint32_t ys_c = std::sqr( y_c );
     uint32_t s_xs_ys_c = xs_c + ys_c;
     vect< float, 3 > res;
-    if ( s_xs_ys_c > r2 ) {
+    if ( s_xs_ys_c >= r2 ) {
         res.setAll( -1 );
         return res;
     }

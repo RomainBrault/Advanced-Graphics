@@ -14,14 +14,12 @@ inRange( T x, T y, T z ) {
 
 static void
 polar2cartesian( float & x, float & y, float phi, float theta ) {
-    phi += M_PI;
     x = std::sin( theta ) * std::sin( phi );
     y = std::cos( theta );
 }
 
 static void
 polar2cartesian( float & x, float & y, float & z, float phi, float theta ) {
-    phi += M_PI;
     x = std::sin( theta ) * std::sin( phi );
     y = std::cos( theta );
     z = std::sin( theta ) * std::cos( phi );
@@ -1185,9 +1183,9 @@ obj::sphere const & s, obj::vect< float, 3 > const & view
 }
 
 void
-image::mapLatLong(
-obj::sphere const & s, obj::vect< float, 3 > const & view, image const & im,
-uint32_t x_offset, uint32_t y_offset
+image::latlong2sphere(
+    obj::sphere const & s, obj::vect< float, 3 > const & view, image const & im,
+    uint32_t x_offset, uint32_t y_offset
 ) noexcept {
     if (
         ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
@@ -1371,33 +1369,27 @@ image::renderBiased(
                 for ( uint32_t k = 0; k < 8; ++k ) {
                 uint32_t x_abs_pos = jb + k;
                 obj::vect< float, 3 > ref =
-                    s.normalXY( x_abs_pos, i );
+                    s.reflectanceXY( x_abs_pos, i, view );
                 if ( ref[ 2 ] == -1 ) { // black
                     continue;
                 }
 
                 float R( 0 ), B( 0 ), G( 0 );
                 for ( uint32_t is = 0; is < n_sample; ++is ) {
-                    float r, g, b;
-                    im.getPixel(
-                        samples[ is ][ 1 ],
-                        samples[ is ][ 0 ],
-                        r, g, b
-                    );
-
-                    float theta = ( 1 -
+                    float theta = (
                         samples[ is ][ 0 ] /
                         static_cast< float >( im.getHeight( ) ) ) * M_PI;
                     float phi = (
                         samples[ is ][ 1 ] /
                         static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+                    float r, g, b;
+                    im.getPixel(
+                        samples[ is ][ 1 ], samples[ is ][ 0 ], r, g, b
+                    );
 
-                    float x, y;
-                    polar2cartesian( x, y, phi, theta );
-                    x = s.getRadius( ) * x + s.getCenterX( );
-                    y = s.getRadius( ) * y + s.getCenterY( );
-                    obj::vect< float, 3 > ref_samp =
-                        s.reflectanceXY( x, y, view );
+                    float x, y, z;
+                    polar2cartesian( x, y, z, phi, theta );
+                    obj::vect< float, 3 > ref_samp( -x, -y, -z );
                     float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
                     float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                     float n = std::norm2( r, g, b );
@@ -1414,31 +1406,27 @@ image::renderBiased(
         for ( uint32_t k = 0; wblock_end + k < width_stop; ++k ) {
             uint32_t x_abs_pos = jb + k;
             obj::vect< float, 3 > ref =
-                s.normalXY( x_abs_pos, i );
+                s.reflectanceXY( x_abs_pos, i, view );
             if ( ref[ 2 ] == -1 ) { // black
                 continue;
             }
 
             float R( 0 ), B( 0 ), G( 0 );
             for ( uint32_t is = 0; is < n_sample; ++is ) {
-                float theta = ( 1 -
+                float theta = (
                     samples[ is ][ 0 ] /
-                    static_cast< float >( im.getHeight( ) ) ) * M_PI;
+                    static_cast< float >( im.getHeight( ) - 1 ) ) * M_PI;
                 float phi = (
                     samples[ is ][ 1 ] /
-                    static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+                    static_cast< float >( im.getWidth( ) - 1 ) ) * 2 * M_PI;
                 float r, g, b;
                 im.getPixel(
-                    static_cast< uint32_t >( samples[ is ][ 1 ] ),
-                    static_cast< uint32_t >( samples[ is ][ 0 ] ),
-                    r, g, b
+                    samples[ is ][ 1 ] , samples[ is ][ 0 ], r, g, b
                 );
 
-                float x, y;
-                polar2cartesian( x, y, phi, theta );
-                x = s.getRadius( ) * x + s.getCenterX( );
-                y = s.getRadius( ) * y + s.getCenterY( );
-                obj::vect< float, 3 > ref_samp = s.reflectanceXY( x, y, view );
+                float x, y, z;
+                polar2cartesian( x, y, z, phi, theta );
+                obj::vect< float, 3 > ref_samp( -x, -y, -z );
                 float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
                 float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                 float n = std::norm2( r, g, b );
@@ -1482,15 +1470,14 @@ image::render(
     m_min_pixel_chanel = im.m_min_pixel_chanel;
 
     uint32_t width_start  = s.getCenterX( ) - s.getRadius( );
-    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( ) + 1;
+    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( );
     uint32_t height_start = s.getCenterY( ) - s.getRadius( );
-    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( ) + 1;
+    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( );
     uint32_t wblock_index_stop ( ( width_stop - 1 ) / 8 );
     uint32_t wblock_index_start( width_start        / 8 );
     uint32_t wblock_end( wblock_index_stop * 8 );
 
     float L = im.integrate( );
-
 
 #if defined( GNU_CXX_COMPILER )
 #pragma omp parallel
@@ -1520,13 +1507,13 @@ image::render(
 #if defined( GNU_CXX_COMPILER )
 #pragma omp for
 #endif
-    for ( uint32_t i = height_start; i <= height_stop; ++i ) {
+    for ( uint32_t i = height_start; i < height_stop; ++i ) {
         for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
                 uint32_t jb = j * 8;
                 for ( uint32_t k = 0; k < 8; ++k ) {
                 uint32_t x_abs_pos = jb + k;
                 obj::vect< float, 3 > ref =
-                    s.normalXY( x_abs_pos, i );
+                    s.reflectanceXY( x_abs_pos, i, view );
                 if ( ref[ 2 ] == -1 ) { // black
                     continue;
                 }
@@ -1534,28 +1521,22 @@ image::render(
                 im.sampleEM( n_sample, rng_p, samples, hist_temp, hist_X_temp );
                 float R( 0 ), B( 0 ), G( 0 );
                 for ( uint32_t is = 0; is < n_sample; ++is ) {
-                    float r, g, b;
-                    im.getPixel(
-                        samples[ is ][ 1 ],
-                        samples[ is ][ 0 ],
-                        r, g, b
-                    );
-
-                    float theta = ( 1 -
+                    float theta = (
                         samples[ is ][ 0 ] /
                         static_cast< float >( im.getHeight( ) ) ) * M_PI;
                     float phi = (
                         samples[ is ][ 1 ] /
                         static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+                    float r, g, b;
+                    im.getPixel(
+                        samples[ is ][ 1 ], samples[ is ][ 0 ], r, g, b
+                    );
 
-                    float x, y;
-                    polar2cartesian( x, y, phi, theta );
-                    x = s.getRadius( ) * x + s.getCenterX( );
-                    y = s.getRadius( ) * y + s.getCenterY( );
-                    obj::vect< float, 3 > ref_samp =
-                        s.reflectanceXY( x, y, view );
+                    float x, y, z;
+                    polar2cartesian( x, y, z, phi, theta );
+                    obj::vect< float, 3 > ref_samp( -x, -y, -z );
                     float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
-		            float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
+                    float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                     float n = std::norm2( r, g, b );
                     R += brdf_v * cos_theta * ( r / n );
                     G += brdf_v * cos_theta * ( g / n );
@@ -1570,7 +1551,7 @@ image::render(
         for ( uint32_t k = 0; wblock_end + k < width_stop; ++k ) {
             uint32_t x_abs_pos = jb + k;
             obj::vect< float, 3 > ref =
-                s.normalXY( x_abs_pos, i );
+                s.reflectanceXY( x_abs_pos, i, view );
             if ( ref[ 2 ] == -1 ) { // black
                 continue;
             }
@@ -1578,25 +1559,20 @@ image::render(
             im.sampleEM( n_sample, rng_p, samples, hist_temp, hist_X_temp );
             float R( 0 ), B( 0 ), G( 0 );
             for ( uint32_t is = 0; is < n_sample; ++is ) {
-                float theta = ( 1 -
+                float theta = (
                     samples[ is ][ 0 ] /
-                    static_cast< float >( im.getHeight( ) ) ) * M_PI;
+                    static_cast< float >( im.getHeight( ) - 1 ) ) * M_PI;
                 float phi = (
                     samples[ is ][ 1 ] /
-                    static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+                    static_cast< float >( im.getWidth( ) - 1 ) ) * 2 * M_PI;
                 float r, g, b;
                 im.getPixel(
-                    static_cast< uint32_t >( samples[ is ][ 1 ] ),
-                    static_cast< uint32_t >( samples[ is ][ 0 ] ),
-                    r, g, b
+                    samples[ is ][ 1 ] , samples[ is ][ 0 ], r, g, b
                 );
 
-                float x, y;
-                polar2cartesian( x, y, phi, theta );
-                x = s.getRadius( ) * x + s.getCenterX( );
-                y = s.getRadius( ) * y + s.getCenterY( );
-                obj::vect< float, 3 > ref_samp =
-                    s.reflectanceXY( x, y, view );
+                float x, y, z;
+                polar2cartesian( x, y, z, phi, theta );
+                obj::vect< float, 3 > ref_samp( -x, -y, -z );
                 float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
                 float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                 float n = std::norm2( r, g, b );

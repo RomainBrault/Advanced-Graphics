@@ -57,7 +57,7 @@ int main( int argc, char * argv[] ) {
     temp.savePNM( "question2_reflection.ppm" );
 
     r_sphere.fill( 0 );
-    r_sphere.mapLatLong( s, view, latlong );
+    r_sphere.latlong2sphere( s, view, latlong );
     r_sphere.savePFM( "question2.pfm" );
     r_sphere.linearToneMap( static_cast< float >( std::atof( argv[ 3 ] ) ) );
     r_sphere.gamma( static_cast< float >( std::atof( argv[ 4 ] ) ) );

@@ -10,14 +10,14 @@ using namespace obj;
 
 int main(int argc, char** argv) {
 
-    if ( argc < 5 ) {
+    if ( argc < 6 ) {
         return -1;
     }
 
-    float stops = static_cast< float >( std::atof( argv[ 3 ] ) );
-    float gamma = static_cast< float >( std::atof( argv[ 4 ] ) );
-    uint32_t n_points = static_cast< float >( std::atoi( argv[ 2 ] ) );
-    uint32_t img_size = 511;
+    float stops = static_cast< float >( std::atof( argv[ 4 ] ) );
+    float gamma = static_cast< float >( std::atof( argv[ 5 ] ) );
+    uint32_t n_points = static_cast< float >( std::atoi( argv[ 3 ] ) );
+    uint32_t img_size = static_cast< float >( std::atoi( argv[ 2 ] ) );
 
     image r_sphere( img_size, img_size, 1 );
     image probe( img_size, img_size, 1 );
@@ -37,10 +37,9 @@ int main(int argc, char** argv) {
     }
     rnd::Uniform< float > rng( time( nullptr ) );
     brdf::model b( view, 1.0, 0.0, 1.0 );
-    r_sphere.render( s, latlong, view, n_points, b, rng );
+    r_sphere.renderBiased( s, latlong, view, n_points, b, rng );
 
     temp = r_sphere;
-    temp.savePFM( "diffuseprobe.pfm", SFMT );
     temp.linearToneMap( stops );
     temp.gamma( gamma );
     temp.normalise( 255 );
