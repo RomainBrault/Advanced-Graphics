@@ -182,7 +182,10 @@ public:
     negatif ( void ) noexcept;
 
     obj::vect< uint32_t, 2 >*
-    sampleEM( uint32_t, rnd::Uniform< float > & rng ) noexcept;
+    sampleEM(
+        uint32_t, rnd::Uniform< float > & rng,
+        obj::vect< uint32_t, 2 >* = nullptr, float* = nullptr, float** = nullptr
+    ) const noexcept;
 
     void median  ( image const &, uint32_t = 3 ) noexcept;
     void median  (                uint32_t = 3 ) noexcept;
@@ -235,7 +238,19 @@ public:
         uint32_t = 0, uint32_t = 0
     ) noexcept;
 
-    // void renderIS(obj::sphere const& s, obj::vect< float, 3 > const & view, image const& em, brdf::model brdf, obj::vect<uint32_t, 2> const* samples, uint32_t nb_samples);
+    void renderBiased(
+        obj::sphere const &, image const &,
+        obj::vect< float, 3 > const &, uint32_t,
+        brdf::model const &, rnd::Uniform< float > &
+    ) noexcept;
+
+    void render(
+        obj::sphere const &, image const &,
+        obj::vect< float, 3 > const &, uint32_t,
+        brdf::model const &, rnd::Uniform< float > &
+    ) noexcept;
+
+    float integrate( void ) const noexcept;
 
     ~image( void ) noexcept;
 

@@ -20,6 +20,7 @@ int main(int argc, char** argv) {
     uint32_t img_size = 511;
 
     image r_sphere( img_size, img_size, 1 );
+    image probe( img_size, img_size, 1 );
     if ( r_sphere. isEmpty( ) == true ) {
         return -1;
     }
@@ -35,20 +36,13 @@ int main(int argc, char** argv) {
         return -1;
     }
     rnd::Uniform< float > rng( time( nullptr ) );
-    obj::vect< uint32_t, 2 >* points = latlong.sampleEM( n_points, rng );
-    if ( points == nullptr ) {
-        return -1;
-    }
-    temp = latlong;
+    brdf::model b( view, 1.0, 0.0, 1.0 );
+    r_sphere.render( s, latlong, view, n_points, b, rng );
 
-    /* Add code here. */
-
-    // temp.renderIS(s, view, latlong, brdf::model(view, 1.0, 0.0, 1.0), points, n_points);
-
-    temp.linearToneMap( 7 );
-    temp.gamma( 2.2 );
+    temp = r_sphere;
+    temp.linearToneMap( stops );
+    temp.gamma( gamma );
     temp.normalise( 255 );
-    temp.savePNM( "latlong.ppm", SFMT );
-
+    temp.savePNM( "diffuseprobe.ppm", SFMT );
     return 0;
 }

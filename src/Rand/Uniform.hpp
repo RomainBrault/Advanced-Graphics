@@ -34,13 +34,13 @@ public:
     }
 
     Uniform( RND< Params ... > const & rng, TE s = 0, TE e = 1 ) noexcept :
-        m_rng( rng ), m_start( s ), m_end( e )
+         m_start( s ), m_end( e ), m_rng( rng )
     {
 
     }
 
     Uniform( Uniform const & rng ) noexcept  :
-        m_rng( rng.m_rng ), m_start( rng.m_start ), m_end( rng.m_end )
+        m_start( rng.m_start ), m_end( rng.m_end ), m_rng( rng.m_rng )
     {
 
     }

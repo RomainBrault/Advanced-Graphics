@@ -2,11 +2,42 @@
 #include <algorithm>
 #include <iostream>
 #include <cmath>
-
-#define hdr_in_range( x, y, z )         \
-    std::min( std::max( x, y ), z )
+#include <omp.h>
 
 namespace hdr {
+
+template < typename T >
+static float constexpr
+hdr_in_range( T x, T y, T z ) {
+    return std::min( std::max( x, y ), z );
+}
+
+template < typename T >
+static float constexpr
+norm2( T x, T y, T z ) {
+    return std::sqrt( std::sqr( x ) + std::sqr( y ) + std::sqr( z ) );
+}
+
+static void
+polar2cartesian( float & x, float & y, float phi, float theta ) {
+    phi += M_PI;
+    x = std::sin( theta ) * std::sin( phi );
+    y = std::cos( theta );
+}
+
+static void
+polar2cartesian( float & x, float & y, float & z, float phi, float theta ) {
+    phi += M_PI;
+    x = std::sin( theta ) * std::sin( phi );
+    y = std::cos( theta );
+    z = std::sin( theta ) * std::cos( phi );
+}
+
+static void
+cartesian2polar( float & phi, float & theta, float x, float y, float z ) {
+    theta = std::acos( y ) / M_PI;
+    phi   = std::atan2( x, z ) / ( 2 * M_PI ) + 0.5;
+}
 
 void
 image::normalise( float n ) noexcept
@@ -515,17 +546,26 @@ getMaxHist( float const * buf, uint32_t length ) {
 }
 
 obj::vect< uint32_t, 2 >*
-image::sampleEM( uint32_t n_sample, rnd::Uniform< float > & rng ) noexcept
-{
+image::sampleEM(
+    uint32_t n_sample, rnd::Uniform< float > & rng,
+    obj::vect< uint32_t, 2 >* buf, float* hist, float** hist_X_s
+) const noexcept {
+
+    if ( buf == nullptr ) {
+        buf = new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
+    }
+    if ( buf == nullptr ) {
+        return nullptr;
+    }
+
+    bool delete_hist   = ( hist == nullptr );
+    bool delete_hist_X = ( hist_X_s == nullptr );
+
     if ( n_sample < m_height ) {
-        obj::vect< uint32_t, 2 >* buf =
-        new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
-        if ( buf == nullptr ) {
-            return nullptr;
+        if ( hist == nullptr ) {
+            hist = new (std::nothrow) float[ m_height + m_width ];
         }
-        float* hist =
-        new (std::nothrow) float[ m_height + m_width ];
-            if ( hist == nullptr ) {
+        if ( hist == nullptr ) {
             delete [] buf;
             return nullptr;
         }
@@ -561,7 +601,6 @@ image::sampleEM( uint32_t n_sample, rnd::Uniform< float > & rng ) noexcept
                 grey_val * exp_rate_1 *
                 std::sin( M_PI * ( 1 - i / static_cast< float >( m_height ) ) );
         }
-
         for ( uint32_t i = 0; i < n_sample; ++i ) {
             uint32_t line_idx =
                 findInverse( hist_L_s, m_height,
@@ -609,24 +648,24 @@ image::sampleEM( uint32_t n_sample, rnd::Uniform< float > & rng ) noexcept
             buf[ i ][ 1 ] = pix_idx;
         }
 
-        delete [] hist;
+        if ( delete_hist ) {
+            delete [] hist;
+        }
         return buf;
     }
 
-    obj::vect< uint32_t, 2 >* buf =
-        new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
-    if ( buf == nullptr ) {
-        return nullptr;
+    if ( hist == nullptr ) {
+        hist = new (std::nothrow) float[ m_height * ( m_width + 1 ) ];
     }
-    float* hist =
-        new (std::nothrow) float[ m_height + m_height * m_width ];
     if ( hist == nullptr ) {
         delete [] buf;
         return nullptr;
     }
 
     float* hist_L_s = hist;
-    float** hist_X_s = new (std::nothrow) float*[ m_height ];
+    if ( hist_X_s == nullptr ) {
+        hist_X_s = new (std::nothrow) float*[ m_height ];
+    }
     if ( hist_X_s == nullptr ) {
         delete [] hist;
         delete [] buf;
@@ -716,8 +755,12 @@ image::sampleEM( uint32_t n_sample, rnd::Uniform< float > & rng ) noexcept
         buf[ i ][ 1 ] = pix_idx;
     }
 
-    delete [] hist_X_s;
-    delete [] hist;
+    if ( delete_hist_X ) {
+        delete [] hist_X_s;
+    }
+    if ( delete_hist ) {
+        delete [] hist;
+    }
     return buf;
 }
 
@@ -1192,18 +1235,14 @@ uint32_t x_offset, uint32_t y_offset
             for ( uint32_t k = 0; k < 8; ++k ) {
                 uint32_t x_abs_pos = jb + k;
                 obj::vect< float, 3 > ref =
-                s.reflectanceXY( x_abs_pos, m_height - i, view );
+                    s.reflectanceXY( x_abs_pos, m_height - i - 1, view );
                 if ( ref[ 2 ] == -1 ) { // black
                     continue;
                 }
-                float theta = hdr_in_range(
-                    static_cast< float >(
-                        std::acos( ref[ 1 ] ) / M_PI
-                    ) , 0.f, 1.f ) * ( im.m_height - 1 );
-                float phi = hdr_in_range(
-                    static_cast< float >(
-                        std::atan2( ref[ 0 ], ref[ 2 ] ) / ( 2 * M_PI ) + 0.5
-                    ) , 0.f, 1.f ) * ( im.m_width - 1 );
+                float theta, phi;
+                cartesian2polar( phi, theta, ref[ 0 ], ref[ 1 ], ref[ 2 ] );
+                theta = hdr_in_range( theta, 0.f, 1.f ) * ( im.m_height - 1 );
+                phi = hdr_in_range( phi , 0.f, 1.f ) * ( im.m_width - 1 );
                 float r, g, b;
                 im.getPixel(
                     ( static_cast< uint32_t >( phi ) + x_offset )
@@ -1221,18 +1260,14 @@ uint32_t x_offset, uint32_t y_offset
         for ( uint32_t k = 0; wblock_end + k < width_stop; ++k ) {
             uint32_t x_abs_pos = jb + k;
             obj::vect< float, 3 > ref =
-                s.reflectanceXY( x_abs_pos, i, view );
+                s.reflectanceXY( x_abs_pos, m_height - i - 1, view );
             if ( ref[ 2 ] == -1 ) { // black
                 continue;
             }
-            float theta = hdr_in_range(
-                static_cast< float >(
-                    std::asin( ref[ 1 ] ) / M_PI + 0.5
-                ), 0.f, 1.f ) * ( im.m_height - 1 );
-            float phi   = hdr_in_range(
-                static_cast< float >(
-                    std::atan2( ref[ 2 ], ref[ 0 ] ) / ( 2 * M_PI ) + 0.5
-                ) , 0.f, 1.f ) * ( im.m_width - 1 );
+            float theta, phi;
+            cartesian2polar( phi, theta, ref[ 0 ], ref[ 1 ], ref[ 2 ] );
+            theta = hdr_in_range( theta, 0.f, 1.f ) * ( im.m_height - 1 );
+            phi = hdr_in_range( phi , 0.f, 1.f ) * ( im.m_width - 1 );
             float r, g, b;
             im.getPixel(
                 ( static_cast< uint32_t >( phi ) - x_offset )
@@ -1248,100 +1283,333 @@ uint32_t x_offset, uint32_t y_offset
     }
 }
 
-// void
-// image::renderIS(obj::sphere const& s, obj::vect< float, 3 > const & view, image const& im, brdf::model brdf, obj::vect<uint32_t, 2> const* samples, uint32_t nb_samples) {
-// float L = 0.0;
-// float rr, gg, bb;
-// for (int i = 0; i < nb_samples; ++i) {
-//     im.getPixel(
-//         ( static_cast< uint32_t >( samples[i][1] ) ),
-//         ( static_cast< uint32_t >( samples[i][0] ) ),
-//         rr, gg, bb
-//         );
-//         rr = (rr > 1 ? 1 : rr);
-//         gg = (gg > 1 ? 1 : gg);
-//         bb = (bb > 1 ? 1 : bb);
-//     L += (rr + gg + bb) / 3;
-// }
-// L /= nb_samples;
-// cout << L << endl;
-// if (
-//     ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
-//     (
-//     static_cast< int32_t >( s.getCenterX( ) ) -
-//     static_cast< int32_t >( s.getRadius( )  ) < 0
-//     ) ||
-//     ( s.getCenterY( ) + s.getRadius( ) > m_height ) ||
-//     (
-//     static_cast< int32_t >( s.getCenterY( ) ) -
-//     static_cast< int32_t >(s.getRadius( ) ) < 0
-//     )
-//     ) {
-//     return;
-// }
+float
+image::integrate( void ) const noexcept {
+    uint32_t wblock_index( ( m_width - 1 ) / 8 );
+    uint32_t wblock_end( wblock_index * 8 );
 
-// m_max_pixel_chanel = im.m_max_pixel_chanel;
-// m_min_pixel_chanel = im.m_min_pixel_chanel;
+    float acc = 0;
+    for ( uint32_t i = 0; i < m_height; ++i ) {
+        float sin_theta = std::sin( ( m_height - i ) /
+            static_cast< float >( m_height ) ) * M_PI;
+        for ( uint32_t j = 0; j < wblock_index; ++j ) {
+            for ( uint32_t k = 0; k < 8; ++k ) {
+                acc += sin_theta * (
+                    m_data_2D[ i ][ j ].r[ k ] +
+                    m_data_2D[ i ][ j ].g[ k ] +
+                    m_data_2D[ i ][ j ].b[ k ] );
+            }
+        }
+        for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+            acc += sin_theta * (
+                m_data_2D[ i ][ wblock_index ].r[ k ] +
+                m_data_2D[ i ][ wblock_index ].g[ k ] +
+                m_data_2D[ i ][ wblock_index ].b[ k ] );
+        }
+    }
+    return acc / ( 3 * m_height * m_width );
+}
 
-// uint32_t width_start  = s.getCenterX( ) - s.getRadius( );
-// uint32_t width_stop   = s.getCenterX( ) + s.getRadius( ) + 1;
-// uint32_t height_start = s.getCenterY( ) - s.getRadius( );
-// uint32_t height_stop  = s.getCenterY( ) + s.getRadius( ) + 1;
-// uint32_t wblock_index_stop ( ( width_stop - 1 ) / 8 );
-// uint32_t wblock_index_start( width_start        / 8 );
-// uint32_t wblock_end( wblock_index_stop * 8 );
-// obj::vect<float, 3> vvv(1, 1, 1);
+void
+image::renderBiased(
+    obj::sphere const & s, image const & im,
+    obj::vect< float, 3 > const & view, uint32_t n_sample,
+    brdf::model const & brdf_f, rnd::Uniform< float > & rng
+) noexcept {
 
-// #if defined( GNU_CXX_COMPILER )
-// #pragma omp parallel for
-// #endif
-// for ( uint32_t i = height_start; i <= height_stop; ++i ) {
-//     for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
-//     uint32_t jb = j * 8;
-//     for ( uint32_t k = 0; k < 8; ++k ) {
-//         float R = 0.0;
-//         float G = 0.0;
-//         float B = 0.0;
-//         uint32_t x_abs_pos = jb + k;
-//         obj::vect< float, 3 > ref =
-//         s.reflectanceXY( x_abs_pos, i, view );
-//         if ( ref[ 2 ] == -1 ) { // black
-//         continue;
-//         }
-//         float theta = hdr_in_range(
-//         static_cast< float >( std::asin( ref[ 1 ] ) / M_PI + 0.5 )
-//         , 0.f, 1.f ) * ( im.m_height - 1 );
-//         float phi   = hdr_in_range(
-//         static_cast< float >(
-//             std::atan2( ref[ 2 ], ref[ 0 ] ) / ( 2 * M_PI ) + 0.5
-//             )
-//         , 0.f, 1.f ) * ( im.m_width - 1 );
-//         for (int i_sample = 0; i_sample < nb_samples; ++i_sample) {
-//         float theta = (samples[i_sample][0]/(float)im.getHeight() * M_PI);
-//         float phi = (samples[i_sample][1]/(float)im.getWidth() * 2 * M_PI);
-//         float r, g, b;
-//         im.getPixel(
-//         ( static_cast< uint32_t >( samples[i_sample][1] )),
-//         ( static_cast< uint32_t >( samples[i_sample][0] )),
-//         r, g, b
-//         );
-//         float x = s.getCenterX() + std::sin(theta)
-//             * std::cos(phi)
-//             * s.getRadius();
-//         float y = s.getCenterY() + std::sin(theta)
-//             * std::sin(phi)
-//             * s.getRadius();
-//         obj::vect< float, 3 > ref_samp = s.reflectanceXY( x, y, view );
-//         float cos_theta = ref_samp.dot(s.normalXY(x_abs_pos, i));
-//         R += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * r/sqrt(r * r + g * g + b * b);
-//         G += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * g/sqrt(r * r + g * g + b * b);
-//         B += 1/M_PI * hdr_in_range(cos_theta, 0.0f, 1.0f) * 1.0 * b/sqrt(r * r + g * g + b * b);
-//         }
-//         m_data_2D[ i ][ j ].r[ k ] = L * R/nb_samples;
-//         m_data_2D[ i ][ j ].g[ k ] = L * G/nb_samples;
-//         m_data_2D[ i ][ j ].b[ k ] = L * B/nb_samples;
-//     }
-//     }
-// }
-// }
+    if (
+        ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
+        (
+            static_cast< int32_t >( s.getCenterX( ) ) -
+            static_cast< int32_t >( s.getRadius( )  ) < 0
+        ) ||
+        ( s.getCenterY( ) + s.getRadius( ) > m_height ) ||
+        (
+            static_cast< int32_t >( s.getCenterY( ) ) -
+            static_cast< int32_t >(s.getRadius( ) ) < 0
+        )
+        ) {
+        return;
+    }
+
+    m_max_pixel_chanel = im.m_max_pixel_chanel;
+    m_min_pixel_chanel = im.m_min_pixel_chanel;
+
+    uint32_t width_start  = s.getCenterX( ) - s.getRadius( );
+    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( ) + 1;
+    uint32_t height_start = s.getCenterY( ) - s.getRadius( );
+    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( ) + 1;
+    uint32_t wblock_index_stop ( ( width_stop - 1 ) / 8 );
+    uint32_t wblock_index_start( width_start        / 8 );
+    uint32_t wblock_end( wblock_index_stop * 8 );
+
+    float L = im.integrate( );
+
+    obj::vect< uint32_t, 2 >* samples =
+        new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
+    if ( samples == nullptr ) {
+        return;
+    }
+    float* hist_temp =
+        new (std::nothrow) float[ im.m_height * ( im.getWidth( ) + 1 ) ];
+    if ( hist_temp == nullptr ) {
+        delete [] samples;
+        return;
+    }
+    float** hist_X_temp = new (std::nothrow) float*[ im.getHeight( ) ];
+    if ( hist_X_temp == nullptr ) {
+        delete [] samples;
+        delete [] hist_temp;
+        return;
+    }
+
+    im.sampleEM( n_sample, rng, samples, hist_temp, hist_X_temp );
+#if defined( GNU_CXX_COMPILER )
+#pragma omp parallel for
+#endif
+    for ( uint32_t i = height_start; i <= height_stop; ++i ) {
+        for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
+                uint32_t jb = j * 8;
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                uint32_t x_abs_pos = jb + k;
+                obj::vect< float, 3 > ref =
+                    s.normalXY( x_abs_pos, i );
+                if ( ref[ 2 ] == -1 ) { // black
+                    continue;
+                }
+
+                float R( 0 ), B( 0 ), G( 0 );
+                for ( uint32_t is = 0; is < n_sample; ++is ) {
+                    float r, g, b;
+                    im.getPixel(
+                        samples[ is ][ 1 ],
+                        samples[ is ][ 0 ],
+                        r, g, b
+                    );
+
+                    float theta = ( 1 -
+                        samples[ is ][ 0 ] /
+                        static_cast< float >( im.getHeight( ) ) ) * M_PI;
+                    float phi = (
+                        samples[ is ][ 1 ] /
+                        static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+
+                    float x, y;
+                    polar2cartesian( x, y, phi, theta );
+                    x = s.getRadius( ) * x + s.getCenterX( );
+                    y = s.getRadius( ) * y + s.getCenterY( );
+                    obj::vect< float, 3 > ref_samp =
+                        s.reflectanceXY( x, y, view );
+                    float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+                    float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
+                    float n = norm2( r, g, b );
+                    R += brdf_v * cos_theta * ( r / n );
+                    G += brdf_v * cos_theta * ( g / n );
+                    B += brdf_v * cos_theta * ( b / n );
+                }
+                m_data_2D[ i ][ j ].r[ k ] = L * R / n_sample;
+                m_data_2D[ i ][ j ].g[ k ] = L * G / n_sample;
+                m_data_2D[ i ][ j ].b[ k ] = L * B / n_sample;
+            }
+        }
+        uint32_t jb = wblock_index_stop * 8;
+        for ( uint32_t k = 0; wblock_end + k < width_stop; ++k ) {
+            uint32_t x_abs_pos = jb + k;
+            obj::vect< float, 3 > ref =
+                s.normalXY( x_abs_pos, i );
+            if ( ref[ 2 ] == -1 ) { // black
+                continue;
+            }
+
+            float R( 0 ), B( 0 ), G( 0 );
+            for ( uint32_t is = 0; is < n_sample; ++is ) {
+                float theta = ( 1 -
+                    samples[ is ][ 0 ] /
+                    static_cast< float >( im.getHeight( ) ) ) * M_PI;
+                float phi = (
+                    samples[ is ][ 1 ] /
+                    static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+                float r, g, b;
+                im.getPixel(
+                    static_cast< uint32_t >( samples[ is ][ 1 ] ),
+                    static_cast< uint32_t >( samples[ is ][ 0 ] ),
+                    r, g, b
+                );
+
+                float x, y;
+                polar2cartesian( x, y, phi, theta );
+                x = s.getRadius( ) * x + s.getCenterX( );
+                y = s.getRadius( ) * y + s.getCenterY( );
+                obj::vect< float, 3 > ref_samp = s.reflectanceXY( x, y, view );
+                float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+                float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
+                float n = norm2( r, g, b );
+                R += brdf_v * cos_theta * ( r / n );
+                G += brdf_v * cos_theta * ( g / n );
+                B += brdf_v * cos_theta * ( b / n );
+            }
+            m_data_2D[ i ][ wblock_index_stop ].r[ k ] = L * R / n_sample;
+            m_data_2D[ i ][ wblock_index_stop ].g[ k ] = L * G / n_sample;
+            m_data_2D[ i ][ wblock_index_stop ].b[ k ] = L * B / n_sample;
+        }
+    }
+    delete [] samples;
+    delete [] hist_temp;
+    delete [] hist_X_temp;
+}
+
+void
+image::render(
+    obj::sphere const & s, image const & im,
+    obj::vect< float, 3 > const & view, uint32_t n_sample,
+    brdf::model const & brdf_f, rnd::Uniform< float > & rng
+) noexcept {
+
+    if (
+        ( s.getCenterX( ) + s.getRadius( ) > m_width  ) ||
+        (
+            static_cast< int32_t >( s.getCenterX( ) ) -
+            static_cast< int32_t >( s.getRadius( )  ) < 0
+        ) ||
+        ( s.getCenterY( ) + s.getRadius( ) > m_height ) ||
+        (
+            static_cast< int32_t >( s.getCenterY( ) ) -
+            static_cast< int32_t >(s.getRadius( ) ) < 0
+        )
+        ) {
+        return;
+    }
+
+    m_max_pixel_chanel = im.m_max_pixel_chanel;
+    m_min_pixel_chanel = im.m_min_pixel_chanel;
+
+    uint32_t width_start  = s.getCenterX( ) - s.getRadius( );
+    uint32_t width_stop   = s.getCenterX( ) + s.getRadius( ) + 1;
+    uint32_t height_start = s.getCenterY( ) - s.getRadius( );
+    uint32_t height_stop  = s.getCenterY( ) + s.getRadius( ) + 1;
+    uint32_t wblock_index_stop ( ( width_stop - 1 ) / 8 );
+    uint32_t wblock_index_start( width_start        / 8 );
+    uint32_t wblock_end( wblock_index_stop * 8 );
+
+    float L = im.integrate( );
+
+#if defined( GNU_CXX_COMPILER )
+#pragma omp parallel
+{
+#endif
+    obj::vect< uint32_t, 2 >* samples =
+        new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
+    float* hist_temp =
+        new (std::nothrow) float[ im.m_height * ( im.getWidth( ) + 1 ) ];
+    float** hist_X_temp = new (std::nothrow) float*[ im.getHeight( ) ];
+    rnd::Uniform< float > rng_p( rng );
+    rng_p.InitSeed(
+        rng.GetSeed( ) + std::sqr( omp_get_thread_num( ) * 17 ) + 13
+    );
+    if (
+        ( samples     != nullptr ) &&
+        ( hist_temp   != nullptr ) &&
+        ( hist_X_temp != nullptr )
+    ) {
+#if defined( GNU_CXX_COMPILER )
+#pragma omp for
+#endif
+    for ( uint32_t i = height_start; i <= height_stop; ++i ) {
+        for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
+                uint32_t jb = j * 8;
+                for ( uint32_t k = 0; k < 8; ++k ) {
+                uint32_t x_abs_pos = jb + k;
+                obj::vect< float, 3 > ref =
+                    s.normalXY( x_abs_pos, i );
+                if ( ref[ 2 ] == -1 ) { // black
+                    continue;
+                }
+
+                im.sampleEM( n_sample, rng_p, samples, hist_temp, hist_X_temp );
+                float R( 0 ), B( 0 ), G( 0 );
+                for ( uint32_t is = 0; is < n_sample; ++is ) {
+                    float r, g, b;
+                    im.getPixel(
+                        samples[ is ][ 1 ],
+                        samples[ is ][ 0 ],
+                        r, g, b
+                    );
+
+                    float theta = ( 1 -
+                        samples[ is ][ 0 ] /
+                        static_cast< float >( im.getHeight( ) ) ) * M_PI;
+                    float phi = (
+                        samples[ is ][ 1 ] /
+                        static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+
+                    float x, y;
+                    polar2cartesian( x, y, phi, theta );
+                    x = s.getRadius( ) * x + s.getCenterX( );
+                    y = s.getRadius( ) * y + s.getCenterY( );
+                    obj::vect< float, 3 > ref_samp =
+                        s.reflectanceXY( x, y, view );
+                    float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+                    float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
+                    float n = norm2( r, g, b );
+                    R += brdf_v * cos_theta * ( r / n );
+                    G += brdf_v * cos_theta * ( g / n );
+                    B += brdf_v * cos_theta * ( b / n );
+                }
+                m_data_2D[ i ][ j ].r[ k ] = L * R / n_sample;
+                m_data_2D[ i ][ j ].g[ k ] = L * G / n_sample;
+                m_data_2D[ i ][ j ].b[ k ] = L * B / n_sample;
+            }
+        }
+        uint32_t jb = wblock_index_stop * 8;
+        for ( uint32_t k = 0; wblock_end + k < width_stop; ++k ) {
+            uint32_t x_abs_pos = jb + k;
+            obj::vect< float, 3 > ref =
+                s.normalXY( x_abs_pos, i );
+            if ( ref[ 2 ] == -1 ) { // black
+                continue;
+            }
+
+            im.sampleEM( n_sample, rng_p, samples, hist_temp, hist_X_temp );
+            float R( 0 ), B( 0 ), G( 0 );
+            for ( uint32_t is = 0; is < n_sample; ++is ) {
+                float theta = ( 1 -
+                    samples[ is ][ 0 ] /
+                    static_cast< float >( im.getHeight( ) ) ) * M_PI;
+                float phi = (
+                    samples[ is ][ 1 ] /
+                    static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+                float r, g, b;
+                im.getPixel(
+                    static_cast< uint32_t >( samples[ is ][ 1 ] ),
+                    static_cast< uint32_t >( samples[ is ][ 0 ] ),
+                    r, g, b
+                );
+
+                float x, y;
+                polar2cartesian( x, y, phi, theta );
+                x = s.getRadius( ) * x + s.getCenterX( );
+                y = s.getRadius( ) * y + s.getCenterY( );
+                obj::vect< float, 3 > ref_samp =
+                    s.reflectanceXY( x, y, view );
+                float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+                float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
+                float n = norm2( r, g, b );
+                R += brdf_v * cos_theta * ( r / n );
+                G += brdf_v * cos_theta * ( g / n );
+                B += brdf_v * cos_theta * ( b / n );
+            }
+            m_data_2D[ i ][ wblock_index_stop ].r[ k ] = L * R / n_sample;
+            m_data_2D[ i ][ wblock_index_stop ].g[ k ] = L * G / n_sample;
+            m_data_2D[ i ][ wblock_index_stop ].b[ k ] = L * B / n_sample;
+        }
+    }
+#if defined( GNU_CXX_COMPILER )
+        delete [] samples;
+        delete [] hist_temp;
+        delete [] hist_X_temp;
+    }
+}
+#endif
+}
+
 } // namespace hdr
