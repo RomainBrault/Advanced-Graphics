@@ -27,8 +27,10 @@ polar2cartesian( float & x, float & y, float & z, float phi, float theta ) {
 
 static void
 cartesian2polar( float & phi, float & theta, float x, float y, float z ) {
-    theta = std::acos( y ) / M_PI;
-    phi   = std::atan2( x, z ) / ( 2 * M_PI ) + 0.5;
+    theta = std::acos( y ) / static_cast< float >( M_PI );
+    phi   = static_cast< float >(
+        std::atan2( x, z ) / ( 2 * static_cast< float >( M_PI ) ) + 0.5
+    );
 }
 
 void
@@ -556,7 +558,10 @@ image::YCDF(
         }
         hist_L_s[ i ] = hist_L_s[ i - 1 ] +
             grey_val * exp_rate_1 *
-            std::sin( M_PI * ( 1 - i / static_cast< float >( m_height ) ) );
+            std::sin(
+                static_cast< float >( M_PI ) *
+                ( 1 - i / static_cast< float >( m_height ) )
+            );
     }
 }
 
@@ -649,7 +654,8 @@ getMaxHist( float const * buf, uint32_t length ) {
 
 obj::vect< uint32_t, 2 >*
 image::sampleEM(
-    uint32_t n_sample, rnd::Uniform< float > & rng,
+    uint32_t n_sample, 
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > & rng,
     obj::vect< uint32_t, 2 >* buf, float* hist, float** hist_X_s
 ) const noexcept {
 
@@ -1276,9 +1282,11 @@ image::integrate( void ) const noexcept {
     uint32_t wblock_end( wblock_index * 8 );
 
     float acc = 0;
+#pragma omp parallel for reduction( +:acc ) schedule( guided )
     for ( uint32_t i = 0; i < m_height; ++i ) {
         float sin_theta = std::sin( ( m_height - i ) /
-            static_cast< float >( m_height - 1) ) * M_PI;
+            static_cast< float >( m_height - 1) ) *
+            static_cast< float >( M_PI );
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
                 acc += sin_theta * (
@@ -1301,7 +1309,8 @@ void
 image::renderBiased(
     obj::sphere const & s, image const & im,
     obj::vect< float, 3 > const & view, uint32_t n_sample,
-    brdf::model const & brdf_f, rnd::Uniform< float > & rng
+    brdf::model const & brdf_f, 
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > & rng
 ) noexcept {
 
     if (
@@ -1374,14 +1383,16 @@ image::renderBiased(
                     continue;
                 }
 
-                float R( 0 ), B( 0 ), G( 0 );
+                float R( 0.f ), B( 0.f ), G( 0.f );
                 for ( uint32_t is = 0; is < n_sample; ++is ) {
                     float theta = (
                         samples[ is ][ 0 ] /
-                        static_cast< float >( im.getHeight( ) ) ) * M_PI;
+                        static_cast< float >( im.getHeight( ) ) ) *
+                        static_cast< float >( M_PI );
                     float phi = (
                         samples[ is ][ 1 ] /
-                        static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+                        static_cast< float >( im.getWidth( ) ) ) * 2 *
+                        static_cast< float >( M_PI );
                     float r, g, b;
                     im.getPixel(
                         samples[ is ][ 1 ], samples[ is ][ 0 ], r, g, b
@@ -1411,14 +1422,16 @@ image::renderBiased(
                 continue;
             }
 
-            float R( 0 ), B( 0 ), G( 0 );
+            float R( 0.f ), B( 0.f ), G( 0.f );
             for ( uint32_t is = 0; is < n_sample; ++is ) {
                 float theta = (
                     samples[ is ][ 0 ] /
-                    static_cast< float >( im.getHeight( ) - 1 ) ) * M_PI;
+                    static_cast< float >( im.getHeight( ) - 1 ) ) *
+                    static_cast< float >( M_PI );
                 float phi = (
                     samples[ is ][ 1 ] /
-                    static_cast< float >( im.getWidth( ) - 1 ) ) * 2 * M_PI;
+                    static_cast< float >( im.getWidth( ) - 1 ) ) * 2 *
+                    static_cast< float >( M_PI );
                 float r, g, b;
                 im.getPixel(
                     samples[ is ][ 1 ] , samples[ is ][ 0 ], r, g, b
@@ -1448,7 +1461,8 @@ void
 image::render(
     obj::sphere const & s, image const & im,
     obj::vect< float, 3 > const & view, uint32_t n_sample,
-    brdf::model const & brdf_f, rnd::Uniform< float > & rng
+    brdf::model const & brdf_f, 
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > & rng
 ) noexcept {
 
     if (
@@ -1479,16 +1493,14 @@ image::render(
 
     float L = im.integrate( );
 
-#if defined( GNU_CXX_COMPILER )
 #pragma omp parallel
 {
-#endif
     obj::vect< uint32_t, 2 >* samples =
         new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
     float* hist_temp =
         new (std::nothrow) float[ im.m_height * ( im.getWidth( ) + 1 ) ];
     float** hist_X_temp = new (std::nothrow) float*[ im.getHeight( ) ];
-    rnd::Uniform< float > rng_p( rng );
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > rng_p( rng );
     rng_p.InitSeed(
         rng.GetSeed( ) + std::sqr( omp_get_thread_num( ) * 17 ) + 13
     );
@@ -1504,9 +1516,7 @@ image::render(
         }
         im.YCDF( hist_temp, wblock_index_latlong, wblock_end_latlong );
         im.XCDF( hist_X_temp, wblock_index_latlong, wblock_end_latlong );
-#if defined( GNU_CXX_COMPILER )
-#pragma omp for
-#endif
+#pragma omp for schedule( guided )
     for ( uint32_t i = height_start; i < height_stop; ++i ) {
         for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
                 uint32_t jb = j * 8;
@@ -1523,10 +1533,12 @@ image::render(
                 for ( uint32_t is = 0; is < n_sample; ++is ) {
                     float theta = (
                         samples[ is ][ 0 ] /
-                        static_cast< float >( im.getHeight( ) ) ) * M_PI;
+                        static_cast< float >( im.getHeight( ) ) ) *
+                        static_cast< float >( M_PI );
                     float phi = (
                         samples[ is ][ 1 ] /
-                        static_cast< float >( im.getWidth( ) ) ) * 2 * M_PI;
+                        static_cast< float >( im.getWidth( ) ) ) * 2 *
+                        static_cast< float >( M_PI );
                     float r, g, b;
                     im.getPixel(
                         samples[ is ][ 1 ], samples[ is ][ 0 ], r, g, b
@@ -1561,10 +1573,12 @@ image::render(
             for ( uint32_t is = 0; is < n_sample; ++is ) {
                 float theta = (
                     samples[ is ][ 0 ] /
-                    static_cast< float >( im.getHeight( ) - 1 ) ) * M_PI;
+                    static_cast< float >( im.getHeight( ) - 1 ) ) *
+                    static_cast< float >( M_PI );
                 float phi = (
                     samples[ is ][ 1 ] /
-                    static_cast< float >( im.getWidth( ) - 1 ) ) * 2 * M_PI;
+                    static_cast< float >( im.getWidth( ) - 1 ) ) * 2 *
+                    static_cast< float >( M_PI );
                 float r, g, b;
                 im.getPixel(
                     samples[ is ][ 1 ] , samples[ is ][ 0 ], r, g, b
@@ -1585,13 +1599,11 @@ image::render(
             m_data_2D[ i ][ wblock_index_stop ].b[ k ] = L * B / n_sample;
         }
     }
-#if defined( GNU_CXX_COMPILER )
+    }
         delete [] samples;
         delete [] hist_temp;
         delete [] hist_X_temp;
-    }
 }
-#endif
 }
 
 } // namespace hdr

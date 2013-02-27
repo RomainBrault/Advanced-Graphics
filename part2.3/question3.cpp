@@ -17,8 +17,8 @@ int main(int argc, char** argv) {
 
     uint32_t nb_samples = std::atoi( argv[ 2 ] );
     uint32_t s          = std::atoi( argv[ 3 ] );
-    float    ks         = std::atof( argv[ 4 ] );
-    float    kd         = std::atof( argv[ 5 ] );
+    float    ks         = static_cast< float >( std::atof( argv[ 4 ] ) );
+    float    kd         = static_cast< float >( std::atof( argv[ 5 ] ) );
 
     image latlong;
     latlong.loadPFM(string( argv[ 1 ] ) );
@@ -47,8 +47,8 @@ int main(int argc, char** argv) {
         SFMT
     );
 
-    tmp.linearToneMap( std::atof( argv[ 6 ] ) );
-    tmp.gamma(std::atof( argv[ 7 ] ) );
+    tmp.linearToneMap( static_cast< float >( std::atof( argv[ 6 ] ) ) );
+    tmp.gamma( static_cast< float >( std::atof( argv[ 7 ] ) ) );
     tmp.normalise( 255 );
     tmp.savePNM(
         std::string( "samplingPhong_" ) +

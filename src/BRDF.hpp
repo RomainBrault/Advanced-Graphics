@@ -107,7 +107,7 @@ private:
         obj::vect< float, 3 > const & wr,
         obj::vect< float, 3 > const & n
     ) const noexcept {
-        return m_kd / M_PI +
+        return m_kd / static_cast< float >( M_PI ) +
             m_ks * std::pow( wr.dot( m_w0 ), m_s ) / n.dot( wi );
     }
 
@@ -125,7 +125,7 @@ private:
         for ( uint32_t i = 0; i < 3; ++i ) {
             wh[ i ] /= norm;
         }
-        return m_kd / M_PI +
+        return m_kd / static_cast< float >( M_PI ) +
             m_ks * std::pow( n.dot( wh ), m_s ) / n.dot( wi );
     }
 

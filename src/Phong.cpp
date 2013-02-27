@@ -24,7 +24,7 @@ Phong::generateSamples( uint32_t n_samples, uint32_t seed ) noexcept
     if ( m_samples == nullptr ) {
         return;
     }
-    rnd::Uniform< float > rng( seed );
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > rng( seed );
     for (uint32_t i = 0; i < n_samples; ++i)
     {
         sample( m_samples[ i ][ 0 ], m_samples[ i ][ 1 ], rng );
@@ -32,7 +32,8 @@ Phong::generateSamples( uint32_t n_samples, uint32_t seed ) noexcept
 }
 
 void
-Phong::sample( float& theta, float& phi, rnd::Uniform< float >& rng )
+Phong::sample( float& theta, float& phi,
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL >& rng )
 noexcept {
     while ( true ) {
         float rand = rng( 0.f, 1.f );
@@ -48,19 +49,21 @@ noexcept {
 }
 
 void
-Phong::diffuseSample( float& theta, float& phi, rnd::Uniform< float >& rng )
+Phong::diffuseSample( float& theta, float& phi,
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL >& rng )
 noexcept {
     theta = std::acos( 1.f - std::sqrt( rng( 0.f, 1.f ) ) );
-    phi = 2 * M_PI * rng( 0.f, 1.f );
+    phi = 2 * static_cast< float >( M_PI ) * rng( 0.f, 1.f );
 }
 
 void
-Phong::specularSample( float& theta, float& phi, rnd::Uniform< float >& rng )
+Phong::specularSample( float& theta, float& phi,
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL >& rng )
 noexcept {
     theta = std::acos(
         std::pow( 1.f - rng( 0.f, 1.f ), 1.f / ( m_s + 1.f ) )
     );
-    phi = 2 * M_PI * rng( 0.f, 1.f );
+    phi = 2 * static_cast< float >( M_PI ) * rng( 0.f, 1.f );
 }
 
 } // Phong

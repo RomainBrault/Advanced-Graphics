@@ -24,9 +24,18 @@ public:
 
 private:
 
-    void sample        ( float&, float&, rnd::Uniform< float >& ) noexcept;
-    void diffuseSample ( float&, float&, rnd::Uniform< float >& ) noexcept;
-    void specularSample( float&, float&, rnd::Uniform< float >& ) noexcept;
+    void sample(
+        float&, float&,
+        rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL >&
+    ) noexcept;
+    void diffuseSample(
+        float&, float&,
+        rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL >&
+    ) noexcept;
+    void specularSample(
+        float&, float&,
+        rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL >&
+    ) noexcept;
 
     float                  m_ks;
     float                  m_kd;
@@ -44,7 +53,7 @@ uint32_t
 Phong::getTheta( uint32_t i, uint32_t height ) const noexcept
 {
     return static_cast< uint32_t >(
-        m_samples[ i ][ 0 ] / M_PI * height
+        m_samples[ i ][ 0 ] / static_cast< float >( M_PI ) * height
     );
 }
 
@@ -52,7 +61,7 @@ uint32_t
 Phong::getPhi( uint32_t i, uint32_t width ) const noexcept
 {
     return static_cast< uint32_t >(
-        m_samples[ i ][ 1 ] / ( 2 * M_PI ) * width
+        m_samples[ i ][ 1 ] / ( 2 * static_cast< float >( M_PI ) ) * width
     );
 }
 

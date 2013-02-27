@@ -23,7 +23,8 @@ int main( int argc, char* argv[] ) {
     if ( latlong.isEmpty( ) == true ) {
         return -1;
     }
-    rnd::Uniform< float > rng( time( nullptr ) );
+    rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL >
+        rng( time( nullptr ) );
     obj::vect< uint32_t, 2 >* points = latlong.sampleEM( n_points, rng );
     if ( points == nullptr ) {
         return -1;
@@ -34,7 +35,9 @@ int main( int argc, char* argv[] ) {
     temp.linearToneMap( stops );
     temp.gamma( gamma );
     for ( uint32_t i = 0; i < n_points; ++i ) {
-        temp.circleFilled( sphere( 2, points[ i ][ 1 ], points[ i ][ 0 ] ), 0, 1, 0 ) ;
+        temp.circleFilled(
+            sphere( 2, points[ i ][ 1 ], points[ i ][ 0 ] ), 0, 1, 0
+        );
     }
     temp.normalise( 255 );
     temp.savePNM( std::string( "sampleEM_" ) + argv[ 2 ] + ".ppm", SFMT );

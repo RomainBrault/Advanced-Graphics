@@ -111,6 +111,7 @@ typedef struct {
     float b[ 8 ];
 } pixelBlock;
 
+
 enum saveFormat : uint32_t {
     ASCIIBitmap    = '1',
     ASCIIGreymap   = '2',
@@ -120,12 +121,21 @@ enum saveFormat : uint32_t {
     BinaryColormap = '6'
 };
 
+#if defined( INTEL_CXX_COMPILER )
+enum chanel : uint32_t {
+    red   = 0,
+    blue  = 1,
+    green = 2,
+    all   = 3
+};
+#else
 enum class chanel : uint32_t {
     red   = 0,
     blue  = 1,
     green = 2,
     all   = 3
 };
+#endif
 
 class image {
 
@@ -183,7 +193,8 @@ public:
 
     obj::vect< uint32_t, 2 >*
     sampleEM(
-        uint32_t, rnd::Uniform< float > & rng,
+        uint32_t,
+        rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > & rng,
         obj::vect< uint32_t, 2 >* = nullptr, float* = nullptr, float** = nullptr
     ) const noexcept;
 
@@ -245,13 +256,15 @@ public:
     void renderBiased(
         obj::sphere const &, image const &,
         obj::vect< float, 3 > const &, uint32_t,
-        brdf::model const &, rnd::Uniform< float > &
+        brdf::model const &,
+        rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > &
     ) noexcept;
 
     void render(
         obj::sphere const &, image const &,
         obj::vect< float, 3 > const &, uint32_t,
-        brdf::model const &, rnd::Uniform< float > &
+        brdf::model const &,
+        rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > &
     ) noexcept;
 
     float integrate( void ) const noexcept;
@@ -317,7 +330,7 @@ public:
 
     float operator( ) ( float x ) {
 
-        return std::sin( x * 2 * M_PI - M_PI / 2 ) + 1;
+        return static_cast< float >( std::sin( x * 2 * M_PI - M_PI / 2 ) + 1 );
     }
 
 private:

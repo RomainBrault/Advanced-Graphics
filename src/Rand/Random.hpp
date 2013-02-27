@@ -78,12 +78,6 @@ template <
 class MitchellMoore;
 
 template <
-    uint64_t mod = 10847ULL * 395959ULL,
-    uint64_t nbp = 4
->
-class BBS;
-
-template <
     typename TE,
     template < uint64_t ... > class RND = rnd::Haynes,
     uint64_t ... Params
