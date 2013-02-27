@@ -8,14 +8,8 @@ namespace hdr {
 
 template < typename T >
 static float constexpr
-hdr_in_range( T x, T y, T z ) {
+inRange( T x, T y, T z ) {
     return std::min( std::max( x, y ), z );
-}
-
-template < typename T >
-static float constexpr
-norm2( T x, T y, T z ) {
-    return std::sqrt( std::sqr( x ) + std::sqr( y ) + std::sqr( z ) );
 }
 
 static void
@@ -539,158 +533,21 @@ findInverse( float const * buf, uint32_t length, float val ) {
     return pos;
 }
 
-static INLINE float
-getMaxHist( float const * buf, uint32_t length ) {
-    /* Since Buf in non decreasing, return last value. */
-    return buf[ length - 1 ];
-}
-
-obj::vect< uint32_t, 2 >*
-image::sampleEM(
-    uint32_t n_sample, rnd::Uniform< float > & rng,
-    obj::vect< uint32_t, 2 >* buf, float* hist, float** hist_X_s
+void
+image::YCDF(
+    float* hist_L_s, uint32_t wblock_index, uint32_t wblock_end
 ) const noexcept {
 
-    if ( buf == nullptr ) {
-        buf = new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
-    }
-    if ( buf == nullptr ) {
-        return nullptr;
-    }
-
-    bool delete_hist   = ( hist == nullptr );
-    bool delete_hist_X = ( hist_X_s == nullptr );
-
-    if ( n_sample < m_height ) {
-        if ( hist == nullptr ) {
-            hist = new (std::nothrow) float[ m_height + m_width ];
-        }
-        if ( hist == nullptr ) {
-            delete [] buf;
-            return nullptr;
-        }
-
-        float* hist_L_s = hist;
-        float* hist_X_s = hist + m_height;
-
-        uint32_t wblock_index( ( m_width - 1 ) / 8 );
-        uint32_t wblock_end( wblock_index * 8 );
-
-        float const exp_rate_1( 1 / ( m_width * 3.f ) );
-        float const exp_rate_2( 1 / 3.f );
-
-        /* Y CDF. */
-        hist_L_s[ 0 ] = 0;
-        for ( uint32_t i = 1; i < m_height; ++i ) {
-            float grey_val = 0;
-            for ( uint32_t j = 0; j < wblock_index; ++j ) {
-                for ( uint32_t k = 0; k < 8; ++k ) {
-                    grey_val +=
-                        m_data_2D[ i ][ j ].r[ k ] +
-                        m_data_2D[ i ][ j ].g[ k ] +
-                        m_data_2D[ i ][ j ].b[ k ];
-                }
-            }
-            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
-                grey_val +=
-                    m_data_2D[ i ][ wblock_index ].r[ k ] +
-                    m_data_2D[ i ][ wblock_index ].g[ k ] +
-                    m_data_2D[ i ][ wblock_index ].b[ k ];
-            }
-            hist_L_s[ i ] = hist_L_s[ i - 1 ] +
-                grey_val * exp_rate_1 *
-                std::sin( M_PI * ( 1 - i / static_cast< float >( m_height ) ) );
-        }
-        for ( uint32_t i = 0; i < n_sample; ++i ) {
-            uint32_t line_idx =
-                findInverse( hist_L_s, m_height,
-                     rng( 0, getMaxHist( hist_L_s, m_height ) )
-                );
-
-            /* X PDF */
-            hist_X_s[ 0 ] = (
-                m_data_2D[ i ][ 0 ].r[ 0 ] +
-                m_data_2D[ i ][ 0 ].g[ 0 ] +
-                m_data_2D[ i ][ 0 ].b[ 0 ] )
-                * exp_rate_2;
-            for ( uint32_t k = 1; k < 8; ++k ) {
-                hist_X_s[ k ] = hist_X_s[ k - 1 ] + (
-                            m_data_2D[ line_idx ][ 0 ].r[ k ] +
-                            m_data_2D[ line_idx ][ 0 ].g[ k ] +
-                            m_data_2D[ line_idx ][ 0 ].b[ k ] )
-                            * exp_rate_2;
-            }
-            for ( uint32_t j =  1; j < wblock_index; ++j ) {
-                uint32_t jb = j * 8;
-                for ( uint32_t k = 0; k < 8; ++k ) {
-                    hist_X_s[ jb + k ] = hist_X_s[ jb + k - 1 ] + (
-                                    m_data_2D[ line_idx ][ j ].r[ k ] +
-                                    m_data_2D[ line_idx ][ j ].g[ k ] +
-                                    m_data_2D[ line_idx ][ j ].b[ k ] )
-                                    * exp_rate_2;
-                }
-            }
-            uint32_t jb = wblock_index * 8;
-            for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
-                hist_X_s[ jb + k ] = hist_X_s[ jb + k - 1 ] + (
-                            m_data_2D[ line_idx ][ wblock_index ].r[ k ] +
-                            m_data_2D[ line_idx ][ wblock_index ].g[ k ] +
-                            m_data_2D[ line_idx ][ wblock_index ].b[ k ] )
-                            * exp_rate_2;
-            }
-
-            uint32_t pix_idx =
-                findInverse( hist_X_s, m_width,
-                     rng( 0, getMaxHist( hist_X_s, m_width ) )
-                );
-
-            buf[ i ][ 0 ] = line_idx;
-            buf[ i ][ 1 ] = pix_idx;
-        }
-
-        if ( delete_hist ) {
-            delete [] hist;
-        }
-        return buf;
-    }
-
-    if ( hist == nullptr ) {
-        hist = new (std::nothrow) float[ m_height * ( m_width + 1 ) ];
-    }
-    if ( hist == nullptr ) {
-        delete [] buf;
-        return nullptr;
-    }
-
-    float* hist_L_s = hist;
-    if ( hist_X_s == nullptr ) {
-        hist_X_s = new (std::nothrow) float*[ m_height ];
-    }
-    if ( hist_X_s == nullptr ) {
-        delete [] hist;
-        delete [] buf;
-        return nullptr;
-    }
-    for ( uint32_t i = 0; i < m_height; ++i ) {
-        hist_X_s[ i ] = hist + m_height + i * m_width;
-    }
-
-    uint32_t wblock_index( ( m_width - 1 ) / 8 );
-    uint32_t wblock_end( wblock_index * 8 );
-
     float const exp_rate_1( 1 / ( m_width * 3.f ) );
-    float const exp_rate_2( 1 / 3.f );
-
-    /* Y CDF. */
     hist_L_s[ 0 ] = 0;
     for ( uint32_t i = 1; i < m_height; ++i ) {
         float grey_val = 0;
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
                 grey_val +=
-                m_data_2D[ i ][ j ].r[ k ] +
-                m_data_2D[ i ][ j ].g[ k ] +
-                m_data_2D[ i ][ j ].b[ k ];
+                    m_data_2D[ i ][ j ].r[ k ] +
+                    m_data_2D[ i ][ j ].g[ k ] +
+                    m_data_2D[ i ][ j ].b[ k ];
             }
         }
         for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
@@ -700,13 +557,59 @@ image::sampleEM(
                 m_data_2D[ i ][ wblock_index ].b[ k ];
         }
         hist_L_s[ i ] = hist_L_s[ i - 1 ] +
-        grey_val * exp_rate_1 *
-        std::sin( M_PI * ( 1 - i / static_cast< float >( m_height ) ) );
+            grey_val * exp_rate_1 *
+            std::sin( M_PI * ( 1 - i / static_cast< float >( m_height ) ) );
     }
+}
+
+void
+image::XCDF(
+    float* hist_X_s, uint32_t line_idx,
+    uint32_t wblock_index, uint32_t wblock_end
+) const noexcept {
+
+    float const exp_rate_2( 1 / 3.f );
+
+    hist_X_s[ 0 ] = (
+        m_data_2D[ line_idx ][ 0 ].r[ 0 ] +
+        m_data_2D[ line_idx ][ 0 ].g[ 0 ] +
+        m_data_2D[ line_idx ][ 0 ].b[ 0 ] )
+        * exp_rate_2;
+    for ( uint32_t k = 1; k < 8; ++k ) {
+        hist_X_s[ k ] = hist_X_s[ k - 1 ] + (
+                    m_data_2D[ line_idx ][ 0 ].r[ k ] +
+                    m_data_2D[ line_idx ][ 0 ].g[ k ] +
+                    m_data_2D[ line_idx ][ 0 ].b[ k ] )
+                    * exp_rate_2;
+    }
+    for ( uint32_t j =  1; j < wblock_index; ++j ) {
+        uint32_t jb = j * 8;
+        for ( uint32_t k = 0; k < 8; ++k ) {
+            hist_X_s[ jb + k ] = hist_X_s[ jb + k - 1 ] + (
+                m_data_2D[ line_idx ][ j ].r[ k ] +
+                m_data_2D[ line_idx ][ j ].g[ k ] +
+                m_data_2D[ line_idx ][ j ].b[ k ] )
+                * exp_rate_2;
+        }
+    }
+    uint32_t jb = wblock_index * 8;
+    for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
+        hist_X_s[ jb + k ] = hist_X_s[ jb + k - 1 ] + (
+            m_data_2D[ line_idx ][ wblock_index ].r[ k ] +
+            m_data_2D[ line_idx ][ wblock_index ].g[ k ] +
+            m_data_2D[ line_idx ][ wblock_index ].b[ k ] )
+            * exp_rate_2;
+    }
+}
+
+void
+image::XCDF(
+    float** hist_X_s, uint32_t wblock_index, uint32_t wblock_end
+) const noexcept {
+
+    float const exp_rate_2( 1 / 3.f );
 
     for ( uint32_t i = 0; i < m_height; ++i ) {
-
-        /* X PDF */
         hist_X_s[ 0 ][ 0 ] = (
         m_data_2D[ i ][ 0 ].r[ 0 ] +
         m_data_2D[ i ][ 0 ].g[ 0 ] +
@@ -738,15 +641,101 @@ image::sampleEM(
             ) * exp_rate_2;
         }
     }
+}
+
+static float
+getMaxHist( float const * buf, uint32_t length ) {
+    /* Since Buf in non decreasing, return last value. */
+    return buf[ length - 1 ];
+}
+
+obj::vect< uint32_t, 2 >*
+image::sampleEM(
+    uint32_t n_sample, rnd::Uniform< float > & rng,
+    obj::vect< uint32_t, 2 >* buf, float* hist, float** hist_X_s
+) const noexcept {
+
+    if ( buf == nullptr ) {
+        buf = new (std::nothrow) obj::vect< uint32_t, 2 >[ n_sample ];
+    }
+    if ( buf == nullptr ) {
+        return nullptr;
+    }
+
+    bool delete_hist   = ( hist == nullptr );
+    bool delete_hist_X = ( hist_X_s == nullptr );
+    bool preprocessed  = ( delete_hist == false ) && ( delete_hist_X == false );
+
+    uint32_t wblock_index( ( m_width - 1 ) / 8 );
+    uint32_t wblock_end( wblock_index * 8 );
+
+    if ( ( n_sample < m_height ) && ( preprocessed == false ) ) {
+        if ( hist == nullptr ) {
+            hist = new (std::nothrow) float[ m_height + m_width ];
+        }
+        if ( hist == nullptr ) {
+            delete [] buf;
+            return nullptr;
+        }
+
+        float* hist_L_s = hist;
+        float* hist_X_s = hist + m_height;
+
+        /* Y CDF. */
+        YCDF( hist_L_s, wblock_index, wblock_end );
+        for ( uint32_t i = 0; i < n_sample; ++i ) {
+            uint32_t line_idx = findInverse( hist_L_s, m_height,
+                rng( 0, getMaxHist( hist_L_s, m_height ) )
+            );
+
+            XCDF( hist_X_s, line_idx, wblock_index, wblock_end );
+
+            uint32_t pix_idx = findInverse( hist_X_s, m_width,
+                rng( 0, getMaxHist( hist_X_s, m_width ) )
+            );
+
+            buf[ i ][ 0 ] = line_idx;
+            buf[ i ][ 1 ] = pix_idx;
+        }
+
+        if ( delete_hist ) {
+            delete [] hist;
+        }
+        return buf;
+    }
+
+    if ( hist == nullptr ) {
+        hist = new (std::nothrow) float[ m_height * ( m_width + 1 ) ];
+    }
+    if ( hist == nullptr ) {
+        delete [] buf;
+        return nullptr;
+    }
+
+    float* hist_L_s = hist;
+    if ( hist_X_s == nullptr ) {
+        hist_X_s = new (std::nothrow) float*[ m_height ];
+    }
+    if ( hist_X_s == nullptr ) {
+        delete [] hist;
+        delete [] buf;
+        return nullptr;
+    }
+    if ( preprocessed == false ) {
+        for ( uint32_t i = 0; i < m_height; ++i ) {
+            hist_X_s[ i ] = hist + m_height + i * m_width;
+        }
+        YCDF( hist_L_s, wblock_index, wblock_end );
+        XCDF( hist_X_s, wblock_index, wblock_end );
+    }
 
     for ( uint32_t i = 0; i < n_sample; ++i ) {
-        uint32_t line_idx =
-        findInverse(
+        uint32_t line_idx = findInverse(
             hist_L_s, m_height,
             rng( 0, getMaxHist( hist_L_s, m_height ) )
         );
-        uint32_t pix_idx =
-        findInverse(
+
+        uint32_t pix_idx = findInverse(
             hist_X_s[ line_idx ], m_width,
             rng( 0, getMaxHist( hist_X_s[ line_idx ], m_width ) )
         );
@@ -996,20 +985,20 @@ image::troncate( float min, float max ) noexcept
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
                 m_data_2D[ i ][ j ].r[ k ] =
-                hdr_in_range( m_data_2D[ i ][ j ].r[ k ], min, max );
+                inRange( m_data_2D[ i ][ j ].r[ k ], min, max );
                 m_data_2D[ i ][ j ].g[ k ] =
-                hdr_in_range( m_data_2D[ i ][ j ].g[ k ], min, max );
+                inRange( m_data_2D[ i ][ j ].g[ k ], min, max );
                 m_data_2D[ i ][ j ].b[ k ] =
-                hdr_in_range( m_data_2D[ i ][ j ].b[ k ], min, max );
+                inRange( m_data_2D[ i ][ j ].b[ k ], min, max );
             }
         }
         for ( uint32_t k = 0; wblock_end + k < m_width; ++k ) {
             m_data_2D[ i ][ wblock_index ].r[ k ] =
-                hdr_in_range( m_data_2D[ i ][ wblock_index ].r[ k ], min, max );
+                inRange( m_data_2D[ i ][ wblock_index ].r[ k ], min, max );
             m_data_2D[ i ][ wblock_index ].g[ k ] =
-                hdr_in_range( m_data_2D[ i ][ wblock_index ].g[ k ], min, max );
+                inRange( m_data_2D[ i ][ wblock_index ].g[ k ], min, max );
             m_data_2D[ i ][ wblock_index ].b[ k ] =
-                hdr_in_range( m_data_2D[ i ][ wblock_index ].b[ k ], min, max );
+                inRange( m_data_2D[ i ][ wblock_index ].b[ k ], min, max );
         }
     }
 }
@@ -1241,8 +1230,8 @@ uint32_t x_offset, uint32_t y_offset
                 }
                 float theta, phi;
                 cartesian2polar( phi, theta, ref[ 0 ], ref[ 1 ], ref[ 2 ] );
-                theta = hdr_in_range( theta, 0.f, 1.f ) * ( im.m_height - 1 );
-                phi = hdr_in_range( phi , 0.f, 1.f ) * ( im.m_width - 1 );
+                theta = inRange( theta, 0.f, 1.f ) * ( im.m_height - 1 );
+                phi = inRange( phi , 0.f, 1.f ) * ( im.m_width - 1 );
                 float r, g, b;
                 im.getPixel(
                     ( static_cast< uint32_t >( phi ) + x_offset )
@@ -1266,8 +1255,8 @@ uint32_t x_offset, uint32_t y_offset
             }
             float theta, phi;
             cartesian2polar( phi, theta, ref[ 0 ], ref[ 1 ], ref[ 2 ] );
-            theta = hdr_in_range( theta, 0.f, 1.f ) * ( im.m_height - 1 );
-            phi = hdr_in_range( phi , 0.f, 1.f ) * ( im.m_width - 1 );
+            theta = inRange( theta, 0.f, 1.f ) * ( im.m_height - 1 );
+            phi = inRange( phi , 0.f, 1.f ) * ( im.m_width - 1 );
             float r, g, b;
             im.getPixel(
                 ( static_cast< uint32_t >( phi ) - x_offset )
@@ -1363,6 +1352,15 @@ image::renderBiased(
         return;
     }
 
+    uint32_t wblock_index_latlong( ( im.m_width - 1 ) / 8 );
+    uint32_t wblock_end_latlong( wblock_index_latlong * 8 );
+
+    for ( uint32_t i = 0; i < im.m_height; ++i ) {
+        hist_X_temp[ i ] = hist_temp + im.m_height + i * im.m_width;
+    }
+    im.YCDF( hist_temp, wblock_index_latlong, wblock_end_latlong );
+    im.XCDF( hist_X_temp, wblock_index_latlong, wblock_end_latlong );
+
     im.sampleEM( n_sample, rng, samples, hist_temp, hist_X_temp );
 #if defined( GNU_CXX_COMPILER )
 #pragma omp parallel for
@@ -1401,10 +1399,8 @@ image::renderBiased(
                     obj::vect< float, 3 > ref_samp =
                         s.reflectanceXY( x, y, view );
                     float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
-		    //reflectance ain't normalised ;)
-		    cos_theta /= norm2(ref_samp[0], ref_samp[1], ref_samp[2]);
                     float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
-                    float n = norm2( r, g, b );
+                    float n = std::norm2( r, g, b );
                     R += brdf_v * cos_theta * ( r / n );
                     G += brdf_v * cos_theta * ( g / n );
                     B += brdf_v * cos_theta * ( b / n );
@@ -1445,7 +1441,7 @@ image::renderBiased(
                 obj::vect< float, 3 > ref_samp = s.reflectanceXY( x, y, view );
                 float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
                 float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
-                float n = norm2( r, g, b );
+                float n = std::norm2( r, g, b );
                 R += brdf_v * cos_theta * ( r / n );
                 G += brdf_v * cos_theta * ( g / n );
                 B += brdf_v * cos_theta * ( b / n );
@@ -1514,6 +1510,13 @@ image::render(
         ( hist_temp   != nullptr ) &&
         ( hist_X_temp != nullptr )
     ) {
+        uint32_t wblock_index_latlong( ( im.m_width - 1 ) / 8 );
+        uint32_t wblock_end_latlong( wblock_index_latlong * 8 );
+        for ( uint32_t i = 0; i < im.m_height; ++i ) {
+            hist_X_temp[ i ] = hist_temp + im.m_height + i * im.m_width;
+        }
+        im.YCDF( hist_temp, wblock_index_latlong, wblock_end_latlong );
+        im.XCDF( hist_X_temp, wblock_index_latlong, wblock_end_latlong );
 #if defined( GNU_CXX_COMPILER )
 #pragma omp for
 #endif
@@ -1552,10 +1555,8 @@ image::render(
                     obj::vect< float, 3 > ref_samp =
                         s.reflectanceXY( x, y, view );
                     float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
-                    // Normalising the reflectance
-		    cos_theta /= norm2(ref_samp[0], ref_samp[1], ref_samp[2]);
-		    float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
-                    float n = norm2( r, g, b );
+		            float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
+                    float n = std::norm2( r, g, b );
                     R += brdf_v * cos_theta * ( r / n );
                     G += brdf_v * cos_theta * ( g / n );
                     B += brdf_v * cos_theta * ( b / n );
@@ -1598,7 +1599,7 @@ image::render(
                     s.reflectanceXY( x, y, view );
                 float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
                 float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
-                float n = norm2( r, g, b );
+                float n = std::norm2( r, g, b );
                 R += brdf_v * cos_theta * ( r / n );
                 G += brdf_v * cos_theta * ( g / n );
                 B += brdf_v * cos_theta * ( b / n );

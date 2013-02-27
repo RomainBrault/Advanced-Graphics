@@ -6,9 +6,15 @@
 namespace std {
 
 template< typename T >
-static INLINE T
+static T
 sqr( T x ) {
     return x * x;
+}
+
+template < typename T >
+static float constexpr
+norm2( T x, T y, T z ) {
+    return sqrt( sqr( x ) + sqr( y ) + sqr( z ) );
 }
 
 } // namespace std
@@ -358,6 +364,10 @@ sphere::reflectanceXY(
     }
     float scal = nv.dot( view );
     nv.mult_minus( 2 * scal, view );
+    float norm = std::norm2( nv[ 0 ], nv[ 1 ], nv[ 2 ] );
+    for ( uint32_t i = 0; i < 3; ++i ) {
+        nv[ i ] /= norm;
+    }
     return nv;
 }
 
@@ -375,6 +385,10 @@ sphere::reflectanceXY_fast(
     }
     float scal = nv.dot( view );
     nv.mult_minus( 2 * scal, view );
+    float norm = std::norm2( nv[ 0 ], nv[ 1 ], nv[ 2 ] );
+    for ( uint32_t i = 0; i < 3; ++i ) {
+        nv[ i ] /= norm;
+    }
     return nv;
 }
 

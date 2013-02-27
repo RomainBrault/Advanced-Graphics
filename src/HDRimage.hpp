@@ -226,6 +226,10 @@ public:
         float const *, image const *, uint32_t
     ) noexcept;
 
+    void YCDF( float* , uint32_t, uint32_t           ) const noexcept;
+    void XCDF( float* , uint32_t, uint32_t, uint32_t ) const noexcept;
+    void XCDF( float**,           uint32_t, uint32_t ) const noexcept;
+
     void linearToneMap( float stops ) noexcept;
     void histEqToneMap( uint32_t = 256 ) noexcept;
 
