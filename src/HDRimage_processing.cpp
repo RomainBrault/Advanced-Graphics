@@ -1291,7 +1291,7 @@ image::integrate( void ) const noexcept {
     float acc = 0;
     for ( uint32_t i = 0; i < m_height; ++i ) {
         float sin_theta = std::sin( ( m_height - i ) /
-            static_cast< float >( m_height ) ) * M_PI;
+            static_cast< float >( m_height - 1) ) * M_PI;
         for ( uint32_t j = 0; j < wblock_index; ++j ) {
             for ( uint32_t k = 0; k < 8; ++k ) {
                 acc += sin_theta * (
@@ -1401,6 +1401,8 @@ image::renderBiased(
                     obj::vect< float, 3 > ref_samp =
                         s.reflectanceXY( x, y, view );
                     float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+		    //reflectance ain't normalised ;)
+		    cos_theta /= norm2(ref_samp[0], ref_samp[1], ref_samp[2]);
                     float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                     float n = norm2( r, g, b );
                     R += brdf_v * cos_theta * ( r / n );
@@ -1493,6 +1495,7 @@ image::render(
 
     float L = im.integrate( );
 
+
 #if defined( GNU_CXX_COMPILER )
 #pragma omp parallel
 {
@@ -1549,7 +1552,9 @@ image::render(
                     obj::vect< float, 3 > ref_samp =
                         s.reflectanceXY( x, y, view );
                     float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
-                    float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
+                    // Normalising the reflectance
+		    cos_theta /= norm2(ref_samp[0], ref_samp[1], ref_samp[2]);
+		    float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                     float n = norm2( r, g, b );
                     R += brdf_v * cos_theta * ( r / n );
                     G += brdf_v * cos_theta * ( g / n );
