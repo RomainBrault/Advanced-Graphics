@@ -654,7 +654,7 @@ getMaxHist( float const * buf, uint32_t length ) {
 
 obj::vect< uint32_t, 2 >*
 image::sampleEM(
-    uint32_t n_sample, 
+    uint32_t n_sample,
     rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > & rng,
     obj::vect< uint32_t, 2 >* buf, float* hist, float** hist_X_s
 ) const noexcept {
@@ -1309,7 +1309,7 @@ void
 image::renderBiased(
     obj::sphere const & s, image const & im,
     obj::vect< float, 3 > const & view, uint32_t n_sample,
-    brdf::model const & brdf_f, 
+    brdf::model const & brdf_f,
     rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > & rng
 ) noexcept {
 
@@ -1369,9 +1369,8 @@ image::renderBiased(
     im.XCDF( hist_X_temp, wblock_index_latlong, wblock_end_latlong );
 
     im.sampleEM( n_sample, rng, samples, hist_temp, hist_X_temp );
-#if defined( GNU_CXX_COMPILER )
-#pragma omp parallel for
-#endif
+
+#pragma omp parallel for schedule( guided )
     for ( uint32_t i = height_start; i <= height_stop; ++i ) {
         for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
                 uint32_t jb = j * 8;
@@ -1461,7 +1460,7 @@ void
 image::render(
     obj::sphere const & s, image const & im,
     obj::vect< float, 3 > const & view, uint32_t n_sample,
-    brdf::model const & brdf_f, 
+    brdf::model const & brdf_f,
     rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL > & rng
 ) noexcept {
 
