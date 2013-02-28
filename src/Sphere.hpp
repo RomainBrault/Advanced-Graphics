@@ -394,6 +394,34 @@ sphere::reflectanceXY_fast(
     return nv;
 }
 
-} //namespace obj
+} // obj
+
+namespace std {
+
+template < typename T >
+static float constexpr
+norm2( obj::vect< T, 3 > const & v ) {
+    return sqrt( sqr( v[ 0 ] ) + sqr( v[ 1 ] ) + sqr( v[ 2 ] ) );
+}
+
+template < typename T >
+static void constexpr
+normalise2( T & x, T & y, T & z ) {
+    T norm = sqrt( sqr( x ) + sqr( y ) + sqr( z ) );
+    x /= norm;
+    y /= norm;
+    z /= norm;
+}
+
+template < typename T >
+static void constexpr
+normalise2( obj::vect< T, 3 > & v ) {
+    T norm = sqrt( sqr( v[ 0 ] ) + sqr( v[ 1 ] ) + sqr( v[ 2 ] ) );
+    for ( uint32_t i = 0; i < 3; ++i ) {
+        v[ i ] /= norm;
+    }
+}
+
+} // std
 
 #endif
