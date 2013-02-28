@@ -1371,7 +1371,7 @@ image::renderBiased(
     im.sampleEM( n_sample, rng, samples, hist_temp, hist_X_temp );
 
 #pragma omp parallel for schedule( guided )
-    for ( uint32_t i = height_start; i <= height_stop; ++i ) {
+    for ( uint32_t i = height_start; i < height_stop; ++i ) {
         for ( uint32_t j = wblock_index_start; j < wblock_index_stop; ++j ) {
                 uint32_t jb = j * 8;
                 for ( uint32_t k = 0; k < 8; ++k ) {
@@ -1382,15 +1382,15 @@ image::renderBiased(
                     continue;
                 }
 
-                float R( 0.f ), B( 0.f ), G( 0.f );
+                float R( 0 ), B( 0 ), G( 0 );
                 for ( uint32_t is = 0; is < n_sample; ++is ) {
                     float theta = (
                         samples[ is ][ 0 ] /
-                        static_cast< float >( im.getHeight( ) ) ) *
+                        static_cast< float >( im.getHeight( ) - 1 ) ) *
                         static_cast< float >( M_PI );
                     float phi = (
                         samples[ is ][ 1 ] /
-                        static_cast< float >( im.getWidth( ) ) ) * 2 *
+                        static_cast< float >( im.getWidth( ) - 1 ) ) * 2 *
                         static_cast< float >( M_PI );
                     float r, g, b;
                     im.getPixel(
@@ -1421,7 +1421,7 @@ image::renderBiased(
                 continue;
             }
 
-            float R( 0.f ), B( 0.f ), G( 0.f );
+            float R( 0 ), B( 0 ), G( 0 );
             for ( uint32_t is = 0; is < n_sample; ++is ) {
                 float theta = (
                     samples[ is ][ 0 ] /
@@ -1532,11 +1532,11 @@ image::render(
                 for ( uint32_t is = 0; is < n_sample; ++is ) {
                     float theta = (
                         samples[ is ][ 0 ] /
-                        static_cast< float >( im.getHeight( ) ) ) *
+                        static_cast< float >( im.getHeight( ) - 1 ) ) *
                         static_cast< float >( M_PI );
                     float phi = (
                         samples[ is ][ 1 ] /
-                        static_cast< float >( im.getWidth( ) ) ) * 2 *
+                        static_cast< float >( im.getWidth( ) - 1 ) ) * 2 *
                         static_cast< float >( M_PI );
                     float r, g, b;
                     im.getPixel(
