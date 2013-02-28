@@ -405,7 +405,7 @@ norm2( obj::vect< T, 3 > const & v ) {
 }
 
 template < typename T >
-static void constexpr
+static void
 normalise2( T & x, T & y, T & z ) {
     T norm = sqrt( sqr( x ) + sqr( y ) + sqr( z ) );
     x /= norm;
@@ -414,7 +414,7 @@ normalise2( T & x, T & y, T & z ) {
 }
 
 template < typename T >
-static void constexpr
+static void
 normalise2( obj::vect< T, 3 > & v ) {
     T norm = sqrt( sqr( v[ 0 ] ) + sqr( v[ 1 ] ) + sqr( v[ 2 ] ) );
     for ( uint32_t i = 0; i < 3; ++i ) {
