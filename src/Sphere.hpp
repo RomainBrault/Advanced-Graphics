@@ -31,7 +31,9 @@ template < typename OutputIterator, typename T, typename... Args >
 void copy_n( size_t n, OutputIterator out, T const & value, Args... args )
 {
   if ( n > 0 ) {
-    *out = static_cast< T >( value );
+    out[ 0 ] = static_cast<
+        typename std::iterator_traits< OutputIterator >::value_type
+    >( value );
     copy_n( n - 1, ++out, args... );
   }
 }

@@ -26,10 +26,26 @@ polar2cartesian( float & x, float & y, float & z, float phi, float theta ) {
 }
 
 static void
+polar2cartesian( obj::vect< float, 3 > & v, float phi, float theta ) {
+    v[ 0 ] = std::sin( theta ) * std::sin( phi );
+    v[ 1 ] = std::cos( theta );
+    v[ 2 ] = std::sin( theta ) * std::cos( phi );
+}
+
+static void
 cartesian2polar( float & phi, float & theta, float x, float y, float z ) {
     theta = std::acos( y ) / static_cast< float >( M_PI );
     phi   = static_cast< float >(
         std::atan2( x, z ) / ( 2 * static_cast< float >( M_PI ) ) + 0.5
+    );
+}
+
+static void
+cartesian2polar( float & phi, float & theta, obj::vect< float, 3 > const & v ) {
+    theta = std::acos( v[ 1 ] ) / static_cast< float >( M_PI );
+    phi   = static_cast< float >(
+        std::atan2( v[ 0 ], v[ 2 ] ) /
+        ( 2 * static_cast< float >( M_PI ) ) + 0.5
     );
 }
 
@@ -1397,10 +1413,9 @@ image::renderBiased(
                         samples[ is ][ 1 ], samples[ is ][ 0 ], r, g, b
                     );
 
-                    float x, y, z;
-                    polar2cartesian( x, y, z, phi, theta );
-                    obj::vect< float, 3 > ref_samp( -x, -y, -z );
-                    float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+                    obj::vect< float, 3 > ref_samp;
+                    polar2cartesian( ref_samp, phi, theta );
+                    float cos_theta = std::max( -ref_samp.dot( ref ), 0.f );
                     float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                     float n = std::norm2( r, g, b );
                     R += brdf_v * cos_theta * ( r / n );
@@ -1436,10 +1451,9 @@ image::renderBiased(
                     samples[ is ][ 1 ] , samples[ is ][ 0 ], r, g, b
                 );
 
-                float x, y, z;
-                polar2cartesian( x, y, z, phi, theta );
-                obj::vect< float, 3 > ref_samp( -x, -y, -z );
-                float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+                obj::vect< float, 3 > ref_samp;
+                polar2cartesian( ref_samp, phi, theta );
+                float cos_theta = std::max( -ref_samp.dot( ref ), 0.f );
                 float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                 float n = std::norm2( r, g, b );
                 R += brdf_v * cos_theta * ( r / n );
@@ -1543,10 +1557,9 @@ image::render(
                         samples[ is ][ 1 ], samples[ is ][ 0 ], r, g, b
                     );
 
-                    float x, y, z;
-                    polar2cartesian( x, y, z, phi, theta );
-                    obj::vect< float, 3 > ref_samp( -x, -y, -z );
-                    float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+                    obj::vect< float, 3 > ref_samp;
+                    polar2cartesian( ref_samp, phi, theta );
+                    float cos_theta = std::max( -ref_samp.dot( ref ), 0.f );
                     float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                     float n = std::norm2( r, g, b );
                     R += brdf_v * cos_theta * ( r / n );
@@ -1583,10 +1596,9 @@ image::render(
                     samples[ is ][ 1 ] , samples[ is ][ 0 ], r, g, b
                 );
 
-                float x, y, z;
-                polar2cartesian( x, y, z, phi, theta );
-                obj::vect< float, 3 > ref_samp( -x, -y, -z );
-                float cos_theta = std::max( ref_samp.dot( ref ), 0.f );
+                obj::vect< float, 3 > ref_samp;
+                polar2cartesian( ref_samp, phi, theta );
+                float cos_theta = std::max( -ref_samp.dot( ref ), 0.f );
                 float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                 float n = std::norm2( r, g, b );
                 R += brdf_v * cos_theta * ( r / n );

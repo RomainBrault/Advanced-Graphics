@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
     rnd::Uniform< float, rnd::Haynes, 6364136223846793005UL, 1UL >
         rng( time( nullptr ) );
     brdf::model b( view, 1.0, 0.0, 1.0 );
-    r_sphere.render( s, latlong, view, n_points, b, rng );
+    r_sphere.renderBiased( s, latlong, view, n_points, b, rng );
 
     temp = r_sphere;
     temp.linearToneMap( stops );
