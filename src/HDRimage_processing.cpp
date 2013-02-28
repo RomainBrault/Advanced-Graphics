@@ -1561,6 +1561,7 @@ image::render(
 
                     obj::vect< float, 3 > ref_samp;
                     polar2cartesian( ref_samp, phi, theta );
+                    std::normalise2( ref_samp );
                     float cos_theta = std::max( -ref_samp.dot( ref ), 0.f );
                     float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                     float n = std::norm2( r, g, b );
@@ -1600,6 +1601,7 @@ image::render(
 
                 obj::vect< float, 3 > ref_samp;
                 polar2cartesian( ref_samp, phi, theta );
+                std::normalise2( ref_samp );
                 float cos_theta = std::max( -ref_samp.dot( ref ), 0.f );
                 float brdf_v = brdf_f.phong( ref_samp, ref_samp, ref_samp );
                 float n = std::norm2( r, g, b );
